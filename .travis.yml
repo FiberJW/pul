@@ -2,6 +2,8 @@ language: node_js
 sudo: false
 node_js:
   - "node"
+git:
+  submodules: false
 install:
   - npm run getdeps
 before_script:
