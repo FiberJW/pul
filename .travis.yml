@@ -7,6 +7,6 @@ git:
 install:
   - npm run getmobiledeps
 before_script:
-  - exp login -u $EXP_UNAME -p $EXP_PWORD
+  - npm run exp login -u $EXP_UNAME -p $EXP_PWORD
 script:
   - npm run exp:push
