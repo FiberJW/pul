@@ -188,6 +188,13 @@ export default class SettingsScreen extends Component {
               return { namePromptVisible: false };
             }) }
             onSubmit={ (displayName) => {
+              if (displayName.length < 4) {
+                this.props.alertWithType('error', 'Error', 'Please enter your full name.');
+                this.setState(() => {
+                  return { phoneNumberPromptVisible: false };
+                });
+                return;
+              }
               global.firebaseApp.auth().currentUser.updateProfile({
                 displayName: displayName.trim(),
               }).then(() => {
@@ -221,6 +228,13 @@ export default class SettingsScreen extends Component {
               return { phoneNumberPromptVisible: false };
             }) }
             onSubmit={ (phoneNumber) => {
+              if (phoneNumber.length === 10) {
+                this.props.alertWithType('error', 'Error', 'Please enter your 10-digit phone number.');
+                this.setState(() => {
+                  return { phoneNumberPromptVisible: false };
+                });
+                return;
+              }
               global.firebaseApp.database()
               .ref('users')
               .child(global.firebaseApp.auth().currentUser.uid)
