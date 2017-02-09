@@ -147,7 +147,7 @@ export default class Ride extends Component { // eslint-disable-line require-jsd
                     .child('rides')
                     .child(this.props.event.yourRide.uid)
                     .child('passengers')
-                    .child(this.props.event.yourRide.passengers[passIndex].passengerUID)
+                    .child(this.props.event.yourRide.passengers[passIndex].passUID)
                     .remove()
                     .then(() => {
                       this.props.alertWithType('error', '😢', `You left ${this.props.event.name}.`);

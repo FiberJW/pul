@@ -14,7 +14,7 @@ export default class EventStore {
       let availableRides = 0;
 
       const rides = _.map(event.rides || {}, (ride, rideUID) => {
-        const passengers = _.map(ride.passengers || {}, (passenger) => passenger);
+        const passengers = _.map(ride.passengers || {}, (passenger, passUID) => ({ ...passenger, passUID }));
 
         if (!passengers || passengers.length < event.rides[rideUID].passengerLimit) {
           availableRides++;
@@ -63,6 +63,7 @@ export default class EventStore {
     .child(global.firebaseApp.auth().currentUser.uid)
     .once('value')
     .then(userSnap => {
+      this.error = null;
       const schoolUID = userSnap.val().school;
       global.firebaseApp.database()
       .ref('schools')
@@ -86,6 +87,7 @@ export default class EventStore {
   @action refresh = (showRefreshControl = true) => {
     this.unWatchEvents();
     this.events = [];
+    this.error = null;
     this.watchEvents(showRefreshControl);
   }
 
