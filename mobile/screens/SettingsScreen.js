@@ -141,35 +141,39 @@ export default class SettingsScreen extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={ () => {
-              Alert.alert(
-                Platform.OS === 'ios' ? 'Log Out' : 'Log out',
-                'Are you sure? Logging out will remove all PÜL data from this device.',
-                [
-                  {
-                    text: 'Cancel',
-                    onPress: () => {},
-                    style: 'cancel',
-                  },
-                  {
-                    text: 'OK',
-                    onPress: () => {
-                      global.firebaseApp.database()
-                      .ref('users')
-                      .child(global.firebaseApp.auth().currentUser.uid)
-                      .update({
-                        pushToken: null,
-                      })
-                      .then(() => {
-                        AsyncStorage.clear();
-                        this.props.navigation.getNavigator('master').immediatelyResetStack([Router.getRoute('onboarding')], 0);
-                      })
-                      .catch(error => {
-                        this.props.alertWithType('error', 'Error', error.toString());
-                      });
+              if (global.firebaseApp.auth().currentUser.emailVerified) {
+                Alert.alert(
+                  Platform.OS === 'ios' ? 'Log Out' : 'Log out',
+                  'Are you sure? Logging out will remove all PÜL data from this device.',
+                  [
+                    {
+                      text: 'Cancel',
+                      onPress: () => {},
+                      style: 'cancel',
                     },
-                  },
-                ],
-              );
+                    {
+                      text: 'OK',
+                      onPress: () => {
+                        global.firebaseApp.database()
+                        .ref('users')
+                        .child(global.firebaseApp.auth().currentUser.uid)
+                        .update({
+                          pushToken: null,
+                        })
+                        .then(() => {
+                          AsyncStorage.clear();
+                          this.props.navigation.getNavigator('master').immediatelyResetStack([Router.getRoute('onboarding')], 0);
+                        })
+                        .catch(error => {
+                          this.props.alertWithType('error', 'Error', error.toString());
+                        });
+                      },
+                    },
+                  ],
+                );
+              } else {
+                this.props.alertWithType('error', 'Error', 'You must verify your email before continuing.');
+              }
             } }
             style={ styles.fieldContainer }
           >
