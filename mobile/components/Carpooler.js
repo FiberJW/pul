@@ -48,7 +48,7 @@ export default class Carpooler extends Component {
     .child('rides')
     .child(this.props.event.yourRide.uid)
     .child('passengers')
-    .child(this.props.event.yourRide.passengers[passIndex].passengerUID)
+    .child(this.props.event.yourRide.passengers[passIndex].userUID)
     .update({ isPickedUp: !this.props.user.isPickedUp })
     .then(() => {
       this.props.refresh();
