@@ -18,6 +18,7 @@ install:
   - npm install
   - cd ..
 before_script:
-  - npm run exp:login
+  - npm i -g exp
 script:
-  - npm run exp:push
+  - exp login -u $EXP_UNAME -p $EXP_PWORD
+  - cd mobile && exp publish

@@ -4,8 +4,7 @@
   "description": "",
   "main": ".eslintrc.js",
   "dependencies": {
-    "chalkdust": "^1.1.0",
-    "exp": "^32.3.0"
+    "chalkdust": "^1.1.0"
   },
   "scripts": {
     "lint": "eslint .",
