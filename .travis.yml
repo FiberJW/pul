@@ -5,7 +5,10 @@ node_js:
 git:
   submodules: false
 install:
-  - npm run getmobiledeps
+  - npm i
+  - cd mobile
+  - npm i
+  - cd ..
 before_script:
   - npm run exp login -u $EXP_UNAME -p $EXP_PWORD
 script:
