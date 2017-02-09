@@ -1,0 +1,4 @@
+{
+  "presets": ["react-native-stage-0/decorator-support"],
+  "plugins": ["jsx-control-statements"]
+}

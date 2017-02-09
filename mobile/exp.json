@@ -1,0 +1,39 @@
+{
+  "name": "PÜL",
+  "description": "Bringing your school community closer, one ride at a time.",
+  "slug": "pul",
+  "sdkVersion": "13.0.0",
+  "version": "0.1.1",
+  "orientation": "portrait",
+  "primaryColor": "#cccccc",
+  "icon": "http://i.imgur.com/Ha8Eaey.png",
+  "androidHideExponentNotificationInShellApp": true,
+  "notification": {
+    "icon": "http://i.imgur.com/RAKQ1Aw.png",
+    "color": "#000000"
+  },
+  "loading": {
+    "icon": "http://i.imgur.com/uXzacrP.png",
+    "hideExponentText": true
+  },
+  "packagerOpts": {
+    "assetExts": ["ttf", "mp4", "jpg"]
+  },
+  "ios": {
+    "bundleIdentifier": "io.github.datwheat.pul",
+    "buildNumber": "4",
+    "config": {
+      "usesNonExemptEncryption": true
+    },
+    "supportsTablet": false
+  },
+  "android": {
+    "package": "io.github.datwheat.pul",
+    "versionCode": 3,
+    "config": {
+      "googleMaps": {
+        "apiKey": "AIzaSyAgFjSKPvJ-YjqpN-uSdyQYFzaJSTWhmSA"
+      }
+    }
+  }
+}

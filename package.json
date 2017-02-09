@@ -1,0 +1,33 @@
+{
+  "name": "pul",
+  "version": "1.0.0",
+  "description": "",
+  "main": ".eslintrc.js",
+  "dependencies": {
+    "chalkdust": "^1.1.0"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "validate": "npm ls",
+    "ios": "./ios.sh",
+    "android": "./android.sh acc947de-2646-4057-b53f-13158bb55536",
+    "getdeps": "./getdeps.sh",
+    "android:hard": "cd mobile && exp start --android && exp logs",
+    "exp:push": "cd mobile && exp publish" 
+  },
+  "devDependencies": {
+    "eslint": "^3.13.1",
+    "eslint-plugin-jsx-control-statements": "^2.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/datwheat/pul.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/datwheat/pul/issues"
+  },
+  "homepage": "https://github.com/datwheat/pul#README"
+}

@@ -1,0 +1,4 @@
+[submodule "server"]
+    path = server
+    url = https://git.heroku.com/pul-notification-server.git
+
