@@ -12,6 +12,9 @@ addons:
     - ubuntu-toolchain-r-test
     packages:
     - g++-4.8
+before_install:
+- openssl aes-256-cbc -K $encrypted_703e333a0a3d_key -iv $encrypted_703e333a0a3d_iv
+  -in keys.js.enc -out keys.js -d
 install:
 - npm install && cd mobile && npm install && cd ..
 before_script:
@@ -21,6 +24,3 @@ script:
 - cd mobile
 - exp start
 - exp publish
-before_install:
-- openssl aes-256-cbc -K $encrypted_703e333a0a3d_key -iv $encrypted_703e333a0a3d_iv
-  -in keys.js.enc -out keys.js -d
