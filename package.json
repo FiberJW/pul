@@ -12,7 +12,8 @@
     "validate": "npm ls",
     "ios": "./ios.sh",
     "android": "./android.sh acc947de-2646-4057-b53f-13158bb55536",
-    "getdeps": "./getdeps.sh",
+    "getalldeps": "./getalldeps.sh",
+    "getmobiledeps": "./getmobiledeps.sh",
     "android:hard": "cd mobile && exp start --android && exp logs",
     "exp:push": "cd mobile && exp publish"
   },
