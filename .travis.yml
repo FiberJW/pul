@@ -4,10 +4,18 @@ node_js:
   - "node"
 git:
   submodules: false
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
 install:
-  - npm i
+  - npm install
   - cd mobile
-  - npm i
+  - npm istall
   - cd ..
 before_script:
   - npm run exp login -u $EXP_UNAME -p $EXP_PWORD
