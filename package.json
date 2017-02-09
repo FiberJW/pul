@@ -4,7 +4,8 @@
   "description": "",
   "main": ".eslintrc.js",
   "dependencies": {
-    "chalkdust": "^1.1.0"
+    "chalkdust": "^1.1.0",
+    "exp": "^32.3.0"
   },
   "scripts": {
     "lint": "eslint .",
@@ -13,7 +14,7 @@
     "android": "./android.sh acc947de-2646-4057-b53f-13158bb55536",
     "getdeps": "./getdeps.sh",
     "android:hard": "cd mobile && exp start --android && exp logs",
-    "exp:push": "cd mobile && exp publish" 
+    "exp:push": "cd mobile && exp publish"
   },
   "devDependencies": {
     "eslint": "^3.13.1",
