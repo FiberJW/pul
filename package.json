@@ -16,7 +16,7 @@
     "getmobiledeps": "./getmobiledeps.sh",
     "android:hard": "cd mobile && exp start --android && exp logs",
     "exp:push": "cd mobile && exp publish",
-    "exp": "exp"
+    "exp:login": "exp login -u $EXP_UNAME -p $EXP_PWORD"
   },
   "devDependencies": {
     "eslint": "^3.13.1",

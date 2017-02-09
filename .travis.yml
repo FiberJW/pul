@@ -18,6 +18,6 @@ install:
   - npm install
   - cd ..
 before_script:
-  - npm run exp login -u $EXP_UNAME -p $EXP_PWORD
+  - npm run exp:login
 script:
   - npm run exp:push
