@@ -51,7 +51,7 @@ export default class Carpooler extends Component {
     .child(this.props.event.yourRide.passengers[passIndex].passUID)
     .update({ isPickedUp: !this.props.user.isPickedUp })
     .then(() => {
-      this.props.refresh();
+      this.props.refresh(false);
     })
     .catch(err => {
       this.props.alertWithType('error', 'Error', err.toString());
