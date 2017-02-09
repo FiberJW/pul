@@ -15,7 +15,7 @@ addons:
 install:
   - npm install
   - cd mobile
-  - npm istall
+  - npm install
   - cd ..
 before_script:
   - npm run exp login -u $EXP_UNAME -p $EXP_PWORD
