@@ -20,7 +20,6 @@ install:
 before_script:
 - npm i -g exp
 script:
-- set -e
 - exp login -u $EXP_UNAME -p $EXP_PWORD
 - cd mobile
 - exp start
