@@ -48,7 +48,7 @@
 - React Native
 - ex-navigation
 - MobX
-- Moment.js
+- Firebase
  
 
 Check it out [here](https://exp.host/@pulapp/pul)! (although you most likely can't sign in unless you go to a supported school)
