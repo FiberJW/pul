@@ -28,3 +28,4 @@ script:
 after_script:
     # killing background process (because dockerized build no longer does it)
     - kill -9 $(ps aux | grep 'exp' | awk '{print $2}')
+    - exp logout
