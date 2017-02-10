@@ -16,11 +16,12 @@
 
 ## Screenshots
 
-![Events Feed](./screenshots/events.png)
-![Upcoming Rides](./screenshots/ride.png)
-![Event Submission](./screenshots/submitevent.png)
-![Trex Game](./screenshots/trex.jpg)
-
+<div>
+  <img style="display:inline-block" alt="Events Feed" src="./screenshots/events.png" width="256">
+  <img style="display:inline-block" alt="Upcoming Rides" src="./screenshots/ride.png" width="256">
+  <img style="display:inline-block" alt="Event Submission" src="./screenshots/submitevent.png" width="256">
+  <img style="display:inline-block" alt="Trex Game" src="./screenshots/trex.png" width="256">
+</div>
 
 ## Directory Structure
 
