@@ -24,4 +24,4 @@ script:
 - cd mobile
 - exp start
 - exp publish
-- travis_terminate 0
+- travis_finish build &?
