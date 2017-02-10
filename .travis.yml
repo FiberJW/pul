@@ -20,12 +20,6 @@ install:
 before_script:
 - npm i -g exp
 script:
-- exp login -u $EXP_UNAME -p $EXP_PWORD
-- cd mobile
-- exp start
-- exp publish
+- exp login -u $EXP_UNAME -p $EXP_PWORD && cd mobile && exp start && exp publish
 after_script:
-    # killing background process (because dockerized build no longer does it)
-    - exp stop
-    - exp logout
-    - kill -9 $(ps aux | grep 'exp' | awk '{print $2}')
+- exp stop && exp logout && kill -9 $(ps aux | grep 'exp' | awk '{print $2}')
