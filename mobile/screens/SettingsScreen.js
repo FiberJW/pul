@@ -188,7 +188,7 @@ export default class SettingsScreen extends Component {
               return { namePromptVisible: false };
             }) }
             onSubmit={ (displayName) => {
-              if (displayName.length < 4) {
+              if (displayName.trim().length < 4) {
                 this.props.alertWithType('error', 'Error', 'Please enter your full name.');
                 this.setState(() => {
                   return { phoneNumberPromptVisible: false };
@@ -228,7 +228,7 @@ export default class SettingsScreen extends Component {
               return { phoneNumberPromptVisible: false };
             }) }
             onSubmit={ (phoneNumber) => {
-              if (phoneNumber.length === 10) {
+              if (phoneNumber.trim().length !== 10) {
                 this.props.alertWithType('error', 'Error', 'Please enter your 10-digit phone number.');
                 this.setState(() => {
                   return { phoneNumberPromptVisible: false };
