@@ -22,4 +22,4 @@ before_script:
 script:
 - exp login -u $EXP_UNAME -p $EXP_PWORD && cd mobile && exp start && exp publish
 after_script:
-- exp stop && exp logout && kill -9 $(ps aux | grep 'exp' | awk '{print $2}')
+- exp stop && exp logout
