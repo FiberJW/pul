@@ -23,4 +23,5 @@ script:
 - exp login -u $EXP_UNAME -p $EXP_PWORD
 - cd mobile
 - exp start
-- exp publish; echo $?
+- exp publish
+- echo $?
