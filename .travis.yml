@@ -24,4 +24,4 @@ script:
 - cd mobile
 - exp start
 - exp publish
-- echo $?
+- travis_terminate 0
