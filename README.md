@@ -17,10 +17,10 @@
 ## Screenshots
 
 <p align="center">
-  <img style="display:inline-block" alt="Events Feed" src="./screenshots/events.png" width="256">
-  <img style="display:inline-block" alt="Upcoming Rides" src="./screenshots/ride.png" width="256">
-  <img style="display:inline-block" alt="Event Submission" src="./screenshots/submitevent.png" width="256">
-  <img style="display:inline-block" alt="Trex Game" src="./screenshots/trex.jpg" width="256">
+  <img style="display:inline-block" alt="Events Feed" src="./screenshots/events.png" width="170">
+  <img style="display:inline-block" alt="Upcoming Rides" src="./screenshots/ride.png" width="170">
+  <img style="display:inline-block" alt="Event Submission" src="./screenshots/submitevent.png" width="170">
+  <img style="display:inline-block" alt="Trex Game" src="./screenshots/trex.jpg" width="170">
 </p>
 
 ## Directory Structure
