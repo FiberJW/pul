@@ -25,4 +25,6 @@ script:
 - cd mobile
 - exp start
 - exp publish
-- echo "Yay"
+after_script:
+    # killing background process (because dockerized build no longer does it)
+    - kill -9 $(ps aux | grep 'exp' | awk '{print $2}')
