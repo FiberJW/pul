@@ -12,6 +12,8 @@
 
 ---
 
+[![Build Status](https://travis-ci.org/datwheat/pul.svg?branch=master)](https://travis-ci.org/datwheat/pul)
+
 ## Directory Structure
 
 ```
