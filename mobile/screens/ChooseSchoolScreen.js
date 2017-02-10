@@ -103,6 +103,19 @@ export default class ChooseSchoolScreen extends Component {
                 };
               }) }
               onSubmit={ (school) => {
+                if (school.trim().length === 0) {
+                  this.setState(() => {
+                    return {
+                      schoolPromptVisible: false,
+                    };
+                  });
+                  this.props.alertWithType(
+                      'error',
+                      'Error',
+                      'Can\'t suggest a school if it doesn\'t exist 😜'
+                    );
+                  return;
+                }
                 if (!this.state.submittingSchoolRequest) {
                   this.setState(() => {
                     return {
