@@ -13,15 +13,15 @@ import * as firebase from 'firebase';
 import { firebaseConfig, sentryURL } from './config/keys';
 import { ActionSheetProvider } from '@exponent/react-native-action-sheet';
 import DropdownAlertProvider from './components/DropdownAlertProvider';
-
-const Raven = require('raven-js');
-require('raven-js/plugins/react-native')(Raven);
+import ExponentSentryClient from '@exponent/sentry-utils';
 
 if (!__DEV__) { // eslint-disable-line jsx-control-statements/jsx-jcs-no-undef
   // enables sentry only in production
-  Raven
-  .config(sentryURL, { release: require('./exp.json').version })
-  .install();
+  ExponentSentryClient.setupSentry(
+    sentryURL,
+    require('./exp.json').version,
+    require('./package.json').main,
+  );
 
   // this guards against console usage in production builds since
   // babel transform of remove console won't work with react-native preset
