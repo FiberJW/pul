@@ -10,19 +10,17 @@ import {
   TextInput,
   Keyboard,
   Alert,
-  ScrollView,
   ActivityIndicator,
-  LayoutAnimation,
 } from 'react-native';
 import colors from '../config/colors';
 import Exponent, { Notifications } from 'exponent';
 import {
   NavigationStyles,
 } from '@exponent/ex-navigation';
-import KeyboardEventListener from 'KeyboardEventListener';
 import Router from 'Router';
 import Icon from '../components/CrossPlatformIcon';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
+import KeyboardAwareScrollView from '../components/KeyboardAwareScrollView';
 
 /**
  *  For getting a user's password in signup or login
@@ -53,46 +51,9 @@ export default class GetPasswordScreen extends Component {
     password: '',
     loggingIn: false,
     checkedPassword: false,
-    keyboardHeight: 0,
     visible: false,
   }
 
-  componentWillMount() {
-    this._unsubscribe = KeyboardEventListener.subscribe(this._onKeyboardVisibilityChange);
-  }
-
-  componentWillUnmount() {
-    if (this._unsubscribe) {
-      this._unsubscribe();
-      this._unsubscribe = null;
-    }
-  }
-
-  _blurFocusedTextInput = () => {
-    TextInput.State.blurTextInput(TextInput.State.currentlyFocusedField());
-  };
-
-  _isKeyboardOpen = () => {
-    return this.state.keyboardHeight > 0;
-  }
-
-  _onKeyboardVisibilityChange = (
-    { keyboardHeight, layoutAnimationConfig }:
-    { keyboardHeight: number, layoutAnimationConfig: ?Object }) => {
-    if (keyboardHeight === 0) {
-      this._blurFocusedTextInput();
-    }
-
-    if (layoutAnimationConfig) {
-      LayoutAnimation.configureNext(layoutAnimationConfig);
-    }
-
-    this.setState(() => {
-      return {
-        keyboardHeight,
-      };
-    });
-  }
 
   pushToNextScreen = () => {
     Keyboard.dismiss();
@@ -205,16 +166,8 @@ export default class GetPasswordScreen extends Component {
 
   render() {
     return (
-      <ScrollView
-        onScroll={ this._blurFocusedTextInput }
-        scrollEventThrottle={ 32 }
-        keyboardShouldPersistTaps="always"
-        keyboardDismissMode="on-drag"
-        contentContainerStyle={ [styles.container,
-          this.state.keyboardHeight ?
-          { flex: 1, marginBottom: this.state.keyboardHeight } :
-          { flex: 1 },
-        ] }
+      <KeyboardAwareScrollView
+        contentContainerStyle={ styles.container }
       >
         <View />
         <Choose>
@@ -294,7 +247,7 @@ export default class GetPasswordScreen extends Component {
             </TouchableOpacity>
           </Otherwise>
         </Choose>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     );
   }
 }
