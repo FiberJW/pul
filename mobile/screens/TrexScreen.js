@@ -75,7 +75,7 @@ export default class TrexScreen extends Component {
             </View>
           </When>
           <Otherwise>
-            <View style={{ flex: 1 }}>
+            <View style={ styles.leaderboard }>
               <View style={ styles.labelContainer }>
                 <Text style={ styles.label }>LEADERBOARD</Text>
               </View>
@@ -107,6 +107,11 @@ const styles = StyleSheet.create({
   webview: {
     height: 300,
     flex: 0,
+  },
+  leaderboard: {
+    borderTopColor: colors.disabledGrey,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    flex: 1,
   },
   labelContainer: {
     padding: 8,
