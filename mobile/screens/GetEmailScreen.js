@@ -5,18 +5,16 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
-  ScrollView,
   Keyboard,
-  LayoutAnimation,
 } from 'react-native';
 import colors from '../config/colors';
 import {
   NavigationStyles,
 } from '@exponent/ex-navigation';
-import KeyboardEventListener from 'KeyboardEventListener';
 import Router from 'Router';
 import validator from 'validator';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
+import KeyboardAwareScrollView from '../components/KeyboardAwareScrollView';
 
 /**
  *  For getting a user's email in signup or login
@@ -44,43 +42,6 @@ export default class GetEmailScreen extends Component {
 
   state = {
     emailUsername: '',
-    keyboardHeight: 0,
-  }
-
-  componentWillMount() {
-    this._unsubscribe = KeyboardEventListener.subscribe(this._onKeyboardVisibilityChange);
-  }
-
-  componentWillUnmount() {
-    if (this._unsubscribe) {
-      this._unsubscribe();
-      this._unsubscribe = null;
-    }
-  }
-  _blurFocusedTextInput = () => {
-    TextInput.State.blurTextInput(TextInput.State.currentlyFocusedField());
-  };
-
-  _isKeyboardOpen = () => {
-    return this.state.keyboardHeight > 0;
-  }
-
-  _onKeyboardVisibilityChange = (
-    { keyboardHeight, layoutAnimationConfig }:
-    { keyboardHeight: number, layoutAnimationConfig: ?Object }) => {
-    if (keyboardHeight === 0) {
-      this._blurFocusedTextInput();
-    }
-
-    if (layoutAnimationConfig) {
-      LayoutAnimation.configureNext(layoutAnimationConfig);
-    }
-
-    this.setState(() => {
-      return {
-        keyboardHeight,
-      };
-    });
   }
 
   pushToNextScreen = () => {
@@ -109,16 +70,8 @@ export default class GetEmailScreen extends Component {
 
   render() {
     return (
-      <ScrollView
-        onScroll={ this._blurFocusedTextInput }
-        scrollEventThrottle={ 32 }
-        keyboardDismissMode="on-drag"
-        keyboardShouldPersistTaps="always"
-        contentContainerStyle={ [styles.container,
-          this.state.keyboardHeight ?
-          { flex: 1, marginBottom: this.state.keyboardHeight } :
-          { flex: 1 },
-        ] }
+      <KeyboardAwareScrollView
+        contentContainerStyle={ styles.container }
       >
         <View />
         <View>
@@ -146,7 +99,7 @@ export default class GetEmailScreen extends Component {
         >
           <Text style={ styles.touchableText }>Next</Text>
         </TouchableOpacity>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     );
   }
 }
