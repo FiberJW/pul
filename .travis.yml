@@ -9,10 +9,17 @@ before_install:
 - openssl aes-256-cbc -K $encrypted_703e333a0a3d_key -iv $encrypted_703e333a0a3d_iv
   -in ./mobile/config/keys.js.enc -out ./mobile/config/keys.js -d
 install:
-- npm install && cd mobile && npm install && cd ..
+- npm install
+- cd mobile
+- npm install
+- cd ..
 before_script:
 - npm i -g exp
 script:
-- exp login -u $EXP_UNAME -p $EXP_PWORD && cd mobile && exp start && exp publish
+- cd mobile
+- exp login -u $EXP_UNAME -p $EXP_PWORD
+- exp start
+- exp publish
 after_script:
-- exp stop && exp logout
+- exp stop
+- exp logout
