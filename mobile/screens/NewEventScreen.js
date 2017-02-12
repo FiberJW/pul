@@ -197,6 +197,7 @@ export default class NewEventScreen extends Component {
       this.props.alertWithType('error', 'Error', err.toString());
     });
   }
+
   render() {
     return (
       <View

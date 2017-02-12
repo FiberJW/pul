@@ -63,16 +63,16 @@ export default class EventStore {
     .child(global.firebaseApp.auth().currentUser.uid)
     .once('value')
     .then(userSnap => {
-      this.error = null;
       const schoolUID = userSnap.val().school;
       global.firebaseApp.database()
       .ref('schools')
       .child(schoolUID)
       .child('events')
       .on('value', this.processEvents(schoolUID));
+      this.error = null;
     })
     .catch(error => {
-      this.error = error;
+      this.setError(error);
     });
   }
 
@@ -89,6 +89,13 @@ export default class EventStore {
     this.events = [];
     this.error = null;
     this.watchEvents(showRefreshControl);
+  }
+
+  @action setError = (error, timeInSeconds = 1) => {
+    this.error = error;
+    setTimeout(() => {
+      this.error = null;
+    }, timeInSeconds * 1000);
   }
 
   @computed get rides() {

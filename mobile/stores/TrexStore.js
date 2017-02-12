@@ -5,6 +5,14 @@ export default class TrexStore {
   @observable players = [];
   @observable loading = true;
   @observable school = null;
+  @observable error = null;
+
+  @action setError = (error, timeInSeconds = 1) => {
+    this.error = error;
+    setTimeout(() => {
+      this.error = null;
+    }, timeInSeconds * 1000);
+  }
 
   @action updateLeaderboard = yourSchool => usersSnapshot => {
     const newPlayers = [];
@@ -20,7 +28,6 @@ export default class TrexStore {
 
     this.players = sorted;
     this.loading = false;
-    this.error = null;
   }
 
   @action watchUsers = () => {
@@ -36,7 +43,7 @@ export default class TrexStore {
       .on('value', this.updateLeaderboard(this.school));
     })
     .catch(error => {
-      this.error = error;
+      this.setError(error);
     });
   }
 
@@ -72,7 +79,7 @@ export default class TrexStore {
       }
     })
     .catch(error => {
-      this.error = error;
+      this.setError(error);
     });
   }
 }
