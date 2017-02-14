@@ -116,7 +116,9 @@ export default class AuthStore {
     });
   }
 
-  @action sendPasswordResetEmail = () => {}
+  @action sendPasswordResetEmail = () => {
+    global.firebaseApp.auth().sendPasswordResetEmail(this.userData.email);
+  }
 
   @action update = () => {}
 
@@ -134,7 +136,9 @@ export default class AuthStore {
     .off('value', this.mergeUserData);
   }
 
-  @action sendEmailVerification = () => {}
+  @action sendEmailVerification = () => {
+    global.firebaseApp.auth().currentUser.sendEmailVerification();
+  }
 
   @action mergeUserData = (userSnap) => {
     const newUserData = userSnap.val();
