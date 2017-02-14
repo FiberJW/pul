@@ -105,9 +105,10 @@ export default class AuthStore {
       pushToken: null,
     })
     .then(() => {
-      success();
       AsyncStorage.clear();
+      this.unWatchUserData();
       global.firebaseApp.auth().signOut();
+      success();
     })
     .catch(err => {
       this.setError(err);
