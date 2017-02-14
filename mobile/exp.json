@@ -24,7 +24,7 @@
     "bundleIdentifier": "io.github.datwheat.pul",
     "buildNumber": "4",
     "config": {
-      "usesNonExemptEncryption": true
+      "usesNonExemptEncryption": false
     },
     "supportsTablet": false
   },
