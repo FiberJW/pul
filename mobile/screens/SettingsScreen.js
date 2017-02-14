@@ -161,8 +161,9 @@ export default class SettingsScreen extends Component {
                           pushToken: null,
                         })
                         .then(() => {
-                          AsyncStorage.clear();
                           this.props.navigation.getNavigator('master').immediatelyResetStack([Router.getRoute('onboarding')], 0);
+                          AsyncStorage.clear();
+                          global.firebaseApp.auth().signOut();
                         })
                         .catch(error => {
                           this.props.alertWithType('error', 'Error', error.toString());

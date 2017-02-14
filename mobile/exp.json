@@ -12,6 +12,7 @@
     "icon": "http://i.imgur.com/RAKQ1Aw.png",
     "color": "#000000"
   },
+  "privacy": "public",
   "loading": {
     "icon": "http://i.imgur.com/uXzacrP.png",
     "hideExponentText": true
