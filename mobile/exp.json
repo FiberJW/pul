@@ -2,7 +2,7 @@
   "name": "PÜL",
   "description": "Bringing your school community closer, one ride at a time.",
   "slug": "pul",
-  "sdkVersion": "13.0.0",
+  "sdkVersion": "14.0.0",
   "version": "0.1.1",
   "orientation": "portrait",
   "primaryColor": "#cccccc",
