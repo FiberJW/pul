@@ -2,9 +2,9 @@ import { observable, action } from 'mobx';
 import _ from 'lodash';
 
 class TrexStore {
-  @observable players = [];
+  @observable.deep players = [];
   @observable loading = true;
-  @observable school = null;
+  @observable.deep school = null;
   @observable error = null;
 
   @action setError = (error, timeInSeconds = 1) => {

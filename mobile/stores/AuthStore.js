@@ -5,7 +5,7 @@ import _ from 'lodash';
 
 class AuthStore {
   authStates = ['unauthenticated', 'authenticated', 'attempting']
-  @observable userData = null;
+  @observable.deep userData = null;
   @observable state = this.authStates[0];
   @observable verified = false;
   @observable error = null;

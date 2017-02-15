@@ -6,8 +6,8 @@ class EventStore {
   @observable loading = true;
   @observable refreshing = false;
   @observable error = null;
-  @observable school = null;
-  @observable events = [];
+  @observable.deep school = null;
+  @observable.deep events = [];
 
   @action processEvents = schoolUID => eventsSnapshot => {
     const rawEvents = _.map(eventsSnapshot.val() || {}, (event, uid) => {
