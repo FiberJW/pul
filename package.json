@@ -13,7 +13,7 @@
     "ios": "./ios.sh",
     "android": "./android.sh acc947de-2646-4057-b53f-13158bb55536",
     "getalldeps": "./getalldeps.sh",
-    "android:hard": "cd mobile && exp start --android && exp logs",
+    "android:hard": "cd mobile && exp start --android",
     "exp:push": "cd mobile && exp publish",
     "exp:login": "exp login -u $EXP_UNAME -p $EXP_PWORD"
   },
