@@ -20,5 +20,4 @@ script:
 - exp login -u $EXP_UNAME -p $EXP_PWORD
 - exp publish
 after_script:
-- exp stop
 - exp logout
