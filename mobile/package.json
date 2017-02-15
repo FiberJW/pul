@@ -30,9 +30,7 @@
     "react-native-prompt": "^1.0.0",
     "react-native-swiper": "^1.5.4",
     "tcomb-form-native": "^0.6.1",
+    "jsx-control-statements": "^3.1.5",
     "validator": "^6.2.1"
-  },
-  "devDependencies": {
-    "jsx-control-statements": "^3.1.5"
   }
 }
