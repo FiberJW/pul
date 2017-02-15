@@ -17,10 +17,9 @@ import Icon from '../components/CrossPlatformIcon';
 import { NavigationStyles } from '@exponent/ex-navigation';
 import Router from '../navigation/Router';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
-import TrexStore from '../stores/TrexStore';
+import trexStore from '../stores/TrexStore';
 import { observer } from 'mobx-react/native';
 
-const trexStore = new TrexStore();
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
 /**

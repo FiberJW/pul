@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 import _ from 'lodash';
 
-export default class TrexStore {
+class TrexStore {
   @observable players = [];
   @observable loading = true;
   @observable school = null;
@@ -83,3 +83,5 @@ export default class TrexStore {
     });
   }
 }
+
+export default new TrexStore();

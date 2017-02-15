@@ -3,7 +3,7 @@ import { AsyncStorage } from 'react-native';
 import Exponent, { Notifications } from 'exponent';
 import _ from 'lodash';
 
-export default class AuthStore {
+class AuthStore {
   authStates = ['unauthenticated', 'authenticated', 'attempting']
   @observable userData = null;
   @observable state = this.authStates[0];
@@ -152,3 +152,5 @@ export default class AuthStore {
     }, timeInSeconds * 1000);
   }
 }
+
+export default new AuthStore();

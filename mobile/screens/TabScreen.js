@@ -10,9 +10,7 @@ import colors from '../config/colors';
 import ShareButton from '../components/ShareButton';
 import NavbarTitle from '../components/NavbarTitle';
 import Router from '../navigation/Router';
-import EventStore from '../stores/EventStore';
-
-const eventStore = new EventStore();
+import eventStore from '../stores/EventStore';
 
 export default class TabScreen extends Component {
   static route = {
