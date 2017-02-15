@@ -18,7 +18,6 @@ before_script:
 script:
 - cd mobile
 - exp login -u $EXP_UNAME -p $EXP_PWORD
-- exp start
 - exp publish
 after_script:
 - exp stop
