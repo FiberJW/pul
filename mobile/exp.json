@@ -22,7 +22,7 @@
   },
   "ios": {
     "bundleIdentifier": "io.github.datwheat.pul",
-    "buildNumber": "4",
+    "buildNumber": "5",
     "config": {
       "usesNonExemptEncryption": false
     },
@@ -30,7 +30,7 @@
   },
   "android": {
     "package": "io.github.datwheat.pul",
-    "versionCode": 3,
+    "versionCode": 4,
     "config": {
       "googleMaps": {
         "apiKey": "AIzaSyAgFjSKPvJ-YjqpN-uSdyQYFzaJSTWhmSA"
