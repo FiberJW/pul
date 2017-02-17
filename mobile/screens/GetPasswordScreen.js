@@ -98,7 +98,7 @@ export default class GetPasswordScreen extends Component {
               pushToken: token,
               deviceId: Exponent.Constants.deviceId,
               settings: {
-                notifications: true,
+                notifications: false,
               },
               displayName: this.props.credentials.name,
               email: this.props.credentials.email,
@@ -137,6 +137,9 @@ export default class GetPasswordScreen extends Component {
             global.firebaseApp.database().ref('users').child(user.uid).update({
               pushToken: token,
               deviceId: Exponent.Constants.deviceId,
+              settings: {
+                notifications: false,
+              },
             });
           });
           try {

@@ -54,7 +54,6 @@ class App extends Component {
   async setup() {
     const { Permissions } = Exponent;
     await Permissions.askAsync(Permissions.LOCATION);
-    await Permissions.askAsync(Permissions.REMOTE_NOTIFICATIONS);
 
     await Font.loadAsync({
       'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),

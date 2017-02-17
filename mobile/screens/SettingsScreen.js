@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import colors from '../config/colors';
+import { Permissions } from 'exponent';
 import { NavigationStyles } from '@exponent/ex-navigation';
 import Router from '../navigation/Router';
 import Prompt from 'react-native-prompt';
@@ -99,29 +100,46 @@ export default class SettingsScreen extends Component {
             <Text style={ styles.switchFieldLabel }>Push notifications</Text>
             <Switch
               onValueChange={ (value) => {
-                this.setState(() => {
-                  return {
-                    notifications: value,
-                  };
-                });
-                global.firebaseApp.database()
-                .ref('users')
-                .child(global.firebaseApp.auth().currentUser.uid)
-                .update({
-                  settings: {
-                    notifications: value,
-                  },
-                })
-                .then(() => {
-                  this.getUser();
-                })
-                .catch(error => {
+                Permissions.askAsync(Permissions.REMOTE_NOTIFICATIONS).then(({ status }) => {
+                  if (status === 'granted') {
+                    this.setState(() => {
+                      return {
+                        notifications: value,
+                      };
+                    });
+                    global.firebaseApp.database()
+                    .ref('users')
+                    .child(global.firebaseApp.auth().currentUser.uid)
+                    .update({
+                      settings: {
+                        notifications: value,
+                      },
+                    })
+                    .then(() => {
+                      this.getUser();
+                    })
+                    .catch(error => {
+                      this.setState(() => {
+                        return {
+                          notifications: !value,
+                        };
+                      });
+                      this.props.alertWithType('error', 'Error', error.toString());
+                    });
+                  } else {
+                    this.setState(() => {
+                      return {
+                        notifications: !value,
+                      };
+                    });
+                    this.props.alertWithType('error', 'Error', 'To stay in the loop, you need to enable push notifications.');
+                  }
+                }).catch(() => {
                   this.setState(() => {
                     return {
                       notifications: !value,
                     };
                   });
-                  this.props.alertWithType('error', 'Error', error.toString());
                 });
               } }
               value={ this.state.notifications }
