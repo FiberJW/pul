@@ -14,9 +14,9 @@
 
 [![Build Status](https://travis-ci.org/datwheat/pul.svg?branch=master)](https://travis-ci.org/datwheat/pul)
 
-<a href='https://play.google.com/store/apps/details?id=io.github.datwheat.pul&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img height="60" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
+<a href='https://play.google.com/store/apps/details?id=io.github.datwheat.pul&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>Google Play</a>
 
-<a href='https://itunes.apple.com/us/app/p%C3%BCl-carpooling-for-students-by-students/id1196047562?ls=1&mt=8'><img height="56" alt='Get it on the App Store' src='./screenshots/download-on-the-app-store.png'/></a>
+<a href='https://itunes.apple.com/us/app/p%C3%BCl-carpooling-for-students-by-students/id1196047562?ls=1&mt=8'>App Store</a>
 
 
 
