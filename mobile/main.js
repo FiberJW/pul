@@ -111,10 +111,12 @@ class App extends Component {
           }
 
           const emailWatch = setInterval(() => {
-            if (global.firebaseApp.auth().currentUser.emailVerified) {
-              clearInterval(emailWatch);
+            if (global.firebaseApp.auth().currentUser) {
+              if (global.firebaseApp.auth().currentUser.emailVerified) {
+                clearInterval(emailWatch);
+              }
+              global.firebaseApp.auth().currentUser.reload();
             }
-            global.firebaseApp.auth().currentUser.reload();
           }, 1000);
           this.setState(() => {
             return { loading: false, loggedIn: true };

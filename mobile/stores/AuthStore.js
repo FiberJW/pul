@@ -46,11 +46,12 @@ class AuthStore {
         this.setError(err);
       }
       const emailWatch = setInterval(() => {
-        if (global.firebaseApp.auth().currentUser.emailVerified) {
-          this.verified = true;
-          clearInterval(emailWatch);
+        if (global.firebaseApp.auth().currentUser) {
+          if (global.firebaseApp.auth().currentUser.emailVerified) {
+            clearInterval(emailWatch);
+          }
+          global.firebaseApp.auth().currentUser.reload();
         }
-        global.firebaseApp.auth().currentUser.reload();
       }, 1000);
       this.state = this.authStates[1];
       this.watchUserData();
