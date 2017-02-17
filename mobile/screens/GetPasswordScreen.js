@@ -121,6 +121,9 @@ export default class GetPasswordScreen extends Component {
                 }
               }, 1000);
               this.props.navigator.immediatelyResetStack([Router.getRoute('tabs')], 0);
+              setTimeout(() => {
+                this.props.alertWithType('info', 'Info', 'Make sure to enable push notifications to stay in the loop!');
+              }, 5000);
             });
           });
         }).catch(error => {
@@ -161,6 +164,9 @@ export default class GetPasswordScreen extends Component {
             global.firebaseApp.auth().currentUser.reload();
           }, 1000);
           this.props.navigator.immediatelyResetStack([Router.getRoute('tabs')], 0);
+          setTimeout(() => {
+            this.props.alertWithType('info', 'Info', 'Make sure to enable push notifications to stay in the loop!');
+          }, 5000);
         }).catch(error => {
           this.setState(() => {
             return { loggingIn: false };
