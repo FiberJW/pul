@@ -25,12 +25,7 @@ export default class TabScreen extends Component {
   }
 
   componentDidMount() {
-    const authWatch = setInterval(() => {
-      if (global.firebaseApp.auth().currentUser) {
-        eventStore.watchEvents();
-        clearInterval(authWatch);
-      }
-    }, 10);
+    eventStore.watchEvents();
   }
 
   _renderLabel = ({ route }) => {

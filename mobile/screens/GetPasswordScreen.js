@@ -102,23 +102,25 @@ export default class GetPasswordScreen extends Component {
               },
               displayName: this.props.credentials.name,
               email: this.props.credentials.email,
+            })
+            .then(() => {
+              try {
+                AsyncStorage.setItem('@PUL:user', JSON.stringify({
+                  ...this.props.credentials,
+                  password: this.state.password,
+                }));
+              } catch (error) {
+                  // Error saving data
+              }
+              const emailWatch = setInterval(() => {
+                if (global.firebaseApp.auth().currentUser.emailVerified) {
+                  clearInterval(emailWatch);
+                }
+                global.firebaseApp.auth().currentUser.reload();
+              }, 1000);
+              this.props.navigator.immediatelyResetStack([Router.getRoute('tabs')], 0);
             });
           });
-          try {
-            AsyncStorage.setItem('@PUL:user', JSON.stringify({
-              ...this.props.credentials,
-              password: this.state.password,
-            }));
-          } catch (error) {
-              // Error saving data
-          }
-          const emailWatch = setInterval(() => {
-            if (global.firebaseApp.auth().currentUser.emailVerified) {
-              clearInterval(emailWatch);
-            }
-            global.firebaseApp.auth().currentUser.reload();
-          }, 1000);
-          this.props.navigator.immediatelyResetStack([Router.getRoute('tabs')], 0);
         }).catch(error => {
           this.setState(() => {
             return { loggingIn: false };
