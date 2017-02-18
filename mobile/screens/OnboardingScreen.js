@@ -68,17 +68,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   innerContainer: {
-    // flex: 1,
     paddingTop: 100,
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   logo: {
     height: 72,
+    width: 181.19,
   },
   taglineContainer: {
     paddingTop: 32,
-    width: Dimensions.get('window').width,
     alignItems: 'center',
     paddingHorizontal: 16,
   },
