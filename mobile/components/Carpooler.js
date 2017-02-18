@@ -117,7 +117,7 @@ export default class Carpooler extends Component {
           </Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity
+      { !this.props.event.yourRide.rideStarted && <TouchableOpacity
         onPress={ () => this.meetDriver() }
       >
         <View style={ styles.meetDriverButton }>
@@ -125,7 +125,7 @@ export default class Carpooler extends Component {
             MEET FOR PICKUP
           </Text>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity>}
     </View>
   )
 
