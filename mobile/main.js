@@ -14,7 +14,7 @@ import { firebaseConfig, sentryURL } from './config/keys';
 import { ActionSheetProvider } from '@exponent/react-native-action-sheet';
 import DropdownAlertProvider from './components/DropdownAlertProvider';
 import ExponentSentryClient from '@exponent/sentry-utils';
-import { Provider as MobXProvider } from 'mobx-react/native';
+import { observer, Provider as MobXProvider } from 'mobx-react/native';
 import authStore from './stores/AuthStore';
 import eventStore from './stores/EventStore';
 import trexStore from './stores/TrexStore';
@@ -36,6 +36,7 @@ if (!__DEV__) { // eslint-disable-line jsx-control-statements/jsx-jcs-no-undef
   );
 }
 
+@observer
 class App extends Component {
   state = {
     loading: true,
@@ -165,19 +166,24 @@ class App extends Component {
           <Components.AppLoading />
         </When>
         <Otherwise>
-          <MobXProvider authStore={ authStore } eventStore={ eventStore } trexStore={ trexStore }>
-            <DropdownAlertProvider>
-              <ActionSheetProvider>
-                <NavigationProvider router={ Router }>
-                  <StackNavigation id="master" initialRoute={ Router.getRoute(route) } />
-                </NavigationProvider>
-              </ActionSheetProvider>
-            </DropdownAlertProvider>
-          </MobXProvider>
+          <DropdownAlertProvider>
+            <ActionSheetProvider>
+              <NavigationProvider router={ Router }>
+                <StackNavigation id="master" initialRoute={ Router.getRoute(route) } />
+              </NavigationProvider>
+            </ActionSheetProvider>
+          </DropdownAlertProvider>
         </Otherwise>
       </Choose>
     );
   }
 }
 
-Exponent.registerRootComponent(App);
+
+const Main = () => (
+  <MobXProvider authStore={ authStore } eventStore={ eventStore } trexStore={ trexStore }>
+    <App />
+  </MobXProvider>
+);
+
+Exponent.registerRootComponent(Main);
