@@ -146,7 +146,7 @@ export class AuthStore {
     global.firebaseApp.auth().sendPasswordResetEmail(email);
   }
 
-  @action sendEmailVerification = () => {
+  sendEmailVerification = () => {
     global.firebaseApp.auth().currentUser.sendEmailVerification();
   }
 
