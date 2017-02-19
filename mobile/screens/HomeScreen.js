@@ -19,8 +19,6 @@ import Router from '../navigation/Router';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import { observer, inject } from 'mobx-react/native';
 
-const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-
 /**
  *  Shows a list of all of your school's future events
  */
@@ -46,6 +44,8 @@ export default class HomeScreen extends Component {
     }
   }
 
+  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+
   render() {
     return (
       <View
@@ -68,7 +68,7 @@ export default class HomeScreen extends Component {
             <ListView
               enableEmptySections
               style={{ marginTop: 4 }}
-              dataSource={ ds.cloneWithRows(this.props.eventStore.events.slice()) }
+              dataSource={ this.ds.cloneWithRows(this.props.eventStore.events.slice()) }
               refreshControl={
                 <RefreshControl
                   enabled

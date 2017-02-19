@@ -15,8 +15,6 @@ import Ride from '../components/Ride';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import { observer, inject } from 'mobx-react/native';
 
-const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-
 /**
  *  Shows upcoming rides to user
  */
@@ -41,6 +39,8 @@ export default class UpcomingRideScreen extends Component {
     }
   }
 
+  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+
   render() {
     return (
       <View style={ styles.container }>
@@ -60,7 +60,7 @@ export default class UpcomingRideScreen extends Component {
           <When condition={ this.props.eventStore.rides.length || this.props.eventStore.refreshing }>
             <ListView
               enableEmptySections
-              dataSource={ ds.cloneWithRows(this.props.eventStore.rides.slice()) }
+              dataSource={ this.ds.cloneWithRows(this.props.eventStore.rides.slice()) }
               refreshControl={
                 <RefreshControl
                   enabled

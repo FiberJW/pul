@@ -13,8 +13,6 @@ import connectDropdownAlert from '../utils/connectDropdownAlert';
 import TrexPlayer from '../components/TrexPlayer';
 import { observer, inject } from 'mobx-react/native';
 
-const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-
 @connectDropdownAlert
 @inject('trexStore') @observer
 export default class TrexScreen extends Component {
@@ -53,6 +51,8 @@ export default class TrexScreen extends Component {
     this.props.trexStore.unWatchUsers();
   }
 
+  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+
   render() {
     return (
       <View
@@ -81,7 +81,7 @@ export default class TrexScreen extends Component {
               </View>
               <ListView
                 enableEmptySections
-                dataSource={ ds.cloneWithRows(this.props.trexStore.players.slice()) }
+                dataSource={ this.ds.cloneWithRows(this.props.trexStore.players.slice()) }
                 renderRow={ (player, __, idx) => <TrexPlayer player={ player } place={ parseInt(idx, 10) + 1 } /> }
               />
             </View>

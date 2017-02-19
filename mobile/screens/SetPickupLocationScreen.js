@@ -14,8 +14,6 @@ import ElevatedView from 'react-native-elevated-view';
 import shuffle from '../utils/shuffle';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 
-const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-
 /**
  *  For setting where you want to get picked up as a rider
  */
@@ -78,6 +76,8 @@ export default class SetPickupLocationScreen extends Component {
         this.props.alertWithType('error', 'Error', err.toString());
       });
   }
+
+  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
 
   renderOption = (location) => {
     return (
@@ -170,7 +170,7 @@ export default class SetPickupLocationScreen extends Component {
             <ListView
               enableEmptySections
               style={{ marginTop: 4 }}
-              dataSource={ ds.cloneWithRows(this.state.pickupLocations) }
+              dataSource={ this.ds.cloneWithRows(this.state.pickupLocations) }
               renderRow={ location => this.renderOption(location) }
             />
           </Otherwise>

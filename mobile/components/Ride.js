@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import colors from '../config/colors';
 import Carpooler from '../components/Carpooler';
-const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 import { connectActionSheet } from '@exponent/react-native-action-sheet';
 import { withNavigation } from '@exponent/ex-navigation';
 import ElevatedView from 'react-native-elevated-view';
@@ -35,6 +34,7 @@ export default class Ride extends Component { // eslint-disable-line require-jsd
     pickedUpUsers: 0,
     selfIsDriver: this.props.event.yourRide.driver === global.firebaseApp.auth().currentUser.uid,
   }
+
 
   componentWillMount() {
     const passengers = [];
@@ -85,6 +85,8 @@ export default class Ride extends Component { // eslint-disable-line require-jsd
       this.props.alertWithType('error', 'Error', err.toString());
     });
   }
+
+  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
 
   _onOpenActionSheet = () => {
     // Same interface as https://facebook.github.io/react-native/docs/actionsheetios.html
@@ -193,7 +195,7 @@ export default class Ride extends Component { // eslint-disable-line require-jsd
         </View>
         <ListView
           enableEmptySections
-          dataSource={ ds.cloneWithRows(this.state.passengers) }
+          dataSource={ this.ds.cloneWithRows(this.state.passengers) }
           renderRow={ u => <Carpooler
             event={ this.props.event }
             refresh={ this.props.refresh }

@@ -13,8 +13,6 @@ import SchoolOption from '../components/SchoolOption';
 import Prompt from 'react-native-prompt';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 
-const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-
 @connectDropdownAlert
 export default class ChooseSchoolScreen extends Component {
   static route = {
@@ -65,6 +63,8 @@ export default class ChooseSchoolScreen extends Component {
     });
   }
 
+  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+
   render() {
     return (
       <View style={ styles.container }>
@@ -78,7 +78,7 @@ export default class ChooseSchoolScreen extends Component {
           <Otherwise>
             <ListView
               enableEmptySections
-              dataSource={ ds.cloneWithRows(this.state.schools) }
+              dataSource={ this.ds.cloneWithRows(this.state.schools) }
               renderRow={ s => <SchoolOption intent={ this.props.intent } school={ s } /> }
             />
           </Otherwise>
