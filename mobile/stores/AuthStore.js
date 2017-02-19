@@ -5,46 +5,42 @@ import _ from 'lodash';
 
 export class AuthStore {
   authStates = ['unauthenticated', 'authenticated', 'attempting']
-  @observable.deep userData = null;
+  @observable.deep userData = {};
   @observable state = this.authStates[0];
   @observable verified = false;
   @observable error = null;
   @observable userId = null;
 
-  @action signup = (credentials = {}, success = () => {}, error = () => {}) => {
+  @action signup = async (credentials = {}) => {
     this.state = this.authStates[2];
+    try {
+      const user = await global.firebaseApp.auth().createUserWithEmailAndPassword(
+        credentials.email,
+        credentials.password,
+      );
 
-    global.firebaseApp.auth().createUserWithEmailAndPassword(
-      credentials.email,
-      credentials.password,
-    ).then(user => {
-      user.updateProfile({ displayName: credentials.name })
-      .then(() => {
-        user.sendEmailVerification();
-      });
-      Notifications.getExponentPushTokenAsync().then((token) => {
-        const userData = {
-          phoneNumber: credentials.phoneNumber,
-          school: credentials.school.uid,
-          ridesGiven: 0,
-          ridesReceived: 0,
-          pushToken: token,
-          deviceId: Exponent.Constants.deviceId,
-          settings: {
-            notifications: true,
-          },
-          displayName: credentials.name,
-          email: credentials.email,
-        };
+      await user.updateProfile({ displayName: credentials.name });
+      user.sendEmailVerification();
 
-        global.firebaseApp.database().ref('users').child(user.uid).set(userData);
-        this.userData = { uid: user.uid, ...userData };
-      });
-      try {
-        AsyncStorage.setItem('@PUL:user', JSON.stringify(credentials));
-      } catch (err) {
-        this.setError(err);
-      }
+      const token = await Notifications.getExponentPushTokenAsync();
+
+      const userData = {
+        phoneNumber: credentials.phoneNumber,
+        school: credentials.school.uid,
+        ridesGiven: 0,
+        ridesReceived: 0,
+        pushToken: token,
+        deviceId: Exponent.Constants.deviceId,
+        settings: {
+          notifications: true,
+        },
+        displayName: credentials.name,
+        email: credentials.email,
+      };
+
+      global.firebaseApp.database().ref('users').child(user.uid).set(userData);
+      AsyncStorage.setItem('@PUL:user', JSON.stringify(credentials));
+
       const emailWatch = setInterval(() => {
         if (global.firebaseApp.auth().currentUser) {
           if (global.firebaseApp.auth().currentUser.emailVerified) {
@@ -53,14 +49,14 @@ export class AuthStore {
           global.firebaseApp.auth().currentUser.reload();
         }
       }, 1000);
+
+      this.userId = user.uid;
       this.state = this.authStates[1];
       this.watchUserData();
-      success();
-    }).catch(err => {
+    } catch (err) {
       this.state = this.authStates[0];
-      this.setError(err);
-      error();
-    });
+      throw err;
+    }
   }
 
   @action login = async (credentials = {}) => {
@@ -110,6 +106,7 @@ export class AuthStore {
 
       this.userId = user.uid;
       this.state = this.authStates[1];
+      this.watchUserData();
     } catch (err) {
       this.state = this.authStates[0];
       throw err; // throw error again catch in promise callback
@@ -156,6 +153,7 @@ export class AuthStore {
   @action mergeUserData = (userSnap) => {
     const newUserData = userSnap.val();
     _.merge(this.userData, newUserData);
+    console.log('userData', this.userData);
   }
 
   @action setError = (error = new Error(''), timeInSeconds = 1) => {
