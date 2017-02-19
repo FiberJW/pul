@@ -98,6 +98,15 @@ export class EventStore {
     }, timeInSeconds * 1000);
   }
 
+  @action reset = () => {
+    this.unWatchEvents();
+    this.loading = true;
+    this.refreshing = false;
+    this.error = null;
+    this.school = null;
+    this.events = [];
+  }
+
   @computed get rides() {
     const yourEvents = this.events.filter((event) => {
       return event.rides && event.rides.some(ride => {

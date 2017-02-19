@@ -15,12 +15,14 @@ import { Permissions } from 'exponent';
 import { NavigationStyles } from '@exponent/ex-navigation';
 import Router from '../navigation/Router';
 import Prompt from 'react-native-prompt';
+import { observer, inject } from 'mobx-react/native';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 
 /**
  *  Allows the user to have some control over account data and app settings
  */
 @connectDropdownAlert
+@observer(['eventStore', 'trexStore'])
 export default class SettingsScreen extends Component {
   static route = {
     styles: {
@@ -31,6 +33,8 @@ export default class SettingsScreen extends Component {
     navigator: PropTypes.object,
     navigation: PropTypes.object,
     alertWithType: PropTypes.func.isRequired,
+    eventStore: PropTypes.object,
+    trexStore: PropTypes.object,
   }
 
   state = {
@@ -185,6 +189,8 @@ export default class SettingsScreen extends Component {
                       })
                       .then(() => {
                         this.props.navigation.getNavigator('master').immediatelyResetStack([Router.getRoute('onboarding')], 0);
+                        this.props.eventStore.reset();
+                        this.props.trexStore.reset();
                         AsyncStorage.clear();
                         global.firebaseApp.auth().signOut();
                       })

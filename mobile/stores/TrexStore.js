@@ -82,6 +82,14 @@ export class TrexStore {
       this.setError(error);
     });
   }
+
+  @action reset = () => {
+    this.unWatchUsers();
+    this.players = [];
+    this.loading = true;
+    this.school = null;
+    this.error = null;
+  }
 }
 
 export default new TrexStore();
