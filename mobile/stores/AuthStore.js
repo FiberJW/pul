@@ -153,7 +153,6 @@ export class AuthStore {
   @action mergeUserData = (userSnap) => {
     const newUserData = userSnap.val();
     _.merge(this.userData, newUserData);
-    console.log('userData', this.userData);
   }
 
   @action setError = (error = new Error(''), timeInSeconds = 1) => {
