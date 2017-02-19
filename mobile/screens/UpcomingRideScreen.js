@@ -13,13 +13,13 @@ import colors from '../config/colors';
 import { NavigationStyles } from '@exponent/ex-navigation';
 import Ride from '../components/Ride';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
-import { observer } from 'mobx-react/native';
+import { observer, inject } from 'mobx-react/native';
 
 /**
  *  Shows upcoming rides to user
  */
 @connectDropdownAlert
-@observer(['eventStore'])
+@inject('eventStore') @observer
 export default class UpcomingRideScreen extends Component {
   static route = {
     styles: {

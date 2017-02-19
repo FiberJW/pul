@@ -21,13 +21,13 @@ import Router from 'Router';
 import Icon from '../components/CrossPlatformIcon';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import KeyboardAwareScrollView from '../components/KeyboardAwareScrollView';
-import { observer } from 'mobx-react/native';
+import { observer, inject } from 'mobx-react/native';
 
 /**
  *  For getting a user's password in signup or login
  */
 @connectDropdownAlert
-@observer(['authStore'])
+@inject('authStore') @observer
 export default class GetPasswordScreen extends Component {
   static route = {
     navigationBar: {

@@ -11,10 +11,10 @@ import colors from '../config/colors';
 import { NavigationStyles } from '@exponent/ex-navigation';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import TrexPlayer from '../components/TrexPlayer';
-import { observer } from 'mobx-react/native';
+import { observer, inject } from 'mobx-react/native';
 
 @connectDropdownAlert
-@observer(['trexStore'])
+@inject('trexStore') @observer
 export default class TrexScreen extends Component {
   static route = {
     navigationBar: {

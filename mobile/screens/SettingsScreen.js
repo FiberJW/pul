@@ -15,14 +15,14 @@ import { Permissions } from 'exponent';
 import { NavigationStyles } from '@exponent/ex-navigation';
 import Router from '../navigation/Router';
 import Prompt from 'react-native-prompt';
-import { observer } from 'mobx-react/native';
+import { observer, inject } from 'mobx-react/native';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 
 /**
  *  Allows the user to have some control over account data and app settings
  */
 @connectDropdownAlert
-@observer(['authStore', 'eventStore', 'trexStore'])
+@inject('authStore', 'eventStore', 'trexStore') @observer
 export default class SettingsScreen extends Component {
   static route = {
     styles: {

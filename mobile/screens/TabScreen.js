@@ -10,9 +10,9 @@ import colors from '../config/colors';
 import ShareButton from '../components/ShareButton';
 import NavbarTitle from '../components/NavbarTitle';
 import Router from '../navigation/Router';
-import { observer } from 'mobx-react/native';
+import { observer, inject } from 'mobx-react/native';
 
-@observer(['eventStore'])
+@inject('eventStore') @observer
 export default class TabScreen extends Component {
   static route = {
     navigationBar: {
