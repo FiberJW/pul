@@ -13,7 +13,6 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import colors from '../config/colors';
-import Exponent, { Notifications } from 'exponent';
 import {
   NavigationStyles,
 } from '@exponent/ex-navigation';
@@ -64,15 +63,6 @@ export default class GetPasswordScreen extends Component {
       if (this.state.loggingIn) {
         return;
       }
-      if (this.props.intent === 'signup' && !this.state.checkedPassword) {
-        this.props.alertWithType('success', '', 'Make sure you\'ve created a memorable password!');
-        this.setState(() => {
-          return {
-            checkedPassword: true,
-          };
-        });
-        return;
-      }
       this.setState(() => {
         return { loggingIn: true };
       });
@@ -83,52 +73,28 @@ export default class GetPasswordScreen extends Component {
         this.props.alertWithType('error', 'Error', 'Password must be at least 8 characters long.');
         return;
       }
+
+      if (this.props.intent === 'signup' && !this.state.checkedPassword) {
+        this.props.alertWithType('success', '', 'Make sure you\'ve created a memorable password!');
+        this.setState(() => {
+          return {
+            checkedPassword: true,
+            loggingIn: false,
+          };
+        });
+        return;
+      }
+
       if (this.props.intent === 'signup') {
-        global.firebaseApp.auth().createUserWithEmailAndPassword(
-          this.props.credentials.email,
-          this.state.password,
-        ).then(user => {
-          user.updateProfile({ displayName: this.props.credentials.name })
-          .then(() => {
-            user.sendEmailVerification();
-          });
-          Notifications.getExponentPushTokenAsync().then((token) => {
-            global.firebaseApp.database().ref('users').child(user.uid).set({
-              phoneNumber: this.props.credentials.phoneNumber,
-              school: this.props.school.uid,
-              ridesGiven: 0,
-              ridesReceived: 0,
-              pushToken: token,
-              deviceId: Exponent.Constants.deviceId,
-              settings: {
-                notifications: false,
-              },
-              displayName: this.props.credentials.name,
-              email: this.props.credentials.email,
-            })
-            .then(() => {
-              try {
-                AsyncStorage.setItem('@PUL:user', JSON.stringify({
-                  ...this.props.credentials,
-                  password: this.state.password,
-                }));
-              } catch (error) {
-                  // Error saving data
-              }
-              const emailWatch = setInterval(() => {
-                if (global.firebaseApp.auth().currentUser) {
-                  if (global.firebaseApp.auth().currentUser.emailVerified) {
-                    clearInterval(emailWatch);
-                  }
-                  global.firebaseApp.auth().currentUser.reload();
-                }
-              }, 1000);
-              this.props.navigator.immediatelyResetStack([Router.getRoute('tabs')], 0);
-              setTimeout(() => {
-                this.props.alertWithType('info', 'Info', 'Make sure to enable push notifications to stay in the loop!');
-              }, 5000);
-            });
-          });
+        this.props.authStore.signup({
+          password: this.state.password,
+          school: this.props.school,
+          ...this.props.credentials,
+        }).then(() => {
+          this.props.navigator.immediatelyResetStack([Router.getRoute('tabs')], 0);
+          setTimeout(() => {
+            this.props.alertWithType('info', 'Info', 'Make sure to enable push notifications to stay in the loop!');
+          }, 5000);
         }).catch(error => {
           this.setState(() => {
             return { loggingIn: false };

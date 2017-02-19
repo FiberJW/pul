@@ -20,7 +20,7 @@ export class AuthStore {
       );
 
       await user.updateProfile({ displayName: credentials.name });
-      user.sendEmailVerification();
+      await user.sendEmailVerification();
 
       const token = await Notifications.getExponentPushTokenAsync();
 
@@ -38,7 +38,7 @@ export class AuthStore {
         email: credentials.email,
       };
 
-      global.firebaseApp.database().ref('users').child(user.uid).set(userData);
+      await global.firebaseApp.database().ref('users').child(user.uid).set(userData);
       AsyncStorage.setItem('@PUL:user', JSON.stringify(credentials));
 
       const emailWatch = setInterval(() => {
@@ -69,7 +69,7 @@ export class AuthStore {
       );
 
       if (!user.emailVerified) {
-        user.sendEmailVerification();
+        await user.sendEmailVerification();
       }
 
       const token = await Notifications.getExponentPushTokenAsync();
