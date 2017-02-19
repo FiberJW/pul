@@ -39,14 +39,7 @@ export class AuthStore {
       await global.firebaseApp.database().ref('users').child(user.uid).set(userData);
       AsyncStorage.setItem('@PUL:user', JSON.stringify(credentials));
 
-      const emailWatch = setInterval(() => {
-        if (global.firebaseApp.auth().currentUser) {
-          if (global.firebaseApp.auth().currentUser.emailVerified) {
-            clearInterval(emailWatch);
-          }
-          global.firebaseApp.auth().currentUser.reload();
-        }
-      }, 1000);
+      this.watchEmailVerification();
 
       this.userId = user.uid;
       this.state = this.authStates[1];
@@ -86,21 +79,14 @@ export class AuthStore {
       } else {
         await global.firebaseApp.database().ref('users').child(user.uid).update({
           deviceId: Exponent.Constants.deviceId,
+          pushToken: null,
           settings: {
             notifications: false,
           },
         });
       }
 
-
-      const emailWatch = setInterval(() => {
-        if (global.firebaseApp.auth().currentUser) {
-          if (global.firebaseApp.auth().currentUser.emailVerified) {
-            clearInterval(emailWatch);
-          }
-          global.firebaseApp.auth().currentUser.reload();
-        }
-      }, 1000);
+      this.watchEmailVerification();
 
       this.userId = user.uid;
       this.state = this.authStates[1];
@@ -109,6 +95,18 @@ export class AuthStore {
       this.state = this.authStates[0];
       throw err; // throw error again catch in promise callback
     }
+  }
+
+  @action watchEmailVerification = () => {
+    const emailWatch = setInterval(() => {
+      if (global.firebaseApp.auth().currentUser) {
+        if (global.firebaseApp.auth().currentUser.emailVerified) {
+          this.verified = true;
+          clearInterval(emailWatch);
+        }
+        global.firebaseApp.auth().currentUser.reload();
+      }
+    }, 1000);
   }
 
   @action logout = async () => {
