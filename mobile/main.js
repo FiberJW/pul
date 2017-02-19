@@ -130,6 +130,9 @@ class App extends Component {
           }
         } else {
           this.props.alertWithType('error', 'Error', error.toString());
+          this.setState(() => {
+            return { loading: false };
+          });
         }
       }
     } else {
