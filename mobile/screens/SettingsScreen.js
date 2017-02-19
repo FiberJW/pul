@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import colors from '../config/colors';
-import { Permissions } from 'exponent';
+import { Notifications, Permissions } from 'exponent';
 import { NavigationStyles } from '@exponent/ex-navigation';
 import Router from '../navigation/Router';
 import Prompt from 'react-native-prompt';
@@ -107,29 +107,32 @@ export default class SettingsScreen extends Component {
               onValueChange={ (value) => {
                 Permissions.askAsync(Permissions.REMOTE_NOTIFICATIONS).then(({ status }) => {
                   if (status === 'granted') {
-                    this.setState(() => {
-                      return {
-                        notifications: value,
-                      };
-                    });
-                    global.firebaseApp.database()
-                    .ref('users')
-                    .child(global.firebaseApp.auth().currentUser.uid)
-                    .update({
-                      settings: {
-                        notifications: value,
-                      },
-                    })
-                    .then(() => {
-                      this.getUser();
-                    })
-                    .catch(error => {
+                    Notifications.getExponentPushTokenAsync().then(token => {
                       this.setState(() => {
                         return {
-                          notifications: !value,
+                          notifications: value,
                         };
                       });
-                      this.props.alertWithType('error', 'Error', error.toString());
+                      global.firebaseApp.database()
+                      .ref('users')
+                      .child(global.firebaseApp.auth().currentUser.uid)
+                      .update({
+                        pushToken: token,
+                        settings: {
+                          notifications: value,
+                        },
+                      })
+                      .then(() => {
+                        this.getUser();
+                      })
+                      .catch(error => {
+                        this.setState(() => {
+                          return {
+                            notifications: !value,
+                          };
+                        });
+                        this.props.alertWithType('error', 'Error', error.toString());
+                      });
                     });
                   } else {
                     this.setState(() => {

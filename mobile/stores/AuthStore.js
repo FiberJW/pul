@@ -1,6 +1,6 @@
 import { observable, action } from 'mobx';
 import { AsyncStorage } from 'react-native';
-import Exponent, { Notifications } from 'exponent';
+import Exponent from 'exponent';
 import _ from 'lodash';
 
 export class AuthStore {
@@ -22,14 +22,12 @@ export class AuthStore {
       await user.updateProfile({ displayName: credentials.name });
       await user.sendEmailVerification();
 
-      const token = await Notifications.getExponentPushTokenAsync();
-
       const userData = {
         phoneNumber: credentials.phoneNumber,
         school: credentials.school.uid,
         ridesGiven: 0,
         ridesReceived: 0,
-        pushToken: token,
+        pushToken: null,
         deviceId: Exponent.Constants.deviceId,
         settings: {
           notifications: true,
@@ -59,28 +57,31 @@ export class AuthStore {
     }
   }
 
-  @action login = async (credentials = {}) => {
+  @action login = async (credentials = {}, auto = false) => {
     this.state = this.authStates[2];
 
     try {
       const user = await global.firebaseApp.auth().signInWithEmailAndPassword(
         credentials.email,
-        credentials.password,
+        credentials.password
       );
 
       if (!user.emailVerified) {
         await user.sendEmailVerification();
       }
 
-      const token = await Notifications.getExponentPushTokenAsync();
-
-      await global.firebaseApp.database().ref('users').child(user.uid).update({
-        pushToken: token,
-        deviceId: Exponent.Constants.deviceId,
-        settings: {
-          notifications: false,
-        },
-      });
+      if (auto) {
+        await global.firebaseApp.database().ref('users').child(user.uid).update({
+          deviceId: Exponent.Constants.deviceId,
+        });
+      } else {
+        await global.firebaseApp.database().ref('users').child(user.uid).update({
+          deviceId: Exponent.Constants.deviceId,
+          settings: {
+            notifications: false,
+          },
+        });
+      }
 
       const userSnap = await global.firebaseApp.database().ref('users').child(user.uid).once('value');
 
@@ -119,6 +120,9 @@ export class AuthStore {
     .child(this.userId)
     .update({
       pushToken: null,
+      settings: {
+        notifications: false,
+      },
     });
 
     this.unWatchUserData();

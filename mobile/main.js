@@ -98,9 +98,8 @@ class App extends Component {
     let userCredentials = await AsyncStorage.getItem('@PUL:user');
     if (userCredentials !== null) {
       userCredentials = JSON.parse(userCredentials);
-
       try {
-        await this.props.authStore.login(userCredentials);
+        await this.props.authStore.login(userCredentials, true);
         this.setState(() => {
           return { loading: false };
         });
