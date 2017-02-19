@@ -70,10 +70,19 @@ export class AuthStore {
         await user.sendEmailVerification();
       }
 
+      const userSnap = await global.firebaseApp.database().ref('users').child(user.uid).once('value');
+
       if (auto) {
-        await global.firebaseApp.database().ref('users').child(user.uid).update({
-          deviceId: Exponent.Constants.deviceId,
-        });
+        if (!userSnap.val().deviceId) {
+          await global.firebaseApp.database().ref('users').child(user.uid).update({
+            deviceId: Exponent.Constants.deviceId,
+          });
+        } else if (userSnap.val().deviceId !== Exponent.Constants.deviceId) {
+          // if this is not the same device as last time, sign out
+          await global.firebaseApp.auth().signOut();
+          this.state = this.authStates[0];
+          return;
+        }
       } else {
         await global.firebaseApp.database().ref('users').child(user.uid).update({
           deviceId: Exponent.Constants.deviceId,
@@ -83,18 +92,6 @@ export class AuthStore {
         });
       }
 
-      const userSnap = await global.firebaseApp.database().ref('users').child(user.uid).once('value');
-
-      if (!userSnap.val().deviceId) {
-        await global.firebaseApp.database().ref('users').child(user.uid).update({
-          deviceId: Exponent.Constants.deviceId,
-        });
-      } else if (userSnap.val().deviceId !== Exponent.Constants.deviceId) {
-        // if this is not the same device as last time, sign out
-        await global.firebaseApp.auth().signOut();
-        this.state = this.authStates[0];
-        return;
-      }
 
       const emailWatch = setInterval(() => {
         if (global.firebaseApp.auth().currentUser) {
