@@ -63,7 +63,7 @@ export class AuthStore {
     });
   }
 
-  @action login = async (credentials = {}, success = () => {}, error = () => {}) => {
+  @action login = async (credentials = {}) => {
     this.state = this.authStates[2];
 
     try {
@@ -95,10 +95,9 @@ export class AuthStore {
       }, 1000);
 
       this.state = this.authStates[1];
-      success();
     } catch (err) {
       this.state = this.authStates[0];
-      error(err);
+      throw err; // to catch in promise callback
     }
   }
 
