@@ -126,10 +126,6 @@ export class AuthStore {
     global.firebaseApp.auth().signOut();
   }
 
-  @action sendPasswordResetEmail = () => {
-    global.firebaseApp.auth().sendPasswordResetEmail(this.userData.email);
-  }
-
   @action update = () => {}
 
   @action watchUserData = () => {
@@ -144,6 +140,10 @@ export class AuthStore {
     .ref('users')
     .child(this.userId)
     .off('value', this.mergeUserData);
+  }
+
+  sendPasswordResetEmail = (email) => {
+    global.firebaseApp.auth().sendPasswordResetEmail(email);
   }
 
   @action sendEmailVerification = () => {

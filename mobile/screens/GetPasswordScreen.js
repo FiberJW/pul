@@ -184,7 +184,7 @@ export default class GetPasswordScreen extends Component {
                           {
                             text: 'OK',
                             onPress: () => {
-                              global.firebaseApp.auth().sendPasswordResetEmail(this.props.credentials.email);
+                              this.props.authStore.sendPasswordResetEmail(this.props.credentials.email);
                             },
                           },
                         ]
