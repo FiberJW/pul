@@ -1,5 +1,5 @@
 import Exponent, { Font, Components } from 'exponent';
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   AsyncStorage,
   Alert,
@@ -14,7 +14,8 @@ import { firebaseConfig, sentryURL } from './config/keys';
 import { ActionSheetProvider } from '@exponent/react-native-action-sheet';
 import DropdownAlertProvider from './components/DropdownAlertProvider';
 import ExponentSentryClient from '@exponent/sentry-utils';
-import { observer, Provider as MobXProvider } from 'mobx-react/native';
+import connectDropdownAlert from './utils/connectDropdownAlert';
+import { observer, Provider as MobXProvider, inject } from 'mobx-react/native';
 import authStore from './stores/AuthStore';
 import eventStore from './stores/EventStore';
 import trexStore from './stores/TrexStore';
@@ -36,8 +37,13 @@ if (!__DEV__) { // eslint-disable-line jsx-control-statements/jsx-jcs-no-undef
   );
 }
 
-@observer
+@connectDropdownAlert
+@inject('authStore') @observer
 class App extends Component {
+  static propTypes = {
+    authStore: PropTypes.object,
+    alertWithType: PropTypes.func,
+  }
   state = {
     loading: true,
     loggedIn: false,
@@ -80,9 +86,10 @@ class App extends Component {
     }
     try {
       await this.signIn();
-    } catch (e) {
+    } catch (error) {
+      this.props.alertWithType('error', 'Error', error.toString());
       this.setState(() => {
-        return { loading: false, loggedIn: false };
+        return { loading: false };
       });
     }
   }
@@ -91,65 +98,40 @@ class App extends Component {
     let userCredentials = await AsyncStorage.getItem('@PUL:user');
     if (userCredentials !== null) {
       userCredentials = JSON.parse(userCredentials);
-      global.firebaseApp.auth().signInWithEmailAndPassword(
-        userCredentials.email,
-        userCredentials.password,
-      ).then((user) => {
-        global.firebaseApp.database()
-        .ref('users')
-        .child(user.uid)
-        .once('value')
-        .then(userSnap => {
-          // if userSnap.val().deviceId === undefined then give it one and continue sign in
-          if (!userSnap.val().deviceId) {
-            global.firebaseApp.database().ref('users').child(user.uid).update({
-              deviceId: Exponent.Constants.deviceId,
-            });
-          } else if (userSnap.val().deviceId !== Exponent.Constants.deviceId) {
-          // if this is not the same device as last time, sign out
-            global.firebaseApp.auth().signOut();
-            this.setState(() => {
-              return { loading: false, loggedIn: false };
-            });
-            return;
-          }
 
-          const emailWatch = setInterval(() => {
-            if (global.firebaseApp.auth().currentUser) {
-              if (global.firebaseApp.auth().currentUser.emailVerified) {
-                clearInterval(emailWatch);
-              }
-              global.firebaseApp.auth().currentUser.reload();
-            }
-          }, 1000);
-          this.setState(() => {
-            return { loading: false, loggedIn: true };
-          });
+      try {
+        await this.props.authStore.login(userCredentials);
+        this.setState(() => {
+          return { loading: false };
         });
-      }).catch(error => {
-        switch (error.code) {
-          case 'auth/network-request-failed':
-            Alert.alert(null, 'No Internet connection. Please press \'OK\' when connected.', [
-              { text: 'OK', onPress: this.signIn },
-            ]);
-            break;
-          case 'auth/user-not-found':
-          case 'auth/invalid-email':
-          case 'auth/user-disabled':
-          case 'auth/wrong-password':
-            this.setState(() => {
-              return { loading: false, loggedIn: false };
-            });
-            break;
-          default:
-            Alert.alert(null, 'Something is on fire.', [
-              { text: 'OK' },
-            ]);
-            this.setState(() => {
-              return { loading: false, loggedIn: false };
-            });
+      } catch (error) {
+        if (error.code) {
+          switch (error.code) {
+            case 'auth/network-request-failed':
+              Alert.alert(null, 'No Internet connection. Please press \'OK\' when connected.', [
+                { text: 'OK', onPress: this.signIn },
+              ]);
+              break;
+            case 'auth/user-not-found':
+            case 'auth/invalid-email':
+            case 'auth/user-disabled':
+            case 'auth/wrong-password':
+              this.setState(() => {
+                return { loading: false };
+              });
+              break;
+            default:
+              Alert.alert(null, 'Something is on fire.', [
+                { text: 'OK' },
+              ]);
+              this.setState(() => {
+                return { loading: false };
+              });
+          }
+        } else {
+          this.props.alertWithType('error', 'Error', error.toString());
         }
-      });
+      }
     } else {
       this.setState(() => {
         return { loading: false };
@@ -158,7 +140,7 @@ class App extends Component {
   };
 
   render() {
-    const route = this.state.loggedIn ? 'tabs' : 'onboarding';
+    const route = this.props.authStore.state === this.props.authStore.authStates[1] ? 'tabs' : 'onboarding';
 
     return (
       <Choose>
@@ -166,23 +148,22 @@ class App extends Component {
           <Components.AppLoading />
         </When>
         <Otherwise>
-          <DropdownAlertProvider>
-            <ActionSheetProvider>
-              <NavigationProvider router={ Router }>
-                <StackNavigation id="master" initialRoute={ Router.getRoute(route) } />
-              </NavigationProvider>
-            </ActionSheetProvider>
-          </DropdownAlertProvider>
+          <NavigationProvider router={ Router }>
+            <StackNavigation id="master" initialRoute={ Router.getRoute(route) } />
+          </NavigationProvider>
         </Otherwise>
       </Choose>
     );
   }
 }
 
-
 const Main = () => (
   <MobXProvider authStore={ authStore } eventStore={ eventStore } trexStore={ trexStore }>
-    <App />
+    <DropdownAlertProvider>
+      <ActionSheetProvider>
+        <App />
+      </ActionSheetProvider>
+    </DropdownAlertProvider>
   </MobXProvider>
 );
 
