@@ -21,11 +21,13 @@ import Router from 'Router';
 import Icon from '../components/CrossPlatformIcon';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import KeyboardAwareScrollView from '../components/KeyboardAwareScrollView';
+import { observer } from 'mobx-react/native';
 
 /**
  *  For getting a user's password in signup or login
  */
 @connectDropdownAlert
+@observer(['authStore'])
 export default class GetPasswordScreen extends Component {
   static route = {
     navigationBar: {
@@ -42,6 +44,7 @@ export default class GetPasswordScreen extends Component {
   static propTypes = {
     school: PropTypes.object.isRequired,
     credentials: PropTypes.object.isRequired,
+    authStore: PropTypes.object.isRequired,
     navigator: PropTypes.object.isRequired,
     intent: PropTypes.string.isRequired,
     alertWithType: PropTypes.func.isRequired,
@@ -133,36 +136,18 @@ export default class GetPasswordScreen extends Component {
           this.props.alertWithType('error', 'Error', error.toString());
         });
       } else {
-        global.firebaseApp.auth().signInWithEmailAndPassword(
-          this.props.credentials.email,
-          this.state.password,
-        ).then(user => {
-          if (!user.emailVerified) {
-            user.sendEmailVerification();
-          }
-          Notifications.getExponentPushTokenAsync().then((token) => {
-            global.firebaseApp.database().ref('users').child(user.uid).update({
-              pushToken: token,
-              deviceId: Exponent.Constants.deviceId,
-              settings: {
-                notifications: false,
-              },
-            });
-          });
+        this.props.authStore.login({
+          ...this.props.credentials,
+          password: this.state.password,
+        }).then(() => {
           try {
             AsyncStorage.setItem('@PUL:user', JSON.stringify({
               ...this.props.credentials,
               password: this.state.password,
             }));
           } catch (error) {
-              // Error saving data
+            this.props.alertWithType('error', 'Error', error.toString());
           }
-          const emailWatch = setInterval(() => {
-            if (global.firebaseApp.auth().currentUser.emailVerified) {
-              clearInterval(emailWatch);
-            }
-            global.firebaseApp.auth().currentUser.reload();
-          }, 1000);
           this.props.navigator.immediatelyResetStack([Router.getRoute('tabs')], 0);
           setTimeout(() => {
             this.props.alertWithType('info', 'Info', 'Make sure to enable push notifications to stay in the loop!');

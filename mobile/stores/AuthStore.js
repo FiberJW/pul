@@ -112,7 +112,7 @@ export class AuthStore {
       this.state = this.authStates[1];
     } catch (err) {
       this.state = this.authStates[0];
-      throw err; // to catch in promise callback
+      throw err; // throw error again catch in promise callback
     }
   }
 
