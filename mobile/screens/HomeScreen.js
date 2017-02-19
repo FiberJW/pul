@@ -17,13 +17,13 @@ import Icon from '../components/CrossPlatformIcon';
 import { NavigationStyles } from '@exponent/ex-navigation';
 import Router from '../navigation/Router';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
-import { observer, inject } from 'mobx-react/native';
+import { observer } from 'mobx-react/native';
 
 /**
  *  Shows a list of all of your school's future events
  */
 @connectDropdownAlert
-@inject('eventStore') @observer
+@observer(['eventStore'])
 export default class HomeScreen extends Component {
   static route = {
     styles: {

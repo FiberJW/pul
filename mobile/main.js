@@ -15,7 +15,7 @@ import { ActionSheetProvider } from '@exponent/react-native-action-sheet';
 import DropdownAlertProvider from './components/DropdownAlertProvider';
 import ExponentSentryClient from '@exponent/sentry-utils';
 import connectDropdownAlert from './utils/connectDropdownAlert';
-import { observer, Provider as MobXProvider, inject } from 'mobx-react/native';
+import { observer, Provider as MobXProvider } from 'mobx-react/native';
 import authStore from './stores/AuthStore';
 import eventStore from './stores/EventStore';
 import trexStore from './stores/TrexStore';
@@ -38,7 +38,7 @@ if (!__DEV__) { // eslint-disable-line jsx-control-statements/jsx-jcs-no-undef
 }
 
 @connectDropdownAlert
-@inject('authStore') @observer
+@observer(['authStore'])
 class App extends Component {
   static propTypes = {
     authStore: PropTypes.object,

@@ -15,7 +15,7 @@ import { Permissions } from 'exponent';
 import { NavigationStyles } from '@exponent/ex-navigation';
 import Router from '../navigation/Router';
 import Prompt from 'react-native-prompt';
-import { observer, inject } from 'mobx-react/native';
+import { observer } from 'mobx-react/native';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 
 /**
