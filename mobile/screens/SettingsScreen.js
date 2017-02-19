@@ -22,7 +22,7 @@ import connectDropdownAlert from '../utils/connectDropdownAlert';
  *  Allows the user to have some control over account data and app settings
  */
 @connectDropdownAlert
-@observer(['eventStore', 'trexStore'])
+@observer(['authStore', 'eventStore', 'trexStore'])
 export default class SettingsScreen extends Component {
   static route = {
     styles: {
@@ -35,6 +35,7 @@ export default class SettingsScreen extends Component {
     alertWithType: PropTypes.func.isRequired,
     eventStore: PropTypes.object,
     trexStore: PropTypes.object,
+    authStore: PropTypes.object,
   }
 
   state = {
@@ -181,20 +182,12 @@ export default class SettingsScreen extends Component {
                   {
                     text: 'OK',
                     onPress: () => {
-                      global.firebaseApp.database()
-                      .ref('users')
-                      .child(global.firebaseApp.auth().currentUser.uid)
-                      .update({
-                        pushToken: null,
-                      })
-                      .then(() => {
+                      this.props.authStore.logout().then(() => {
                         this.props.navigation.getNavigator('master').immediatelyResetStack([Router.getRoute('onboarding')], 0);
                         this.props.eventStore.reset();
                         this.props.trexStore.reset();
                         AsyncStorage.clear();
-                        global.firebaseApp.auth().signOut();
-                      })
-                      .catch(error => {
+                      }).catch(error => {
                         this.props.alertWithType('error', 'Error', error.toString());
                       });
                     },

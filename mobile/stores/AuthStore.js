@@ -9,6 +9,7 @@ export class AuthStore {
   @observable state = this.authStates[0];
   @observable verified = false;
   @observable error = null;
+  @observable userId = null;
 
   @action signup = (credentials = {}, success = () => {}, error = () => {}) => {
     this.state = this.authStates[2];
@@ -23,7 +24,6 @@ export class AuthStore {
       });
       Notifications.getExponentPushTokenAsync().then((token) => {
         const userData = {
-          uid: user.uid,
           phoneNumber: credentials.phoneNumber,
           school: credentials.school.uid,
           ridesGiven: 0,
@@ -38,7 +38,7 @@ export class AuthStore {
         };
 
         global.firebaseApp.database().ref('users').child(user.uid).set(userData);
-        this.userData = userData;
+        this.userData = { uid: user.uid, ...userData };
       });
       try {
         AsyncStorage.setItem('@PUL:user', JSON.stringify(credentials));
@@ -72,15 +72,29 @@ export class AuthStore {
         credentials.password,
       );
 
+      if (!user.emailVerified) {
+        user.sendEmailVerification();
+      }
+
+      const token = await Notifications.getExponentPushTokenAsync();
+
+      await global.firebaseApp.database().ref('users').child(user.uid).update({
+        pushToken: token,
+        deviceId: Exponent.Constants.deviceId,
+        settings: {
+          notifications: false,
+        },
+      });
+
       const userSnap = await global.firebaseApp.database().ref('users').child(user.uid).once('value');
 
       if (!userSnap.val().deviceId) {
-        global.firebaseApp.database().ref('users').child(user.uid).update({
+        await global.firebaseApp.database().ref('users').child(user.uid).update({
           deviceId: Exponent.Constants.deviceId,
         });
       } else if (userSnap.val().deviceId !== Exponent.Constants.deviceId) {
         // if this is not the same device as last time, sign out
-        global.firebaseApp.auth().signOut();
+        await global.firebaseApp.auth().signOut();
         this.state = this.authStates[0];
         return;
       }
@@ -94,6 +108,7 @@ export class AuthStore {
         }
       }, 1000);
 
+      this.userId = user.uid;
       this.state = this.authStates[1];
     } catch (err) {
       this.state = this.authStates[0];
@@ -101,24 +116,17 @@ export class AuthStore {
     }
   }
 
-  @action logout = (success = () => {}, error = () => {}) => {
-    global.firebaseApp.database()
+  @action logout = async () => {
+    await global.firebaseApp.database()
     .ref('users')
-    .child(global.firebaseApp.auth().currentUser.uid)
+    .child(this.userId)
     .update({
       pushToken: null,
-    })
-    .then(() => {
-      this.state = this.authStates[0];
-      AsyncStorage.clear();
-      this.unWatchUserData();
-      global.firebaseApp.auth().signOut();
-      success();
-    })
-    .catch(err => {
-      this.setError(err);
-      error(err);
     });
+
+    this.unWatchUserData();
+    this.state = this.authStates[0];
+    global.firebaseApp.auth().signOut();
   }
 
   @action sendPasswordResetEmail = () => {
@@ -130,14 +138,14 @@ export class AuthStore {
   @action watchUserData = () => {
     global.firebaseApp.database()
     .ref('users')
-    .child(this.userData.uid)
+    .child(this.userId)
     .on('value', this.mergeUserData);
   }
 
   @action unWatchUserData = () => {
     global.firebaseApp.database()
     .ref('users')
-    .child(this.userData.uid)
+    .child(this.userId)
     .off('value', this.mergeUserData);
   }
 
