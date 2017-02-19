@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   StackNavigation,
   SlidingTabNavigation,
@@ -10,8 +10,9 @@ import colors from '../config/colors';
 import ShareButton from '../components/ShareButton';
 import NavbarTitle from '../components/NavbarTitle';
 import Router from '../navigation/Router';
-import eventStore from '../stores/EventStore';
+import { inject, observer } from 'mobx-react/native';
 
+@inject('eventStore') @observer
 export default class TabScreen extends Component {
   static route = {
     navigationBar: {
@@ -24,8 +25,12 @@ export default class TabScreen extends Component {
     },
   }
 
+  static propTypes = {
+    eventStore: PropTypes.object,
+  }
+
   componentDidMount() {
-    eventStore.watchEvents();
+    this.props.eventStore.watchEvents();
   }
 
   _renderLabel = ({ route }) => {
@@ -76,7 +81,7 @@ export default class TabScreen extends Component {
             <StackNavigation
               id="ride"
               navigatorUID="ride"
-              initialRoute={ Router.getRoute('upcoming', { eventStore }) }
+              initialRoute={ Router.getRoute('upcoming') }
             />
           </SlidingTabNavigationItem>
           <SlidingTabNavigationItem
@@ -85,7 +90,7 @@ export default class TabScreen extends Component {
             <StackNavigation
               id="home"
               navigatorUID="home"
-              initialRoute={ Router.getRoute('home', { eventStore }) }
+              initialRoute={ Router.getRoute('home') }
             />
           </SlidingTabNavigationItem>
           <SlidingTabNavigationItem

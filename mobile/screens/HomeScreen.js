@@ -17,8 +17,7 @@ import Icon from '../components/CrossPlatformIcon';
 import { NavigationStyles } from '@exponent/ex-navigation';
 import Router from '../navigation/Router';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
-import trexStore from '../stores/TrexStore';
-import { observer } from 'mobx-react/native';
+import { observer, inject } from 'mobx-react/native';
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
@@ -26,7 +25,7 @@ const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
  *  Shows a list of all of your school's future events
  */
 @connectDropdownAlert
-@observer
+@inject('eventStore') @observer
 export default class HomeScreen extends Component {
   static route = {
     styles: {
@@ -130,7 +129,7 @@ export default class HomeScreen extends Component {
             if (global.firebaseApp.auth().currentUser.emailVerified) {
               this.props.navigation
               .getNavigator('master')
-              .push(Router.getRoute('trex', { trexStore }));
+              .push(Router.getRoute('trex'));
             } else {
               this.props.alertWithType('error', 'Error', 'You must verify your email before continuing.');
             }

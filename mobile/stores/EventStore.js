@@ -2,7 +2,7 @@ import { observable, action, computed } from 'mobx';
 import _ from 'lodash';
 import moment from 'moment';
 
-class EventStore {
+export class EventStore {
   @observable loading = true;
   @observable refreshing = false;
   @observable error = null;

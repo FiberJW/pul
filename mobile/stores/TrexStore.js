@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 import _ from 'lodash';
 
-class TrexStore {
+export class TrexStore {
   @observable.deep players = [];
   @observable loading = true;
   @observable.deep school = null;

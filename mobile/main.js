@@ -14,15 +14,12 @@ import { firebaseConfig, sentryURL } from './config/keys';
 import { ActionSheetProvider } from '@exponent/react-native-action-sheet';
 import DropdownAlertProvider from './components/DropdownAlertProvider';
 import ExponentSentryClient from '@exponent/sentry-utils';
+import { Provider as MobXProvider } from 'mobx-react/native';
+import authStore from './stores/AuthStore';
+import eventStore from './stores/EventStore';
+import trexStore from './stores/TrexStore';
 
 if (!__DEV__) { // eslint-disable-line jsx-control-statements/jsx-jcs-no-undef
-  // enables sentry only in production
-  ExponentSentryClient.setupSentry(
-    sentryURL,
-    require('./exp.json').version,
-    require('./package.json').main,
-  );
-
   // this guards against console usage in production builds since
   // babel transform of remove console won't work with react-native preset
   ['assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error', 'exception',
@@ -31,6 +28,12 @@ if (!__DEV__) { // eslint-disable-line jsx-control-statements/jsx-jcs-no-undef
     (methodName) => {
       console[methodName] = () => { /* noop */ };
     });
+
+  ExponentSentryClient.setupSentry(
+    sentryURL,
+    require('./exp.json').version,
+    require('./package.json').main,
+  );
 }
 
 class App extends Component {
@@ -162,13 +165,15 @@ class App extends Component {
           <Components.AppLoading />
         </When>
         <Otherwise>
-          <DropdownAlertProvider>
-            <ActionSheetProvider>
-              <NavigationProvider router={ Router }>
-                <StackNavigation id="master" initialRoute={ Router.getRoute(route) } />
-              </NavigationProvider>
-            </ActionSheetProvider>
-          </DropdownAlertProvider>
+          <MobXProvider authStore={ authStore } eventStore={ eventStore } trexStore={ trexStore }>
+            <DropdownAlertProvider>
+              <ActionSheetProvider>
+                <NavigationProvider router={ Router }>
+                  <StackNavigation id="master" initialRoute={ Router.getRoute(route) } />
+                </NavigationProvider>
+              </ActionSheetProvider>
+            </DropdownAlertProvider>
+          </MobXProvider>
         </Otherwise>
       </Choose>
     );

@@ -13,7 +13,7 @@ import colors from '../config/colors';
 import { NavigationStyles } from '@exponent/ex-navigation';
 import Ride from '../components/Ride';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
-import { observer } from 'mobx-react/native';
+import { observer, inject } from 'mobx-react/native';
 
 const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
@@ -21,7 +21,7 @@ const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
  *  Shows upcoming rides to user
  */
 @connectDropdownAlert
-@observer
+@inject('eventStore') @observer
 export default class UpcomingRideScreen extends Component {
   static route = {
     styles: {

@@ -3,7 +3,7 @@ import { AsyncStorage } from 'react-native';
 import Exponent, { Notifications } from 'exponent';
 import _ from 'lodash';
 
-class AuthStore {
+export class AuthStore {
   authStates = ['unauthenticated', 'authenticated', 'attempting']
   @observable.deep userData = null;
   @observable state = this.authStates[0];
