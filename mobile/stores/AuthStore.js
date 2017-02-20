@@ -120,9 +120,14 @@ export class AuthStore {
       },
     });
 
+
     this.unWatchUserData();
-    this.state = this.authStates[0];
     global.firebaseApp.auth().signOut();
+    this.userData = {};
+    this.state = this.authStates[0];
+    this.verified = false;
+    this.error = null;
+    this.userId = null;
   }
 
 
