@@ -32,7 +32,6 @@ export class EventStore {
       };
     }).reverse();
 
-    this.school = schoolUID;
     this.events = rawEvents.filter(event => {
       return moment(event.date)
         .add(event.time.hours, 'hours')
@@ -47,7 +46,8 @@ export class EventStore {
           .add(rightEvent.time.hours, 'hours')
           .add(rightEvent.time.minutes, 'minutes')
         );
-    });
+    }).slice(0, 100);
+    this.school = schoolUID;
     this.loading = false;
     this.refreshing = false;
     this.error = null;
