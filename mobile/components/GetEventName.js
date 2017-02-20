@@ -8,7 +8,7 @@ import newEventFormStylesheet from '../config/newEventFormStylesheet';
 
 const Form = t.form.Form;
 
-const nameRefined = t.refinement(t.String, string => string.length > 0 && string.length < 30);
+const nameRefined = t.refinement(t.String, string => string.length > 0 && string.length < 45);
 
 
 const Name = t.struct({
