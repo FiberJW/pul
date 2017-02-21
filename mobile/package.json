@@ -8,7 +8,7 @@
   "dependencies": {
     "@exponent/ex-navigation": "^2.9.0",
     "@exponent/react-native-action-sheet": "^0.3.0",
-    "@exponent/sentry-utils": "^0.1.6",
+    "@exponent/sentry-utils": "*",
     "@exponent/vector-icons": "~2.0.3",
     "babel-preset-react-native-stage-0": "^1.0.1",
     "bad-words": "^1.4.2",
