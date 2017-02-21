@@ -163,18 +163,17 @@ export default class SetPickupLocationScreen extends Component {
                       this.props.alertWithType('error', 'Error', err.toString());
                     });
                   }
+                  this.props.alertWithType('success', 'Success', 'Thanks for requesting a ride! Make sure to say hello to your driver!');
+                  this.setState(() => {
+                    return {
+                      loading: false,
+                    };
+                  });
+                  this.props.refresh(false);
+                  this.props.navigator.pop();
                 });
               });
             }
-
-            this.props.alertWithType('success', 'Success', 'Thanks for requesting a ride! Make sure to say hello to your driver!');
-            this.setState(() => {
-              return {
-                loading: false,
-              };
-            });
-            this.props.navigator.pop();
-            this.props.refresh(false);
           })
           .catch(err => {
             this.setState(() => {

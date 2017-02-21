@@ -6,7 +6,6 @@ import {
   LayoutAnimation,
   Platform,
   TextInput,
-  Alert,
   ActivityIndicator,
 } from 'react-native';
 import {
@@ -27,7 +26,8 @@ import CancelButton from '../components/NavBarCancelButton';
 import moment from 'moment';
 import filter from '../utils/filter';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
-
+import { isExponentPushToken, sendPushNotificationAsync } from '../utils/ExponentPushClient';
+import _ from 'lodash';
 /**
  *  Allows user to create new events for school
  */
@@ -181,13 +181,27 @@ export default class NewEventScreen extends Component {
       .child('events')
       .push(event)
       .then(() => {
-        Alert.alert(
-          null,
-          'Your event was submitted successfully!',
-          [{ text: 'OK' }]
-        );
-        this.props.refresh();
-        this.props.navigator.pop();
+        // send pushes to peers
+        global.firebaseApp.database().ref('users')
+        .once('value')
+        .then(usersSnap => {
+          _.each(usersSnap.val(), user => {
+            if (isExponentPushToken(user.pushToken) && user.school === schoolUID) {
+              sendPushNotificationAsync({
+                exponentPushToken: user.pushToken,
+                message: `There's a new ${event.type.toLowerCase()} event at your school!`,
+              }).then(() => {
+
+              }).catch((err) => {
+                this.props.alertWithType('error', 'Error', err.toString());
+              });
+            }
+          });
+
+          this.props.alertWithType('success', 'Success', 'Your event was submitted successfully!');
+          this.props.refresh();
+          this.props.navigator.pop();
+        });
       });
     })
     .catch(err => {
