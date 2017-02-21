@@ -145,8 +145,8 @@ export default class SetPickupLocationScreen extends Component {
               }
             });
 
-            if (Array.isArray(ride.passengers)) {
-              ride.passengers.forEach((passenger) => {
+            if (Array.isArray(ride.passengers.slice())) {
+              ride.passengers.slice().forEach((passenger) => {
                 global.firebaseApp.database().ref('users')
                 .child(passenger.userUID)
                 .once('value')
@@ -157,9 +157,7 @@ export default class SetPickupLocationScreen extends Component {
                     sendPushNotificationAsync({
                       exponentPushToken: user.pushToken,
                       message: `${this.props.authStore.userData.displayName} has joined your ride to ${this.props.event.name}!`,
-                    }).then(() => {
-
-                    }).catch((err) => {
+                    }).then(() => {}).catch((err) => {
                       this.props.alertWithType('error', 'Error', err.toString());
                     });
                   }
