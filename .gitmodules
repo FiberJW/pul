@@ -1,4 +1,4 @@
 [submodule "server"]
     path = server
-    url = https://git.heroku.com/pul-notification-server.git
+    url = https://github.com/datwheat/pul-notification-server.git
 
