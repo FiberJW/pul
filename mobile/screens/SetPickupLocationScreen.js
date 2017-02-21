@@ -137,9 +137,7 @@ export default class SetPickupLocationScreen extends Component {
                 sendPushNotificationAsync({
                   exponentPushToken: user.pushToken,
                   message: `${this.props.authStore.userData.displayName} has joined your ride to ${this.props.event.name}!`,
-                }).then(() => {
-
-                }).catch((err) => {
+                }).then(() => {}).catch((err) => {
                   this.props.alertWithType('error', 'Error', err.toString());
                 });
               }
