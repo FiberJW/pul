@@ -103,8 +103,9 @@ export default class SetPickupLocationScreen extends Component {
       this.props.alertWithType('error', 'Error', 'Choose a pickup location.');
       return;
     }
-    shuffle(this.props.event.rides);
-    this.props.event.rides.some(ride => {
+
+    const shuffledRides = shuffle(this.props.event.rides);
+    shuffledRides.some(ride => {
       if (ride.passengers === undefined || ride.passengers.length < ride.passengerLimit) {
         this.setState(() => {
           return {
