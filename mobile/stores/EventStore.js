@@ -10,6 +10,7 @@ export class EventStore {
   @observable.deep events = [];
 
   @action processEvents = schoolUID => eventsSnapshot => {
+    this.events = [];
     const rawEvents = _.map(eventsSnapshot.val() || {}, (event, uid) => {
       let availableRides = 0;
 

@@ -57,7 +57,7 @@ export default class UpcomingRideScreen extends Component {
               <ActivityIndicator size="large" />
             </View>
           </When>
-          <When condition={ this.props.eventStore.rides.length || this.props.eventStore.refreshing }>
+          <When condition={ this.props.eventStore.rides.slice().length || this.props.eventStore.refreshing }>
             <ListView
               enableEmptySections
               dataSource={ this.ds.cloneWithRows(this.props.eventStore.rides.slice()) }

@@ -15,10 +15,12 @@ import { withNavigation } from '@exponent/ex-navigation';
 import ElevatedView from 'react-native-elevated-view';
 import { maybeOpenURL } from 'react-native-app-link';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
+import { observer } from 'mobx-react/native';
 
 @withNavigation
 @connectActionSheet
 @connectDropdownAlert
+@observer
 export default class Ride extends Component { // eslint-disable-line require-jsdoc
   static propTypes = {
     event: PropTypes.object.isRequired,
@@ -52,7 +54,7 @@ export default class Ride extends Component { // eslint-disable-line require-jsd
 
       // now get other users and push to arr
       if (this.props.event.yourRide.passengers) {
-        this.props.event.yourRide.passengers.forEach(pass => {
+        this.props.event.yourRide.passengers.slice().forEach(pass => {
           global.firebaseApp.database()
           .ref('users')
           .child(pass.userUID)
@@ -138,7 +140,7 @@ export default class Ride extends Component { // eslint-disable-line require-jsd
               {
                 text: 'OK',
                 onPress: () => {
-                  const passIndex = this.props.event.yourRide.passengers.findIndex(
+                  const passIndex = this.props.event.yourRide.passengers.slice().findIndex(
                     i => i.userUID === global.firebaseApp.auth().currentUser.uid
                   );
                   global.firebaseApp.database()
