@@ -3,7 +3,6 @@ import {
   View,
   TouchableOpacity,
   Text,
-  Alert,
   StyleSheet,
   ListView,
   ActivityIndicator,
@@ -13,11 +12,13 @@ import colors from '../config/colors';
 import ElevatedView from 'react-native-elevated-view';
 import shuffle from '../utils/shuffle';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
-
+import { isExponentPushToken, sendPushNotificationAsync } from '../utils/ExponentPushClient';
+import { inject, observer } from 'mobx-react/native';
 /**
  *  For setting where you want to get picked up as a rider
  */
 @connectDropdownAlert
+@inject('authStore') @observer
 export default class SetPickupLocationScreen extends Component {
   static route = {
     navigationBar: {
@@ -36,8 +37,9 @@ export default class SetPickupLocationScreen extends Component {
 
   static propTypes = {
     navigator: PropTypes.object.isRequired,
-    event: PropTypes.object.isRequired,
     navigation: PropTypes.object.isRequired,
+    event: PropTypes.object.isRequired,
+    authStore: PropTypes.object.isRequired,
     refresh: PropTypes.func,
     alertWithType: PropTypes.func.isRequired,
   }
@@ -125,11 +127,47 @@ export default class SetPickupLocationScreen extends Component {
             isPickedUp: false,
           })
           .then(() => {
-            Alert.alert(
-              null,
-              'Thanks for requesting a ride! Make sure to say hello to your driver!',
-              [{ text: 'OK' }]
-            );
+            global.firebaseApp.database().ref('users')
+            .child(ride.driver)
+            .once('value')
+            .then(userSnap => {
+              const user = userSnap.val();
+
+              if (isExponentPushToken(user.pushToken)) {
+                sendPushNotificationAsync({
+                  exponentPushToken: user.pushToken,
+                  message: `${this.props.authStore.userData.displayName} has joined your ride to ${this.props.event.name}!`,
+                }).then(() => {
+
+                }).catch((err) => {
+                  this.props.alertWithType('error', 'Error', err.toString());
+                });
+              }
+            });
+
+            if (Array.isArray(ride.passengers)) {
+              ride.passengers.forEach((passenger) => {
+                global.firebaseApp.database().ref('users')
+                .child(passenger.userUID)
+                .once('value')
+                .then(userSnap => {
+                  const user = userSnap.val();
+
+                  if (isExponentPushToken(user.pushToken)) {
+                    sendPushNotificationAsync({
+                      exponentPushToken: user.pushToken,
+                      message: `${this.props.authStore.userData.displayName} has joined your ride to ${this.props.event.name}!`,
+                    }).then(() => {
+
+                    }).catch((err) => {
+                      this.props.alertWithType('error', 'Error', err.toString());
+                    });
+                  }
+                });
+              });
+            }
+
+            this.props.alertWithType('success', 'Success', 'Thanks for requesting a ride! Make sure to say hello to your driver!');
             this.setState(() => {
               return {
                 loading: false,
