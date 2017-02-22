@@ -66,11 +66,11 @@ export default class GetPasswordScreen extends Component {
       this.setState(() => {
         return { loggingIn: true };
       });
-      if (this.state.password.length < 8) {
+      if (this.state.password.length < 6) {
         this.setState(() => {
           return { loggingIn: false };
         });
-        this.props.alertWithType('error', 'Error', 'Password must be at least 8 characters long.');
+        this.props.alertWithType('error', 'Error', 'Password must be at least 6 characters long.');
         return;
       }
 
