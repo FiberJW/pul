@@ -60,10 +60,9 @@ export default class Carpooler extends Component {
 
   contact = () => {
     Linking.openURL(`tel:${this.props.user.phoneNumber}`.trim())
-      .then(() => {})
-      .catch(err => {
-        this.props.alertWithType('error', 'Error', err.toString());
-      });
+    .catch(err => {
+      this.props.alertWithType('error', 'Error', err.toString());
+    });
   }
 
   meetDriver = () => {

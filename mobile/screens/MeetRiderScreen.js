@@ -148,10 +148,9 @@ export default class MeetRiderScreen extends Component {
             <TouchableOpacity
               onPress={ () => {
                 Linking.openURL(`tel:${this.props.rider.phoneNumber}`.trim())
-                  .then(() => {})
-                  .catch(err => {
-                    this.props.alertWithType('error', 'Error', err.toString());
-                  });
+                .catch(err => {
+                  this.props.alertWithType('error', 'Error', err.toString());
+                });
               } }
             >
               <View style={ styles.button }>

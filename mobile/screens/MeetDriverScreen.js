@@ -199,10 +199,9 @@ export default class MeetDriverScreen extends Component {
                 <TouchableOpacity
                   onPress={ () => {
                     Linking.openURL(`tel:${this.state.driverData.phoneNumber}`.trim())
-                      .then(() => {})
-                      .catch(err => {
-                        this.props.alertWithType('error', 'Error', err.toString());
-                      });
+                    .catch(err => {
+                      this.props.alertWithType('error', 'Error', err.toString());
+                    });
                   } }
                 >
                   <View style={ styles.button }>

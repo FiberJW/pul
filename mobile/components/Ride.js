@@ -243,7 +243,6 @@ export default class Ride extends Component { // eslint-disable-line require-jsd
                             this.props.alertWithType('error', 'Error', err.toString());
                           });
                         })
-                        .then(() => {})
                         .catch(err => {
                           this.props.alertWithType('error', 'Error', err.toString());
                         });
@@ -288,7 +287,6 @@ export default class Ride extends Component { // eslint-disable-line require-jsd
                         }, () => {
                           this.props.alertWithType('success', 'YEET', 'Aye you made it!');
                         })
-                        .then(() => {})
                         .catch(err => {
                           this.props.alertWithType('error', 'Error', err.toString());
                         });
