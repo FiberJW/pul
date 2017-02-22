@@ -190,8 +190,6 @@ export default class NewEventScreen extends Component {
               sendPushNotificationAsync({
                 exponentPushToken: user.pushToken,
                 message: `There's a new ${event.type.toLowerCase()} event at your school!`,
-              }).then(() => {
-
               }).catch((err) => {
                 this.props.alertWithType('error', 'Error', err.toString());
               });
