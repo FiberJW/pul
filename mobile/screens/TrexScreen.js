@@ -105,8 +105,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   webview: {
-    height: 300,
-    flex: 0,
+    // height: 300,
+    flex: 1,
   },
   leaderboard: {
     borderTopColor: colors.disabledGrey,
