@@ -142,7 +142,7 @@ export default class MeetRiderScreen extends Component {
               onPress={ () => this.props.navigator.pop() }
             >
               <View style={ [styles.button, styles.cancelButton] }>
-                <Text style={ styles.cancel }>CANCEL</Text>
+                <Text style={ styles.cancel }>CLOSE</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity
