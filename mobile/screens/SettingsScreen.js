@@ -42,7 +42,7 @@ export default class SettingsScreen extends Component {
     namePromptVisible: false,
     phoneNumberPromptVisible: false,
     user: {},
-    notifications: true,
+    notifications: false,
     feedbackPromptVisible: false,
   }
 
