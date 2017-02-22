@@ -48,6 +48,7 @@ export default class SetPickupLocationScreen extends Component {
     location: '',
     pickupLocations: [],
     loading: true,
+    submitting: false,
   }
 
   /**
@@ -101,6 +102,16 @@ export default class SetPickupLocationScreen extends Component {
 
 
   requestRide = () => {
+    // add submission check
+    if (this.state.submitting) {
+      this.props.alertWithType('info', 'Info', 'Your request is in progress.');
+      return;
+    }
+
+    this.setState(() => {
+      return { submitting: true };
+    });
+
     if (this.state.location === '') {
       this.props.alertWithType('error', 'Error', 'Choose a pickup location.');
       return;

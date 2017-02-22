@@ -110,9 +110,15 @@ export default class DriveOptionsScreen extends Component {
     //   this.props.alertWithType('error', 'Error', 'Your pickup time is invalid.');
     //   return;
     // }
+    if (this.state.submitting) {
+      this.props.alertWithType('info', 'Info', 'Your submission is in progress.');
+      return;
+    }
+
     this.setState(() => {
       return { submitting: true };
     });
+
     global.firebaseApp.database().ref('schools')
       .child(this.props.event.schoolUID)
       .child('events')

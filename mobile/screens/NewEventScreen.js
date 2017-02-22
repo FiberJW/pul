@@ -166,11 +166,14 @@ export default class NewEventScreen extends Component {
 
   submitEvent = (event) => {
     if (this.state.submitting) {
+      this.props.alertWithType('info', 'Info', 'Your submission is in progress.');
       return;
     }
+
     this.setState(() => {
       return { submitting: true };
     });
+
     global.firebaseApp.database().ref('users')
     .child(global.firebaseApp.auth().currentUser.uid)
     .once('value')
