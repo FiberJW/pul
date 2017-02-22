@@ -30,7 +30,7 @@ export class AuthStore {
         pushToken: null,
         deviceId: Exponent.Constants.deviceId,
         settings: {
-          notifications: true,
+          notifications: false,
         },
         displayName: credentials.name,
         email: credentials.email,
