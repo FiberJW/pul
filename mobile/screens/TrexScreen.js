@@ -60,7 +60,7 @@ export default class TrexScreen extends Component {
       >
         <WebView
           style={ styles.webview }
-          source={ require('../assets/html/t-rex.html') }
+          source={ require('../assets/html/x3dcn50pq1.html') }
           scrollEnabled={ false }
           javaScriptEnabled
           onMessage={ (e) => {
