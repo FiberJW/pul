@@ -24,7 +24,7 @@
     "react-native": "https://github.com/exponent/react-native/archive/sdk-14.0.0.tar.gz",
     "react-native-action-button": "^2.0.18",
     "react-native-app-link": "*",
-    "react-native-collapsible": "git+https://github.com/relayfoods/react-native-collapsible.git#collapsible-not-expanding-temp-fix",
+    "react-native-collapsible": "^0.8.0",
     "react-native-communications": "^2.2.1",
     "react-native-dropdownalert": "^2.5.0",
     "react-native-elevated-view": "0.0.1",
