@@ -5,35 +5,35 @@ import {
   Text,
   ActivityIndicator,
   ScrollView,
-  Alert,
   StyleSheet,
 } from 'react-native';
 import { NavigationStyles } from '@exponent/ex-navigation';
 import colors from '../config/colors';
 import moment from 'moment';
-// import t from 'tcomb-form-native';
-// import pickupTimeStylesheet from '../config/pickupTimeStylesheet';
+import t from 'tcomb-form-native';
+import pickupTimeStylesheet from '../config/pickupTimeStylesheet';
 import ElevatedView from 'react-native-elevated-view';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
+import { Notifications } from 'exponent';
 
-// const Form = t.form.Form;
+const Form = t.form.Form;
 
-// const Time = t.struct({
-//   time: t.Date,
-// });
-//
-// const TimeOptions = {
-//   auto: 'none',
-//   fields: {
-//     time: {
-//       stylesheet: pickupTimeStylesheet,
-//       config: {
-//         format: time => moment(time).format('h:mma'),
-//       },
-//       mode: 'time',
-//     },
-//   },
-// };
+const Time = t.struct({
+  time: t.Date,
+});
+
+const TimeOptions = {
+  auto: 'none',
+  fields: {
+    time: {
+      stylesheet: pickupTimeStylesheet,
+      config: {
+        format: time => moment(time).format('h:mma'),
+      },
+      mode: 'time',
+    },
+  },
+};
 
 @connectDropdownAlert
 export default class DriveOptionsScreen extends Component {
@@ -86,15 +86,15 @@ export default class DriveOptionsScreen extends Component {
   }
 
   createRide = () => {
-    // const pickupTime = {
-    //   hours: this.state.pickupTime.time ? moment(this.state.pickupTime.time).hours() : moment(this.state.pickupTime).hours(),
-    //   minutes: this.state.pickupTime.time ? moment(this.state.pickupTime.time).minutes() : moment(this.state.pickupTime).minutes(),
-    // };
+    const pickupTime = {
+      hours: this.state.pickupTime.time ? moment(this.state.pickupTime.time).hours() : moment(this.state.pickupTime).hours(),
+      minutes: this.state.pickupTime.time ? moment(this.state.pickupTime.time).minutes() : moment(this.state.pickupTime).minutes(),
+    };
 
     return {
       eventUID: this.props.event.uid,
       schoolUID: this.props.event.schoolUID,
-      // pickupTime,
+      pickupTime,
       pickupStarted: false,
       pickupCompleted: false,
       rideStarted: false,
@@ -106,10 +106,10 @@ export default class DriveOptionsScreen extends Component {
   }
 
   pushRide = () => {
-    // if (!this.timeIsValid()) {
-    //   this.props.alertWithType('error', 'Error', 'Your pickup time is invalid.');
-    //   return;
-    // }
+    if (!this.timeIsValid()) {
+      this.props.alertWithType('error', 'Error', 'Your pickup time is invalid.');
+      return;
+    }
     if (this.state.submitting) {
       this.props.alertWithType('info', 'Info', 'Your submission is in progress.');
       return;
@@ -125,12 +125,20 @@ export default class DriveOptionsScreen extends Component {
       .child(this.props.event.uid)
       .child('rides')
       .push(this.createRide())
-      .then(() => {
-        Alert.alert(
-          null,
-          'Thanks for offering a ride!',
-          [{ text: 'OK' }]
-        );
+      .then(ride => {
+        const pickupTime = this.state.pickupTime.time ? moment(this.state.pickupTime.time) : moment(this.state.pickupTime);
+
+        Notifications.scheduleLocalNotificationAsync({
+          title: 'Time to pickup your passengers!',
+          body: `Pickup your riders for ${this.props.event.name}`,
+        }, { time: pickupTime.subtract(30, 'minutes').toDate() })
+        .then(notiID => {
+          ride.update({
+            notiID,
+          });
+        });
+
+        this.props.alertWithType('success', 'Success', 'Thanks for offering a ride!');
         this.props.navigator.pop();
         this.props.refresh(false);
       })
@@ -217,7 +225,7 @@ export default class DriveOptionsScreen extends Component {
                 </View>
               </TouchableOpacity>
             </View>
-            {/* <View style={ styles.headerRow }>
+            <View style={ styles.headerRow }>
               <Text style={ styles.header }>
                 PICKUP TIME
               </Text>
@@ -235,7 +243,7 @@ export default class DriveOptionsScreen extends Component {
                 });
               } }
               options={ TimeOptions }
-            /> */}
+            />
             <TouchableOpacity
               onPress={ () => this.pushRide() }
             >

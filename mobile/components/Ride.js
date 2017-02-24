@@ -16,6 +16,7 @@ import ElevatedView from 'react-native-elevated-view';
 import { maybeOpenURL } from 'react-native-app-link';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import { observer } from 'mobx-react/native';
+import { Notifications } from 'exponent';
 
 @withNavigation
 @connectActionSheet
@@ -121,6 +122,7 @@ export default class Ride extends Component { // eslint-disable-line require-jsd
                     .child(this.props.event.yourRide.uid)
                     .remove()
                     .then(() => {
+                      Notifications.cancelScheduledNotificationAsync(this.props.event.yourRide.notiID);
                       this.props.alertWithType('error', '😢', `You left ${this.props.event.name}.`);
                       this.props.refresh(false);
                     })
