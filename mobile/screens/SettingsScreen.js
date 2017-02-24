@@ -71,6 +71,53 @@ export default class SettingsScreen extends Component {
     });
   }
 
+  togglePushNotifications = (value) => {
+    Permissions.askAsync(Permissions.REMOTE_NOTIFICATIONS).then(({ status }) => {
+      if (status === 'granted') {
+        Notifications.getExponentPushTokenAsync().then(token => {
+          this.setState(() => {
+            return {
+              notifications: value,
+            };
+          });
+          global.firebaseApp.database()
+          .ref('users')
+          .child(global.firebaseApp.auth().currentUser.uid)
+          .update({
+            pushToken: token,
+            settings: {
+              notifications: value,
+            },
+          })
+          .then(() => {
+            this.getUser();
+          })
+          .catch(error => {
+            this.setState(() => {
+              return {
+                notifications: !value,
+              };
+            });
+            this.props.alertWithType('error', 'Error', error.toString());
+          });
+        });
+      } else {
+        this.setState(() => {
+          return {
+            notifications: !value,
+          };
+        });
+        this.props.alertWithType('error', 'Error', 'To stay in the loop, you need to enable push notifications.');
+      }
+    }).catch(() => {
+      this.setState(() => {
+        return {
+          notifications: !value,
+        };
+      });
+    });
+  }
+
   render() {
     return (
       <ScrollView contentContainerStyle={ styles.container }>
@@ -101,55 +148,16 @@ export default class SettingsScreen extends Component {
             <Text style={ styles.fieldLabel }>Phone number</Text>
             <Text style={ styles.fieldContents }>{this.state.user.phoneNumber}</Text>
           </TouchableOpacity>
-          <View style={ styles.switchFieldContainer }>
-            <Text style={ styles.switchFieldLabel }>Push notifications</Text>
+          <View
+            style={ styles.switchFieldContainer }
+          >
+            <TouchableOpacity
+              onPress={ () => this.togglePushNotifications(!this.state.notifications) }
+            >
+              <Text style={ styles.switchFieldLabel }>Push notifications</Text>
+            </TouchableOpacity>
             <Switch
-              onValueChange={ (value) => {
-                Permissions.askAsync(Permissions.REMOTE_NOTIFICATIONS).then(({ status }) => {
-                  if (status === 'granted') {
-                    Notifications.getExponentPushTokenAsync().then(token => {
-                      this.setState(() => {
-                        return {
-                          notifications: value,
-                        };
-                      });
-                      global.firebaseApp.database()
-                      .ref('users')
-                      .child(global.firebaseApp.auth().currentUser.uid)
-                      .update({
-                        pushToken: token,
-                        settings: {
-                          notifications: value,
-                        },
-                      })
-                      .then(() => {
-                        this.getUser();
-                      })
-                      .catch(error => {
-                        this.setState(() => {
-                          return {
-                            notifications: !value,
-                          };
-                        });
-                        this.props.alertWithType('error', 'Error', error.toString());
-                      });
-                    });
-                  } else {
-                    this.setState(() => {
-                      return {
-                        notifications: !value,
-                      };
-                    });
-                    this.props.alertWithType('error', 'Error', 'To stay in the loop, you need to enable push notifications.');
-                  }
-                }).catch(() => {
-                  this.setState(() => {
-                    return {
-                      notifications: !value,
-                    };
-                  });
-                });
-              } }
+              onValueChange={ this.togglePushNotifications }
               value={ this.state.notifications }
             />
           </View>
