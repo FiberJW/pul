@@ -160,7 +160,7 @@ class App extends Component {
 }
 
 const Main = () => (
-  <MobXProvider authStore={ authStore } eventStore={ eventStore } trexStore={ trexStore }>
+  <MobXProvider { ...{ authStore, eventStore, trexStore } }>
     <DropdownAlertProvider>
       <ActionSheetProvider>
         <App />
