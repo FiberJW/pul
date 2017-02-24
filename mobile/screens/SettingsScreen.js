@@ -7,6 +7,7 @@ import {
   AsyncStorage,
   StyleSheet,
   Switch,
+  TextInput,
   Platform,
   TouchableOpacity,
 } from 'react-native';
@@ -14,7 +15,6 @@ import colors from '../config/colors';
 import { Notifications, Permissions } from 'exponent';
 import { NavigationStyles } from '@exponent/ex-navigation';
 import Router from '../navigation/Router';
-import Prompt from 'react-native-prompt';
 import { observer, inject } from 'mobx-react/native';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import { email } from 'react-native-communications';
@@ -40,8 +40,6 @@ export default class SettingsScreen extends Component {
   }
 
   state = {
-    namePromptVisible: false,
-    phoneNumberPromptVisible: false,
     user: {},
     notifications: false,
   }
@@ -126,28 +124,75 @@ export default class SettingsScreen extends Component {
             <Text style={ styles.sectionHeaderText }>ACCOUNT</Text>
             <View style={ styles.sectionHeaderUnderline } />
           </View>
-          <TouchableOpacity
-            onPress={
-              () => this.setState(() => {
-                return { namePromptVisible: true };
-              })
-            }
+          <View
             style={ styles.fieldContainer }
           >
             <Text style={ styles.fieldLabel }>Name</Text>
-            <Text style={ styles.fieldContents }>{this.state.user.displayName}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={
-              () => this.setState(() => {
-                return { phoneNumberPromptVisible: true };
-              })
-            }
+            <TextInput
+              editable
+              underlineColorAndroid="transparent"
+              onChangeText={ (displayName) => {
+                this.setState(prevState => ({
+                  user: {
+                    ...prevState.user,
+                    displayName,
+                  },
+                }));
+                if (displayName.trim().length < 4) {
+                  this.props.alertWithType('error', 'Error', 'Please enter your full name.');
+                  return;
+                }
+                global.firebaseApp.auth().currentUser.updateProfile({
+                  displayName: displayName.trim(),
+                }).then(() => {
+                  global.firebaseApp.database()
+                  .ref('users')
+                  .child(global.firebaseApp.auth().currentUser.uid)
+                  .update({
+                    displayName: displayName.trim(),
+                  });
+                })
+                .catch(error => {
+                  this.props.alertWithType('error', 'Error', error.toString());
+                });
+              } }
+              style={ styles.fieldContents }
+              onEndEditing={ this.getUser }
+              value={ this.state.user.displayName }
+            />
+          </View>
+          <View
             style={ styles.fieldContainer }
           >
             <Text style={ styles.fieldLabel }>Phone number</Text>
-            <Text style={ styles.fieldContents }>{this.state.user.phoneNumber}</Text>
-          </TouchableOpacity>
+            <TextInput
+              style={ styles.fieldContents }
+              onEndEditing={ this.getUser }
+              underlineColorAndroid="transparent"
+              onChangeText={ (phoneNumber) => {
+                this.setState(prevState => ({
+                  user: {
+                    ...prevState.user,
+                    phoneNumber,
+                  },
+                }));
+                if (phoneNumber.trim().length !== 10) {
+                  this.props.alertWithType('error', 'Error', 'Please enter your 10-digit phone number.');
+                  return;
+                }
+                global.firebaseApp.database()
+                .ref('users')
+                .child(global.firebaseApp.auth().currentUser.uid)
+                .update({
+                  phoneNumber: phoneNumber.trim(),
+                })
+                .catch(error => {
+                  this.props.alertWithType('error', 'Error', error.toString());
+                });
+              } }
+              value={ this.state.user.phoneNumber }
+            />
+          </View>
           <View
             style={ styles.switchFieldContainer }
           >
@@ -210,82 +255,6 @@ export default class SettingsScreen extends Component {
           >
             <Text style={ styles.fieldLabel }>Log out</Text>
           </TouchableOpacity>
-          <Prompt
-            title="Change Display Name"
-            placeholder="Start typing"
-            defaultValue={ this.state.user.displayName }
-            visible={ this.state.namePromptVisible }
-            onCancel={ () => this.setState(() => {
-              return { namePromptVisible: false };
-            }) }
-            onSubmit={ (displayName) => {
-              if (displayName.trim().length < 4) {
-                this.props.alertWithType('error', 'Error', 'Please enter your full name.');
-                this.setState(() => {
-                  return { phoneNumberPromptVisible: false };
-                });
-                return;
-              }
-              global.firebaseApp.auth().currentUser.updateProfile({
-                displayName: displayName.trim(),
-              }).then(() => {
-                global.firebaseApp.database()
-                .ref('users')
-                .child(global.firebaseApp.auth().currentUser.uid)
-                .update({
-                  displayName: displayName.trim(),
-                })
-                .then(() => {
-                  this.getUser();
-                  this.setState(() => {
-                    return { namePromptVisible: false };
-                  });
-                });
-              })
-              .catch(error => {
-                this.setState(() => {
-                  return { namePromptVisible: false };
-                });
-                this.props.alertWithType('error', 'Error', error.toString());
-              });
-            } }
-          />
-          <Prompt
-            title="Change Phone Number"
-            placeholder="Start typing"
-            defaultValue={ this.state.user.phoneNumber }
-            visible={ this.state.phoneNumberPromptVisible }
-            onCancel={ () => this.setState(() => {
-              return { phoneNumberPromptVisible: false };
-            }) }
-            onSubmit={ (phoneNumber) => {
-              if (phoneNumber.trim().length !== 10) {
-                this.props.alertWithType('error', 'Error', 'Please enter your 10-digit phone number.');
-                this.setState(() => {
-                  return { phoneNumberPromptVisible: false };
-                });
-                return;
-              }
-              global.firebaseApp.database()
-              .ref('users')
-              .child(global.firebaseApp.auth().currentUser.uid)
-              .update({
-                phoneNumber: phoneNumber.trim(),
-              })
-              .then(() => {
-                this.getUser();
-                this.setState(() => {
-                  return { phoneNumberPromptVisible: false };
-                });
-              })
-              .catch(error => {
-                this.setState(() => {
-                  return { phoneNumberPromptVisible: false };
-                });
-                this.props.alertWithType('error', 'Error', error.toString());
-              });
-            } }
-          />
         </View>
       </ScrollView>
     );
@@ -325,6 +294,7 @@ const styles = StyleSheet.create({
   },
   fieldContents: {
     fontFamily: 'open-sans',
+    height: 24,
     fontSize: 14,
     color: colors.grey,
   },
