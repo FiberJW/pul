@@ -4,7 +4,6 @@ import {
   StyleSheet,
   StatusBar,
   TouchableOpacity,
-  Linking,
   Text,
 } from 'react-native';
 import { NavigationStyles } from '@exponent/ex-navigation';
@@ -13,6 +12,7 @@ import { Components, Location } from 'exponent';
 import ElevatedView from 'react-native-elevated-view';
 import { maybeOpenURL } from 'react-native-app-link';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
+import { phonecall } from 'react-native-communications';
 
 @connectDropdownAlert
 export default class MeetRiderScreen extends Component {
@@ -147,10 +147,7 @@ export default class MeetRiderScreen extends Component {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={ () => {
-                Linking.openURL(`tel:${this.props.rider.phoneNumber}`.trim())
-                .catch(err => {
-                  this.props.alertWithType('error', 'Error', err.toString());
-                });
+                phonecall(this.props.rider.phoneNumber, true);
               } }
             >
               <View style={ styles.button }>

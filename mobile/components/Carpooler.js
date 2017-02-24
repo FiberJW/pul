@@ -5,7 +5,6 @@ import {
   Dimensions,
   StyleSheet,
   TouchableOpacity,
-  Linking,
 } from 'react-native';
 import { withNavigation } from '@exponent/ex-navigation';
 import colors from '../config/colors';
@@ -13,7 +12,7 @@ import Collapsible from 'react-native-collapsible';
 import ElevatedView from 'react-native-elevated-view';
 import Router from 'Router';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
-
+import { phonecall } from 'react-native-communications';
 
 /**
 *  Renders a Carpooler
@@ -59,10 +58,7 @@ export default class Carpooler extends Component {
   }
 
   contact = () => {
-    Linking.openURL(`tel:${this.props.user.phoneNumber}`.trim())
-    .catch(err => {
-      this.props.alertWithType('error', 'Error', err.toString());
-    });
+    phonecall(this.props.user.phoneNumber, true);
   }
 
   meetDriver = () => {
