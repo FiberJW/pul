@@ -4,14 +4,15 @@ import {
   StyleSheet,
   ListView,
   StatusBar,
+  TouchableOpacity,
   Text,
   ActivityIndicator,
 } from 'react-native';
 import colors from '../config/colors';
 import { NavigationStyles } from '@exponent/ex-navigation';
 import SchoolOption from '../components/SchoolOption';
-import Prompt from 'react-native-prompt';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
+import { email } from 'react-native-communications';
 
 @connectDropdownAlert
 export default class ChooseSchoolScreen extends Component {
@@ -39,8 +40,6 @@ export default class ChooseSchoolScreen extends Component {
   state = {
     loading: true,
     schools: [],
-    submittingSchoolRequest: false,
-    schoolPromptVisible: false,
   }
 
   componentWillMount() {
@@ -85,71 +84,44 @@ export default class ChooseSchoolScreen extends Component {
         </Choose>
         <Choose>
           <When condition={ this.props.intent === 'signup' }>
-            <Text
-              onPress={ () => this.setState(() => {
-                return { schoolPromptVisible: true };
-              }) }
-              style={ styles.notExist }
+            <TouchableOpacity
+              onPress={ () => {
+                email(
+                  ['datwheat@gmail.com'],
+                  null,
+                  null,
+                  'PÜL School Request',
+                  `Hey!
+
+You should consider adding <SCHOOL NAME> to PÜL!
+
+Our email domain is <EMAIL DOMAIN> (example: '@stpaulsschool.org').
+
+Our hotspots for pickups are:
+  1. Name: <NAME>
+      Location: (<LAT>, <LON>)
+  2. Name: <NAME>
+      Location: (<LAT>, <LON>)
+  3. Name: <NAME>
+      Location: (<LAT>, <LON>)
+  4. Name: <NAME>
+      Location: (<LAT>, <LON>)
+
+(How to find coordinates: https://support.google.com/maps/answer/18539)
+
+Thanks a lot for considering adding <SCHOOL NAME> to PÜL!
+
+<SENDER NAME>`
+                );
+              } }
             >
+              <Text
+                style={ styles.notExist }
+              >
               School not listed?
             </Text>
-            <Prompt
-              title="What school do you go to?"
-              placeholder="Start typing"
-              visible={ this.state.schoolPromptVisible }
-              onCancel={ () => this.setState(() => {
-                return {
-                  schoolPromptVisible: false,
-                };
-              }) }
-              onSubmit={ (school) => {
-                if (school.trim().length === 0) {
-                  this.setState(() => {
-                    return {
-                      schoolPromptVisible: false,
-                    };
-                  });
-                  this.props.alertWithType(
-                      'error',
-                      'Error',
-                      'Can\'t suggest a school if it doesn\'t exist 😜'
-                    );
-                  return;
-                }
-                if (!this.state.submittingSchoolRequest) {
-                  this.setState(() => {
-                    return {
-                      submittingSchoolRequest: true,
-                    };
-                  });
-                  global.firebaseApp.database()
-                  .ref('requestedSchools')
-                  .push(school.trim())
-                  .then(() => {
-                    this.props.alertWithType(
-                      'success',
-                      'Yay!',
-                      'Thanks for your feedback! We will bring PÜL to your school as fast as we can!'
-                    );
-                    this.setState(() => {
-                      return {
-                        schoolPromptVisible: false,
-                        submittingSchoolRequest: false,
-                      };
-                    });
-                  })
-                  .catch(error => {
-                    this.setState(() => {
-                      return {
-                        schoolPromptVisible: false,
-                        submittingSchoolRequest: false,
-                      };
-                    });
-                    this.props.alertWithType('error', 'Error', error.toString());
-                  });
-                }
-              } }
-            />
+
+            </TouchableOpacity>
           </When>
         </Choose>
       </View>

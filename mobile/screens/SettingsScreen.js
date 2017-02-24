@@ -17,6 +17,7 @@ import Router from '../navigation/Router';
 import Prompt from 'react-native-prompt';
 import { observer, inject } from 'mobx-react/native';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
+import { email } from 'react-native-communications';
 
 /**
  *  Allows the user to have some control over account data and app settings
@@ -43,7 +44,6 @@ export default class SettingsScreen extends Component {
     phoneNumberPromptVisible: false,
     user: {},
     notifications: false,
-    feedbackPromptVisible: false,
   }
 
   componentWillMount() {
@@ -158,13 +158,13 @@ export default class SettingsScreen extends Component {
           <TouchableOpacity
             onPress={
               () => {
-                if (global.firebaseApp.auth().currentUser.emailVerified) {
-                  this.setState(() => {
-                    return { feedbackPromptVisible: true };
-                  });
-                } else {
-                  this.props.alertWithType('error', 'Error', 'You must verify your email before continuing.');
-                }
+                email(
+                  ['datwheat@gmail.com'],
+                  null,
+                  null,
+                  `PÜL Feedback <${this.props.authStore.userId}>`,
+                  null
+                );
               }
             }
             style={ styles.fieldContainer }
@@ -273,35 +273,6 @@ export default class SettingsScreen extends Component {
               .catch(error => {
                 this.setState(() => {
                   return { phoneNumberPromptVisible: false };
-                });
-                this.props.alertWithType('error', 'Error', error.toString());
-              });
-            } }
-          />
-          <Prompt
-            title="What's Up?"
-            placeholder="Start typing"
-            visible={ this.state.feedbackPromptVisible }
-            onCancel={ () => this.setState(() => {
-              return { feedbackPromptVisible: false };
-            }) }
-            onSubmit={ (feedback) => {
-              global.firebaseApp.database()
-              .ref('feedback')
-              .push({
-                userUID: global.firebaseApp.auth().currentUser.uid,
-                message: feedback.trim(),
-              })
-              .then(() => {
-                this.getUser();
-                this.setState(() => {
-                  return { feedbackPromptVisible: false };
-                });
-                this.props.alertWithType('success', '😎', 'Thanks for your feedback!');
-              })
-              .catch(error => {
-                this.setState(() => {
-                  return { feedbackPromptVisible: false };
                 });
                 this.props.alertWithType('error', 'Error', error.toString());
               });
