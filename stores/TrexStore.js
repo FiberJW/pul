@@ -3,6 +3,7 @@ import _ from 'lodash';
 
 export class TrexStore {
   @observable.deep players = [];
+  @observable blockedUsers = ['3ql1ezBpETYte2U9reF5QjHHbzf1'];
   @observable loading = true;
   @observable.deep school = null;
   @observable error = null;
@@ -54,6 +55,9 @@ export class TrexStore {
   }
 
   @action addNewHighScore = (highestScore) => {
+    if (global.firebaseApp.auth().currentUser.uid in this.blockedUsers) {
+      return;
+    }
     global.firebaseApp.database()
     .ref('users')
     .child(global.firebaseApp.auth().currentUser.uid)
