@@ -4,3 +4,4 @@ npm-debug.*
 .exponent/
 node_modules/
 config/keys.js
+.release/

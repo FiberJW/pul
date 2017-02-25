@@ -5,6 +5,11 @@
   "author": "Juwan Wheatley",
   "private": true,
   "main": "main.js",
+  "scripts": {
+    "upload-sourcemaps:android": "publish-sentry-release --platform android --team juwan-wheatley --project pul --auth-token ba831e90c8b5421b907731c3bc77415161fa905c437e4572ae79ad2192886adc",
+    "upload-sourcemaps:ios": "publish-sentry-release --platform ios --team juwan-wheatley --project pul --auth-token ba831e90c8b5421b907731c3bc77415161fa905c437e4572ae79ad2192886adc",
+    "prepush": "npm run upload-sourcemaps:android && upload-sourcemaps:ios"
+  },
   "dependencies": {
     "@exponent/ex-navigation": "^2.9.0",
     "@exponent/react-native-action-sheet": "^0.3.0",
@@ -36,6 +41,7 @@
   },
   "devDependencies": {
     "eslint": "^3.13.1",
-    "eslint-plugin-jsx-control-statements": "^2.1.1"
+    "eslint-plugin-jsx-control-statements": "^2.1.1",
+    "husky": "^0.13.1"
   }
 }
