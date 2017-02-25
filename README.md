@@ -18,9 +18,6 @@
 
 <a href='https://itunes.apple.com/us/app/p%C3%BCl-carpooling-for-students-by-students/id1196047562?ls=1&mt=8'>App Store</a>
 
-
-
-
 ## Screenshots
 
 <p align="center">
