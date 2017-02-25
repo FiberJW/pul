@@ -1,35 +1,41 @@
 {
   "name": "pul",
-  "version": "0.0.0",
-  "description": "",
+  "version": "0.1.1",
+  "description": "A Middle-Out Transportation Solution for Students on the Go.",
+  "author": "Juwan Wheatley",
   "private": true,
-  "main": ".eslintrc.js",
+  "main": "main.js",
   "dependencies": {
+    "@exponent/ex-navigation": "^2.9.0",
+    "@exponent/react-native-action-sheet": "^0.3.0",
+    "@exponent/sentry-utils": "*",
+    "@exponent/vector-icons": "~2.0.3",
+    "babel-preset-react-native-stage-0": "^1.0.1",
+    "bad-words": "^1.4.2",
+    "exponent": "^14.0.0",
+    "firebase": "^3.6.3",
+    "hoist-non-react-statics": "^1.2.0",
+    "jsx-control-statements": "^3.1.5",
+    "lodash": "^4.17.2",
+    "mobx": "^3.1.0",
+    "mobx-react": "^4.1.0",
+    "moment": "^2.17.0",
+    "react": "~15.4.1",
+    "react-native": "https://github.com/exponent/react-native/archive/sdk-14.0.0.tar.gz",
+    "react-native-action-button": "^2.0.18",
+    "react-native-app-link": "*",
+    "react-native-collapsible": "^0.8.0",
+    "react-native-communications": "^2.2.1",
+    "react-native-dropdownalert": "^2.5.0",
+    "react-native-elevated-view": "0.0.1",
+    "react-native-google-places-autocomplete": "^1.2.6",
+    "react-native-swiper": "^1.5.4",
+    "tcomb-form-native": "^0.6.1",
+    "validator": "^6.2.1",
     "chalkdust": "^1.1.0"
-  },
-  "scripts": {
-    "lint": "eslint .",
-    "validate": "npm ls",
-    "ios": "./ios.sh",
-    "android": "./android.sh acc947de-2646-4057-b53f-13158bb55536",
-    "getalldeps": "./getalldeps.sh",
-    "android:hard": "cd mobile && exp start --android",
-    "exp:push": "cd mobile && exp publish",
-    "exp:login": "exp login -u $EXP_UNAME -p $EXP_PWORD"
   },
   "devDependencies": {
     "eslint": "^3.13.1",
     "eslint-plugin-jsx-control-statements": "^2.1.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/datwheat/pul.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/datwheat/pul/issues"
-  },
-  "homepage": "https://github.com/datwheat/pul#README"
+  }
 }

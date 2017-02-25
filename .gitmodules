@@ -1,4 +1,0 @@
-[submodule "server"]
-    path = server
-    url = https://github.com/datwheat/pul-notification-server.git
-

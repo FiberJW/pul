@@ -30,25 +30,6 @@
   <img style="display:inline-block" alt="Trex Game" src="./screenshots/trex.jpg" width="170">
 </p>
 
-## Directory Structure
-
-```
-.
-├── mobile // contains exponent project
-│   ├── assets
-│   │   ├── fonts
-│   │   ├── html
-│   │   └── images
-│   ├── components
-│   ├── config
-│   ├── navigation
-│   ├── screens
-│   ├── stores // MobX stuff
-│   └── utils
-├── server // contains worker scripts on Heroku
-└── template-files // example files for api keys needed
-```
-
 ## Major technologies used
 
 - Exponent

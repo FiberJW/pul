@@ -1,13 +1,6 @@
 .DS_Store
 npm-debug.*
 .idea/
-mobile/.exponent/
-mobile/node_modules/
+.exponent/
 node_modules/
-server/node_modules/
-
-
-mobile/config/keys.js
-
-server/config.json
-server/serviceAccountCredentials.json
+config/keys.js
