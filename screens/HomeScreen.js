@@ -7,6 +7,7 @@ import {
   StatusBar,
   Image,
   Vibration,
+  Platform,
   Text,
   RefreshControl,
 } from 'react-native';
@@ -114,7 +115,7 @@ export default class HomeScreen extends Component {
         </Choose>
         <ActionButton
           offsetX={ 16 }
-          offsetY={ 0 }
+          offsetY={ Platform.OS === 'android' ? 16 : 0 }
           onPress={ () => {
             if (global.firebaseApp.auth().currentUser.emailVerified) {
               this.props.navigation
