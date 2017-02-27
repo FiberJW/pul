@@ -112,7 +112,7 @@ export default class NewEventScreen extends Component {
   checkDataAndPush = () => {
     let propertiesAreValid = true;
 
-    const name = this.state.name !== null && this.state.name.name;
+    const name = this.state.name !== null ? this.state.name.name : '';
     const date = this.state.date.date ?
       moment.utc(moment(this.state.date.date).startOf('day')) :
       moment.utc(moment(this.state.date).startOf('day'));
