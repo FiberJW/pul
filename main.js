@@ -1,4 +1,4 @@
-import Exponent, { Font, Components } from 'exponent';
+import Exponent, { Font, Components, Permissions } from 'exponent';
 import React, { Component, PropTypes } from 'react';
 import {
   AsyncStorage,
@@ -62,18 +62,18 @@ class App extends Component {
    *  Asks for permissions, loads fonts, and starts Firebase
    */
   async setup() {
-    const { Permissions } = Exponent;
-    await Permissions.askAsync(Permissions.LOCATION);
-
-    await Font.loadAsync({
-      'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
-      'open-sans-light': require('./assets/fonts/OpenSans-Light.ttf'),
-      'open-sans-extrabold': require('./assets/fonts/OpenSans-ExtraBold.ttf'),
-      'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
-      'open-sans-semibold': require('./assets/fonts/OpenSans-Semibold.ttf'),
-      'neutra-bold': require('./assets/fonts/NeutraTextBold.ttf'),
-    });
-    await this.startFirebase();
+    await Promise.all([
+      Permissions.askAsync(Permissions.LOCATION),
+      Font.loadAsync({
+        'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+        'open-sans-light': require('./assets/fonts/OpenSans-Light.ttf'),
+        'open-sans-extrabold': require('./assets/fonts/OpenSans-ExtraBold.ttf'),
+        'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+        'open-sans-semibold': require('./assets/fonts/OpenSans-Semibold.ttf'),
+        'neutra-bold': require('./assets/fonts/NeutraTextBold.ttf'),
+      }),
+      this.startFirebase(),
+    ]);
   }
 
   startFirebase = async () => {
