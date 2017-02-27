@@ -95,11 +95,8 @@ export default class DriveOptionsScreen extends Component {
       eventUID: this.props.event.uid,
       schoolUID: this.props.event.schoolUID,
       pickupTime,
-      pickupStarted: false,
-      pickupCompleted: false,
       rideStarted: false,
       rideCompleted: false,
-      reminderSet: false,
       passengerLimit: this.state.passengerLimit,
       driver: global.firebaseApp.auth().currentUser.uid,
     };
