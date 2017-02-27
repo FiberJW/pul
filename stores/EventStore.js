@@ -37,7 +37,7 @@ export class EventStore {
       return moment(event.date)
         .add(event.time.hours, 'hours')
         .add(event.time.minutes, 'minutes')
-        .isAfter(moment());
+        .isAfter(moment().startOf('day'));
     }).sort((leftEvent, rightEvent) => {
       return moment(leftEvent.date)
         .add(leftEvent.time.hours, 'hours')
@@ -120,7 +120,7 @@ export class EventStore {
       let yourRide;
       if (event.rides) {
         event.rides.forEach(ride => {
-          if (!ride.rideCompleted && (ride.driver === global.firebaseApp.auth().currentUser.uid ||
+          if ((ride.driver === global.firebaseApp.auth().currentUser.uid ||
               ride.passengers.some(passenger => passenger.userUID === global.firebaseApp.auth().currentUser.uid))) {
             yourRide = ride;
           }

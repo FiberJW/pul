@@ -204,6 +204,7 @@ export default class Ride extends Component { // eslint-disable-line require-jsd
             event={ this.props.event }
             refresh={ this.props.refresh }
             passengers={ this.state.passengers }
+            pickedUpUsers={ this.state.pickedUpUsers }
             refreshing={ this.props.refreshing }
             user={ u }
             selfIsDriver={ this.state.selfIsDriver }
@@ -213,6 +214,7 @@ export default class Ride extends Component { // eslint-disable-line require-jsd
         <Choose>
           <When
             condition={
+              this.state.selfIsDriver &&
               !this.props.event.yourRide.rideStarted &&
               this.state.passengers.length > 1 &&
               this.state.pickedUpUsers === this.state.passengers.length - 1
@@ -265,7 +267,7 @@ export default class Ride extends Component { // eslint-disable-line require-jsd
             </TouchableOpacity>
           </When>
           <When
-            condition={ this.props.event.yourRide.rideStarted }
+            condition={ this.state.selfIsDriver && this.props.event.yourRide.rideStarted && !this.props.event.yourRide.rideCompleted }
           >
             <TouchableOpacity
               onPress={
@@ -318,6 +320,18 @@ export default class Ride extends Component { // eslint-disable-line require-jsd
               }}
             >
               NO PASSENGERS AVAILABLE
+            </Text>
+          </When>
+          <When condition={ this.props.event.yourRide.rideCompleted }>
+            <Text
+              style={{
+                fontFamily: 'open-sans-semibold',
+                fontSize: 18,
+                alignSelf: 'center',
+                paddingTop: 16,
+              }}
+            >
+              RIDE COMPLETED
             </Text>
           </When>
         </Choose>

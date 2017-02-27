@@ -23,6 +23,7 @@ export default class Carpooler extends Component {
   static propTypes = {
     user: PropTypes.object.isRequired,
     event: PropTypes.object.isRequired,
+    pickedUpUsers: PropTypes.number,
     navigator: PropTypes.object.isRequired,
     navigation: PropTypes.object.isRequired,
     passengers: PropTypes.array.isRequired,
@@ -199,6 +200,7 @@ export default class Carpooler extends Component {
           <View
             style={ [
               styles.indicator,
+              this.props.pickedUpUsers === this.props.passengers.length - 1 &&
               !!(this.props.event.yourRide.rideStarted || this.props.user.isPickedUp) &&
                 { backgroundColor: colors.neonGreen },
             ] }
