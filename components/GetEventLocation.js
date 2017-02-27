@@ -7,7 +7,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { Components } from 'exponent';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import {
+  GooglePlacesAutocomplete,
+} from 'react-native-google-places-autocomplete';
 import { googleApiKey } from '../config/keys';
 import colors from '../config/colors';
 import ElevatedView from 'react-native-elevated-view';
@@ -19,60 +21,52 @@ export default class GetEventLocation extends Component {
     onLocationSelect: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     submitting: PropTypes.bool.isRequired,
-  }
-
+  };
   state = {
     textInputFocused: false,
-  }
-
+  };
   focusTextInput = () => this.setState(() => {
     return {
       textInputFocused: true,
     };
-  })
-
+  });
   blurTextInput = () => this.setState(() => {
     return {
       textInputFocused: false,
     };
-  })
-
+  });
   render() {
     return (
       <View style={ styles.container }>
-        {
-          !!(!this.props.submitting && this.props.location) &&
-            <Components.MapView
-              style={ StyleSheet.absoluteFillObject }
-              scrollEnabled={ false }
-              initialRegion={{
+        {!!(!this.props.submitting && this.props.location) &&
+          <Components.MapView
+            style={ StyleSheet.absoluteFillObject }
+            scrollEnabled={ false }
+            initialRegion={{
+              latitude: this.props.location.details.geometry.location.lat,
+              longitude: this.props.location.details.geometry.location.lng,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+            region={{
+              latitude: this.props.location.details.geometry.location.lat,
+              longitude: this.props.location.details.geometry.location.lng,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
+            }}
+          >
+            <Components.MapView.Marker
+              coordinate={{
                 latitude: this.props.location.details.geometry.location.lat,
                 longitude: this.props.location.details.geometry.location.lng,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
               }}
-              region={{
-                latitude: this.props.location.details.geometry.location.lat,
-                longitude: this.props.location.details.geometry.location.lng,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
-              }}
-              liteMode
-            >
-              <Components.MapView.Marker
-                coordinate={{
-                  latitude: this.props.location.details.geometry.location.lat,
-                  longitude: this.props.location.details.geometry.location.lng,
-                }}
-              />
-            </Components.MapView>
-        }
-        {
-          !this.props.submitting &&
+            />
+          </Components.MapView>}
+        {!this.props.submitting &&
           <GooglePlacesAutocomplete
             placeholder="Event Location"
             minLength={ 2 }
-            listViewDisplayed="auto"    // true/false/undefined
+            listViewDisplayed="auto" /* true/false/undefined*/
             fetchDetails
             textInputProps={{
               onFocus: this.focusTextInput,
@@ -104,31 +98,25 @@ export default class GetEventLocation extends Component {
             textInputProps={{
               underlineColorAndroid: 'transparent',
             }}
-            nearbyPlacesAPI="GooglePlacesSearch" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+            nearbyPlacesAPI="GooglePlacesSearch" /* Which API to use: GoogleReverseGeocoding or GooglePlacesSearch*/
             GooglePlacesSearchQuery={{
               rankby: 'distance',
             }}
-          />
-        }
-        {
-          !!(this.props.keyboardHeight === 0 && !this.props.submitting && this.props.location) &&
+          />}
+        {!!(this.props.keyboardHeight === 0 &&
+          !this.props.submitting &&
+          this.props.location) &&
           <TouchableOpacity
             onPress={ this.props.onSubmit }
             activeOpacity={ 0.7 }
             style={ styles.submitButtonContainer }
           >
-            <ElevatedView
-              style={ styles.submitButton }
-              elevation={ 4 }
-            >
-              <Text
-                style={ styles.submitText }
-              >
+            <ElevatedView style={ styles.submitButton } elevation={ 4 }>
+              <Text style={ styles.submitText }>
                 SUBMIT EVENT
               </Text>
             </ElevatedView>
-          </TouchableOpacity>
-      }
+          </TouchableOpacity>}
       </View>
     );
   }
