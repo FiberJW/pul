@@ -200,8 +200,8 @@ export default class Carpooler extends Component {
           <View
             style={ [
               styles.indicator,
-              this.props.pickedUpUsers === this.props.passengers.length - 1 &&
-              !!(this.props.event.yourRide.rideStarted || this.props.user.isPickedUp) &&
+              (this.props.pickedUpUsers === this.props.passengers.length ||
+              !!(this.props.event.yourRide.rideStarted || this.props.user.isPickedUp)) &&
                 { backgroundColor: colors.neonGreen },
             ] }
           />
