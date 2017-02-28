@@ -15,6 +15,8 @@ import pickupTimeStylesheet from '../config/pickupTimeStylesheet';
 import ElevatedView from 'react-native-elevated-view';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import { Notifications } from 'exponent';
+import { isExponentPushToken, sendPushNotificationAsync } from '../utils/ExponentPushClient';
+import _ from 'lodash';
 
 const Form = t.form.Form;
 
@@ -132,6 +134,21 @@ export default class DriveOptionsScreen extends Component {
         .then(notiID => {
           ride.update({
             notiID,
+          });
+        });
+
+        global.firebaseApp.database().ref('users')
+        .once('value')
+        .then(usersSnap => {
+          _.each(usersSnap.val(), user => {
+            if (isExponentPushToken(user.pushToken) && user.school === this.props.event.schoolUID) {
+              sendPushNotificationAsync({
+                exponentPushToken: user.pushToken,
+                message: `There's a new driver for ${this.props.event.name}!`,
+              }).catch((err) => {
+                this.props.alertWithType('error', 'Error', err.toString());
+              });
+            }
           });
         });
 
