@@ -121,7 +121,7 @@ export default class HomeScreen extends Component {
               .getNavigator('master')
               .push(Router.getRoute('newEvent', { refresh: this.props.eventStore.refresh }));
             } else {
-              this.props.alertWithType('error', 'Error', 'You must verify your email before continuing.');
+              this.props.alertWithType('error', 'Error', 'You must verify your email before continuing. No creepers allowed!');
             }
           } }
           onLongPress={ () => {
@@ -131,7 +131,7 @@ export default class HomeScreen extends Component {
               .getNavigator('master')
               .push(Router.getRoute('trex'));
             } else {
-              this.props.alertWithType('error', 'Error', 'You must verify your email before continuing.');
+              this.props.alertWithType('error', 'Error', 'You must verify your email before continuing. No creepers allowed!');
             }
           } }
           buttonColor={ colors.black }

@@ -189,7 +189,7 @@ export default class Event extends Component {
                         Router.getRoute('setPickupLocation', { refresh: this.props.refresh, event: this.props.event })
                       );
                     } else {
-                      this.props.alertWithType('error', 'Error', 'You must verify your email before continuing.');
+                      this.props.alertWithType('error', 'Error', 'You must verify your email before continuing. No creepers allowed!');
                     }
                   }
                 }
@@ -216,7 +216,7 @@ export default class Event extends Component {
                       )
                     );
                   } else {
-                    this.props.alertWithType('error', 'Error', 'You must verify your email before continuing.');
+                    this.props.alertWithType('error', 'Error', 'You must verify your email before continuing. No creepers allowed!');
                   }
                 } }
                 style={ [styles.driveButton, {
