@@ -6,7 +6,7 @@
   "version": "0.1.1",
   "orientation": "portrait",
   "primaryColor": "#cccccc",
-  "icon": "http://i.imgur.com/Ha8Eaey.png",
+  "icon": "http://i.imgur.com/sv4ccpN.png",
   "androidHideExponentNotificationInShellApp": true,
   "notification": {
     "icon": "http://i.imgur.com/RAKQ1Aw.png",
@@ -22,7 +22,7 @@
   },
   "ios": {
     "bundleIdentifier": "io.github.datwheat.pul",
-    "buildNumber": "5",
+    "buildNumber": "6",
     "config": {
       "usesNonExemptEncryption": false
     },
@@ -30,7 +30,7 @@
   },
   "android": {
     "package": "io.github.datwheat.pul",
-    "versionCode": 4,
+    "versionCode": 5,
     "config": {
       "googleMaps": {
         "apiKey": "AIzaSyAgFjSKPvJ-YjqpN-uSdyQYFzaJSTWhmSA"
