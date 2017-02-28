@@ -55,7 +55,7 @@ export class TrexStore {
   }
 
   @action addNewHighScore = (highestScore) => {
-    if (global.firebaseApp.auth().currentUser.uid in this.blockedUsers) {
+    if (this.blockedUsers.includes(global.firebaseApp.auth().currentUser.uid)) {
       return;
     }
     global.firebaseApp.database()
