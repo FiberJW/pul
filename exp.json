@@ -3,7 +3,7 @@
   "description": "A carpooling app designed for students to help each other get more involved in their community.",
   "slug": "pul",
   "sdkVersion": "14.0.0",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "orientation": "portrait",
   "primaryColor": "#cccccc",
   "icon": "http://i.imgur.com/sv4ccpN.png",
