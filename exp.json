@@ -30,7 +30,7 @@
   },
   "android": {
     "package": "io.github.datwheat.pul",
-    "versionCode": 5,
+    "versionCode": 6,
     "config": {
       "googleMaps": {
         "apiKey": "AIzaSyAgFjSKPvJ-YjqpN-uSdyQYFzaJSTWhmSA"
