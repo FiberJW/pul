@@ -322,6 +322,18 @@ export default class Ride extends Component { // eslint-disable-line require-jsd
               NO PASSENGERS AVAILABLE
             </Text>
           </When>
+          <When condition={ this.props.event.yourRide.rideStarted && !this.props.event.yourRide.rideCompleted }>
+            <Text
+              style={{
+                fontFamily: 'open-sans-semibold',
+                fontSize: 18,
+                alignSelf: 'center',
+                paddingTop: 16,
+              }}
+            >
+              RIDE IN PROGRESS
+            </Text>
+          </When>
           <When condition={ this.props.event.yourRide.rideCompleted }>
             <Text
               style={{
