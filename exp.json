@@ -6,7 +6,7 @@
   "version": "0.1.2",
   "orientation": "portrait",
   "primaryColor": "#cccccc",
-  "icon": "http://i.imgur.com/sv4ccpN.png",
+  "icon": "http://i.imgur.com/FB7xWqw.png",
   "androidHideExponentNotificationInShellApp": true,
   "notification": {
     "icon": "http://i.imgur.com/RAKQ1Aw.png",
