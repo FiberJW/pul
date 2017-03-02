@@ -35,6 +35,12 @@
       "googleMaps": {
         "apiKey": "AIzaSyAgFjSKPvJ-YjqpN-uSdyQYFzaJSTWhmSA"
       }
+    },
+    "infoPlist": {
+      "LSApplicationQueriesSchemes": [
+        "waze",
+        "lyft"
+      ]
     }
   }
 }
