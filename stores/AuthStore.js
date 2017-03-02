@@ -4,8 +4,8 @@ import Exponent from 'exponent';
 import _ from 'lodash';
 
 export class AuthStore {
-  authStates = ['unauthenticated', 'authenticated', 'attempting']
-  @observable.deep userData = {};
+  authStates = ['unauthenticated', 'authenticated', 'attempting'];
+  @observable userData = {};
   @observable state = this.authStates[0];
   @observable verified = false;
   @observable error = null;
@@ -14,10 +14,12 @@ export class AuthStore {
   @action signup = async (credentials = {}) => {
     this.state = this.authStates[2];
     try {
-      const user = await global.firebaseApp.auth().createUserWithEmailAndPassword(
-        credentials.email,
-        credentials.password,
-      );
+      const user = await global.firebaseApp
+        .auth()
+        .createUserWithEmailAndPassword(
+          credentials.email,
+          credentials.password,
+        );
 
       await user.updateProfile({ displayName: credentials.name });
       await user.sendEmailVerification();
@@ -36,7 +38,11 @@ export class AuthStore {
         email: credentials.email,
       };
 
-      await global.firebaseApp.database().ref('users').child(user.uid).set(userData);
+      await global.firebaseApp
+        .database()
+        .ref('users')
+        .child(user.uid)
+        .set(userData);
       AsyncStorage.setItem('@PUL:user', JSON.stringify(credentials));
 
       this.watchEmailVerification();
@@ -48,28 +54,35 @@ export class AuthStore {
       this.state = this.authStates[0];
       throw err;
     }
-  }
+  };
 
   @action login = async (credentials = {}, auto = false) => {
     this.state = this.authStates[2];
 
     try {
-      const user = await global.firebaseApp.auth().signInWithEmailAndPassword(
-        credentials.email,
-        credentials.password
-      );
+      const user = await global.firebaseApp
+        .auth()
+        .signInWithEmailAndPassword(credentials.email, credentials.password);
 
       if (!user.emailVerified) {
         await user.sendEmailVerification();
       }
 
-      const userSnap = await global.firebaseApp.database().ref('users').child(user.uid).once('value');
+      const userSnap = await global.firebaseApp
+        .database()
+        .ref('users')
+        .child(user.uid)
+        .once('value');
 
       if (auto) {
         if (!userSnap.val().deviceId) {
-          await global.firebaseApp.database().ref('users').child(user.uid).update({
-            deviceId: Exponent.Constants.deviceId,
-          });
+          await global.firebaseApp
+            .database()
+            .ref('users')
+            .child(user.uid)
+            .update({
+              deviceId: Exponent.Constants.deviceId,
+            });
         } else if (userSnap.val().deviceId !== Exponent.Constants.deviceId) {
           // if this is not the same device as last time, sign out
           await global.firebaseApp.auth().signOut();
@@ -77,13 +90,17 @@ export class AuthStore {
           return;
         }
       } else {
-        await global.firebaseApp.database().ref('users').child(user.uid).update({
-          deviceId: Exponent.Constants.deviceId,
-          pushToken: null,
-          settings: {
-            notifications: false,
-          },
-        });
+        await global.firebaseApp
+          .database()
+          .ref('users')
+          .child(user.uid)
+          .update({
+            deviceId: Exponent.Constants.deviceId,
+            pushToken: null,
+            settings: {
+              notifications: false,
+            },
+          });
       }
 
       this.watchEmailVerification();
@@ -95,31 +112,30 @@ export class AuthStore {
       this.state = this.authStates[0];
       throw err; // throw error again catch in promise callback
     }
-  }
+  };
 
   @action watchEmailVerification = () => {
-    const emailWatch = setInterval(() => {
-      if (global.firebaseApp.auth().currentUser) {
-        if (global.firebaseApp.auth().currentUser.emailVerified) {
-          this.verified = true;
-          clearInterval(emailWatch);
+    const emailWatch = setInterval(
+      () => {
+        if (global.firebaseApp.auth().currentUser) {
+          if (global.firebaseApp.auth().currentUser.emailVerified) {
+            this.verified = true;
+            clearInterval(emailWatch);
+          }
+          global.firebaseApp.auth().currentUser.reload();
         }
-        global.firebaseApp.auth().currentUser.reload();
-      }
-    }, 1000);
-  }
+      },
+      1000,
+    );
+  };
 
   @action logout = async () => {
-    await global.firebaseApp.database()
-    .ref('users')
-    .child(this.userId)
-    .update({
+    await global.firebaseApp.database().ref('users').child(this.userId).update({
       pushToken: null,
       settings: {
         notifications: false,
       },
     });
-
 
     this.unWatchUserData();
     await global.firebaseApp.auth().signOut();
@@ -128,38 +144,42 @@ export class AuthStore {
     this.verified = false;
     this.error = null;
     this.userId = null;
-  }
-
+  };
 
   @action watchUserData = () => {
-    global.firebaseApp.database()
-    .ref('users')
-    .child(this.userId)
-    .on('value', this.mergeUserData);
-  }
+    global.firebaseApp
+      .database()
+      .ref('users')
+      .child(this.userId)
+      .on('value', this.mergeUserData);
+  };
 
   @action unWatchUserData = () => {
-    global.firebaseApp.database()
-    .ref('users')
-    .child(this.userId)
-    .off('value', this.mergeUserData);
-  }
+    global.firebaseApp
+      .database()
+      .ref('users')
+      .child(this.userId)
+      .off('value', this.mergeUserData);
+  };
 
-  sendPasswordResetEmail = (email) => {
+  sendPasswordResetEmail = email => {
     global.firebaseApp.auth().sendPasswordResetEmail(email);
-  }
+  };
 
-  @action mergeUserData = (userSnap) => {
+  @action mergeUserData = userSnap => {
     const newUserData = userSnap.val();
     _.merge(this.userData, newUserData);
-  }
+  };
 
   @action setError = (error = new Error(''), timeInSeconds = 1) => {
     this.error = error;
-    setTimeout(() => {
-      this.error = null;
-    }, timeInSeconds * 1000);
-  }
+    setTimeout(
+      () => {
+        this.error = null;
+      },
+      timeInSeconds * 1000,
+    );
+  };
 }
 
 export default new AuthStore();
