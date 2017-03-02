@@ -6,6 +6,7 @@ import {
   View,
   ActivityIndicator,
   Text,
+  AppState,
 } from 'react-native';
 import colors from '../config/colors';
 import { NavigationStyles } from '@exponent/ex-navigation';
@@ -14,7 +15,8 @@ import TrexPlayer from '../components/TrexPlayer';
 import { observer, inject } from 'mobx-react/native';
 
 @connectDropdownAlert
-@inject('trexStore') @observer
+@inject('trexStore')
+@observer
 export default class TrexScreen extends Component {
   static route = {
     navigationBar: {
@@ -30,59 +32,85 @@ export default class TrexScreen extends Component {
     styles: {
       ...NavigationStyles.SlideHorizontal,
     },
-  }
+  };
 
   static propTypes = {
     alertWithType: PropTypes.func.isRequired,
     trexStore: PropTypes.object.isRequired,
-  }
+  };
+
+  state = {
+    appState: AppState.currentState,
+    softBanned: false,
+  };
 
   componentDidMount() {
     this.props.trexStore.watchUsers();
+    AppState.addEventListener('change', this._handleAppStateChange);
   }
 
   componentWillUpdate(nextProps) {
     if (nextProps.trexStore.error) {
-      nextProps.alertWithType('error', 'Error', nextProps.trexStore.error.toString());
+      nextProps.alertWithType(
+        'error',
+        'Error',
+        nextProps.trexStore.error.toString(),
+      );
     }
   }
 
   componentWillUnmount() {
     this.props.trexStore.unWatchUsers();
+    AppState.removeEventListener('change', this._handleAppStateChange);
   }
 
-  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+
+  _handleAppStateChange = nextAppState => {
+    if (
+      this.state.appState.match(/inactive|background/) &&
+      nextAppState === 'active'
+    ) {
+      this.setState({ softBanned: true }); // to prevent guys hacking
+      setTimeout(() => this.setState({ softBanned: false }), 60000);
+    }
+    this.setState({ appState: nextAppState });
+  };
 
   render() {
     return (
-      <View
-        style={ styles.container }
-      >
+      <View style={styles.container}>
         <WebView
-          style={ styles.webview }
-          source={ require('../assets/html/x3dcn50pq1.html') }
-          scrollEnabled={ false }
+          style={styles.webview}
+          source={require('../assets/html/x3dcn50pq1.html')}
+          scrollEnabled={false}
           javaScriptEnabled
-          onMessage={ (e) => {
-            const highestScore = JSON.parse(e.nativeEvent.data).highestScore;
-            this.props.trexStore.addNewHighScore(highestScore);
-          } }
+          onMessage={e => {
+            if (!this.state.softBanned) {
+              const highestScore = JSON.parse(e.nativeEvent.data).highestScore;
+              this.props.trexStore.addNewHighScore(highestScore);
+            }
+          }}
         />
         <Choose>
-          <When condition={ this.props.trexStore.loading }>
-            <View style={ styles.activityContainer }>
+          <When condition={this.props.trexStore.loading}>
+            <View style={styles.activityContainer}>
               <ActivityIndicator size="large" />
             </View>
           </When>
           <Otherwise>
-            <View style={ styles.leaderboard }>
-              <View style={ styles.labelContainer }>
-                <Text style={ styles.label }>LEADERBOARD</Text>
+            <View style={styles.leaderboard}>
+              <View style={styles.labelContainer}>
+                <Text style={styles.label}>LEADERBOARD</Text>
               </View>
               <ListView
                 enableEmptySections
-                dataSource={ this.ds.cloneWithRows(this.props.trexStore.players.slice()) }
-                renderRow={ (player, __, idx) => <TrexPlayer player={ player } place={ parseInt(idx, 10) + 1 } /> }
+                dataSource={this.ds.cloneWithRows(
+                  this.props.trexStore.players.slice(),
+                )}
+                renderRow={(player, __, idx) => (
+                  <TrexPlayer player={player} place={parseInt(idx, 10) + 1} />
+                )}
               />
             </View>
           </Otherwise>
@@ -105,7 +133,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   webview: {
-    // height: 300,
     flex: 1,
   },
   leaderboard: {
