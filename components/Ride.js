@@ -303,7 +303,6 @@ export default class Ride extends Component {
               )}>
               <ElevatedView style={styles.startDrivingButton} elevation={4}>
                 <Text style={styles.buttonText}>
-
                   START DRIVING
                 </Text>
               </ElevatedView>
