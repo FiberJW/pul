@@ -14,7 +14,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "prettier --write --parser flow --trailing-comma all --bracket-spacing --jsx-bracket-same-line",
+      "prettier --write --bracket-spacing --jsx-bracket-same-line --trailing-comma all ",
       "git add"
     ]
   },
