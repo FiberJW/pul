@@ -1,63 +1,54 @@
-import { observable, action, computed } from "mobx";
-import _ from "lodash";
-import moment from "moment";
+import { observable, action, computed } from 'mobx';
+import _ from 'lodash';
+import moment from 'moment';
 
 export class EventStore {
   @observable loading = true;
   @observable refreshing = false;
   @observable error = null;
-  @observable.deep
-  school = null;
-  @observable.deep
-  events = [];
+  @observable school = null;
+  @observable events = [];
 
   @action processEvents = schoolUID => eventsSnapshot => {
     this.events = [];
     const rawEvents = _.map(eventsSnapshot.val() || {}, (event, uid) => {
-        let availableRides = 0;
+      let availableRides = 0;
 
-        const rides = _.map(event.rides || {}, (ride, rideUID) => {
-          const passengers = _.map(ride.passengers || {}, (
-            passenger,
-            passUID,
-          ) => ({ ...passenger, passUID }));
+      const rides = _.map(event.rides || {}, (ride, rideUID) => {
+        const passengers = _.map(ride.passengers || {}, (
+          passenger,
+          passUID,
+        ) => ({ ...passenger, passUID }));
 
-          if (
-            (!passengers ||
-              passengers.length < event.rides[rideUID].passengerLimit) &&
-            !event.rides[rideUID].rideStarted
-          ) {
-            availableRides++;
-          }
+        if (
+          (!passengers ||
+            passengers.length < event.rides[rideUID].passengerLimit) &&
+          !event.rides[rideUID].rideStarted
+        ) {
+          availableRides++;
+        }
 
-          return { ...ride, uid: rideUID, passengers };
-        });
+        return { ...ride, uid: rideUID, passengers };
+      });
 
-        return {
-          ...event,
-          uid,
-          availableRides,
-          schoolUID,
-          rides,
-        };
-      })
-      .reverse();
+      return { ...event, uid, availableRides, schoolUID, rides };
+    }).reverse();
 
     this.events = rawEvents
       .filter(event => {
         return moment(event.date)
-          .add(event.time.hours, "hours")
-          .add(event.time.minutes, "minutes")
-          .isAfter(moment().startOf("day"));
+          .add(event.time.hours, 'hours')
+          .add(event.time.minutes, 'minutes')
+          .isAfter(moment().startOf('day'));
       })
       .sort((leftEvent, rightEvent) => {
         return moment(leftEvent.date)
-          .add(leftEvent.time.hours, "hours")
-          .add(leftEvent.time.minutes, "minutes")
+          .add(leftEvent.time.hours, 'hours')
+          .add(leftEvent.time.minutes, 'minutes')
           .diff(
             moment(rightEvent.date)
-              .add(rightEvent.time.hours, "hours")
-              .add(rightEvent.time.minutes, "minutes"),
+              .add(rightEvent.time.hours, 'hours')
+              .add(rightEvent.time.minutes, 'minutes'),
           );
       })
       .slice(0, 100);
@@ -74,17 +65,17 @@ export class EventStore {
 
     global.firebaseApp
       .database()
-      .ref("users")
+      .ref('users')
       .child(global.firebaseApp.auth().currentUser.uid)
-      .once("value")
+      .once('value')
       .then(userSnap => {
         const schoolUID = userSnap.val().school;
         global.firebaseApp
           .database()
-          .ref("schools")
+          .ref('schools')
           .child(schoolUID)
-          .child("events")
-          .on("value", this.processEvents(schoolUID));
+          .child('events')
+          .on('value', this.processEvents(schoolUID));
         this.error = null;
       })
       .catch(error => {
@@ -95,10 +86,10 @@ export class EventStore {
   @action unWatchEvents = () => {
     global.firebaseApp
       .database()
-      .ref("schools")
+      .ref('schools')
       .child(this.school)
-      .child("events")
-      .off("value", this.processEvents(this.school));
+      .child('events')
+      .off('value', this.processEvents(this.school));
   };
 
   @action refresh = (showRefreshControl = true) => {
