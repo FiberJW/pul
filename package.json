@@ -8,7 +8,15 @@
   "scripts": {
     "upload-sourcemaps:android": "publish-sentry-release --platform android --team juwan-wheatley --project pul --auth-token ba831e90c8b5421b907731c3bc77415161fa905c437e4572ae79ad2192886adc",
     "upload-sourcemaps:ios": "publish-sentry-release --platform ios --team juwan-wheatley --project pul --auth-token ba831e90c8b5421b907731c3bc77415161fa905c437e4572ae79ad2192886adc",
-    "upload-sourcemaps": "npm run upload-sourcemaps:android && npm run upload-sourcemaps:ios"
+    "upload-sourcemaps": "npm run upload-sourcemaps:android && npm run upload-sourcemaps:ios",
+    "lint:staged": "lint-staged",
+    "precommit": "npm run lint:staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write --parser flow --trailing-comma all --bracket-spacing --jsx-bracket-same-line",
+      "git add"
+    ]
   },
   "dependencies": {
     "@exponent/ex-navigation": "^2.9.0",
@@ -17,6 +25,7 @@
     "@exponent/vector-icons": "~2.0.3",
     "babel-preset-react-native-stage-0": "^1.0.1",
     "bad-words": "^1.4.2",
+    "chalkdust": "^1.1.0",
     "exponent": "^14.0.0",
     "firebase": "^3.6.3",
     "hoist-non-react-statics": "^1.2.0",
@@ -36,12 +45,12 @@
     "react-native-google-places-autocomplete": "^1.2.6",
     "react-native-swiper": "^1.5.4",
     "tcomb-form-native": "^0.6.1",
-    "validator": "^6.2.1",
-    "chalkdust": "^1.1.0"
+    "validator": "^6.2.1"
   },
   "devDependencies": {
     "eslint": "^3.13.1",
     "eslint-plugin-jsx-control-statements": "^2.1.1",
-    "husky": "^0.13.1"
+    "husky": "^0.13.1",
+    "lint-staged": "^3.3.1"
   }
 }

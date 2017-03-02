@@ -5,3 +5,4 @@ npm-debug.*
 node_modules/
 config/keys.js
 .release/
+.vscode/
