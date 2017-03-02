@@ -25,7 +25,6 @@
     "@exponent/vector-icons": "~2.0.3",
     "babel-preset-react-native-stage-0": "^1.0.1",
     "bad-words": "^1.4.2",
-    "chalkdust": "^1.1.0",
     "exponent": "^14.0.0",
     "firebase": "^3.6.3",
     "hoist-non-react-statics": "^1.2.0",
@@ -48,9 +47,8 @@
     "validator": "^6.2.1"
   },
   "devDependencies": {
-    "eslint": "^3.13.1",
-    "eslint-plugin-jsx-control-statements": "^2.1.1",
     "husky": "^0.13.1",
-    "lint-staged": "^3.3.1"
+    "lint-staged": "^3.3.1",
+    "prettier": "^0.20.0"
   }
 }

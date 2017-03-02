@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component, PropTypes } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -6,20 +6,20 @@ import {
   ActivityIndicator,
   ScrollView,
   StyleSheet,
-} from "react-native";
-import { NavigationStyles } from "@exponent/ex-navigation";
-import colors from "../config/colors";
-import moment from "moment";
-import t from "tcomb-form-native";
-import pickupTimeStylesheet from "../config/pickupTimeStylesheet";
-import ElevatedView from "react-native-elevated-view";
-import connectDropdownAlert from "../utils/connectDropdownAlert";
-import { Notifications } from "exponent";
+} from 'react-native';
+import { NavigationStyles } from '@exponent/ex-navigation';
+import colors from '../config/colors';
+import moment from 'moment';
+import t from 'tcomb-form-native';
+import pickupTimeStylesheet from '../config/pickupTimeStylesheet';
+import ElevatedView from 'react-native-elevated-view';
+import connectDropdownAlert from '../utils/connectDropdownAlert';
+import { Notifications } from 'exponent';
 import {
   isExponentPushToken,
   sendPushNotificationAsync,
-} from "../utils/ExponentPushClient";
-import _ from "lodash";
+} from '../utils/ExponentPushClient';
+import _ from 'lodash';
 
 const Form = t.form.Form;
 
@@ -28,14 +28,14 @@ const Time = t.struct({
 });
 
 const TimeOptions = {
-  auto: "none",
+  auto: 'none',
   fields: {
     time: {
       stylesheet: pickupTimeStylesheet,
       config: {
-        format: time => moment(time).format("h:mma"),
+        format: time => moment(time).format('h:mma'),
       },
-      mode: "time",
+      mode: 'time',
     },
   },
 };
@@ -45,12 +45,12 @@ export default class DriveOptionsScreen extends Component {
   static route = {
     navigationBar: {
       visible: true,
-      title: "DRIVE OPTIONS",
+      title: 'DRIVE OPTIONS',
       tintColor: colors.black,
       titleStyle: {
-        fontFamily: "open-sans-bold",
+        fontFamily: 'open-sans-bold',
       },
-      backgroundColor: "white",
+      backgroundColor: 'white',
     },
     styles: {
       ...NavigationStyles.SlideHorizontal,
@@ -72,7 +72,7 @@ export default class DriveOptionsScreen extends Component {
   };
 
   timeIsValid = () => {
-    const date = moment(this.props.event.date).startOf("day");
+    const date = moment(this.props.event.date).startOf('day');
     const pickupDate = moment(date);
     const pickupHours = this.state.pickupTime.time
       ? moment(this.state.pickupTime.time).hours()
@@ -82,16 +82,16 @@ export default class DriveOptionsScreen extends Component {
       ? moment(this.state.pickupTime.time).minutes()
       : moment(this.state.pickupTime).minutes();
 
-    const pickupDatePlusHours = moment(pickupDate).add(pickupHours, "hours");
+    const pickupDatePlusHours = moment(pickupDate).add(pickupHours, 'hours');
     const completePickupMoment = moment(pickupDatePlusHours).add(
       pickUpMinutes,
-      "minutes",
+      'minutes',
     );
 
-    const addedHours = moment(date).add(this.props.event.time.hours, "hours");
+    const addedHours = moment(date).add(this.props.event.time.hours, 'hours');
     const completeEventMoment = moment(addedHours).add(
       this.props.event.time.minutes,
-      "minutes",
+      'minutes',
     );
     return completePickupMoment.isBefore(completeEventMoment);
   };
@@ -120,17 +120,17 @@ export default class DriveOptionsScreen extends Component {
   pushRide = () => {
     if (!this.timeIsValid()) {
       this.props.alertWithType(
-        "error",
-        "Error",
-        "Your pickup time is invalid.",
+        'error',
+        'Error',
+        'Your pickup time is invalid.',
       );
       return;
     }
     if (this.state.submitting) {
       this.props.alertWithType(
-        "info",
-        "Info",
-        "Your submission is in progress.",
+        'info',
+        'Info',
+        'Your submission is in progress.',
       );
       return;
     }
@@ -141,11 +141,11 @@ export default class DriveOptionsScreen extends Component {
 
     global.firebaseApp
       .database()
-      .ref("schools")
+      .ref('schools')
       .child(this.props.event.schoolUID)
-      .child("events")
+      .child('events')
       .child(this.props.event.uid)
-      .child("rides")
+      .child('rides')
       .push(this.createRide())
       .then(ride => {
         const pickupTime = this.state.pickupTime.time
@@ -153,22 +153,21 @@ export default class DriveOptionsScreen extends Component {
           : moment(this.state.pickupTime);
 
         Notifications.scheduleLocalNotificationAsync(
-            {
-              title: "Time to pickup your passengers!",
-              body: `Pickup your riders for ${this.props.event.name}`,
-            },
-            { time: pickupTime.subtract(30, "minutes").toDate() },
-          )
-          .then(notiID => {
-            ride.update({
-              notiID,
-            });
+          {
+            title: 'Time to pickup your passengers!',
+            body: `Pickup your riders for ${this.props.event.name}`,
+          },
+          { time: pickupTime.subtract(30, 'minutes').toDate() },
+        ).then(notiID => {
+          ride.update({
+            notiID,
           });
+        });
 
         global.firebaseApp
           .database()
-          .ref("users")
-          .once("value")
+          .ref('users')
+          .once('value')
           .then(usersSnap => {
             _.each(usersSnap.val(), user => {
               if (
@@ -176,21 +175,20 @@ export default class DriveOptionsScreen extends Component {
                 isExponentPushToken(user.pushToken) &&
                 user.school === this.props.event.schoolUID
               ) {
-                // eslint-disable-line jsx-control-statements/jsx-jcs-no-undef
                 sendPushNotificationAsync({
                   exponentPushToken: user.pushToken,
                   message: `There's a new driver for ${this.props.event.name}!`,
                 }).catch(err => {
-                  this.props.alertWithType("error", "Error", err.toString());
+                  this.props.alertWithType('error', 'Error', err.toString());
                 });
               }
             });
           });
 
         this.props.alertWithType(
-          "success",
-          "Success",
-          "Thanks for offering a ride!",
+          'success',
+          'Success',
+          'Thanks for offering a ride!',
         );
         this.props.navigator.pop();
         this.props.refresh(false);
@@ -199,7 +197,7 @@ export default class DriveOptionsScreen extends Component {
         this.setState(() => {
           return { submitting: false };
         });
-        this.props.alertWithType("error", "Error", err.toString());
+        this.props.alertWithType('error', 'Error', err.toString());
       });
   };
 
@@ -209,8 +207,8 @@ export default class DriveOptionsScreen extends Component {
         <When condition={this.state.submiting}>
           <View
             style={{
-              justifyContent: "center",
-              alignItems: "center",
+              justifyContent: 'center',
+              alignItems: 'center',
               flex: 1,
             }}>
             <ActivityIndicator size="large" />
@@ -315,49 +313,48 @@ export default class DriveOptionsScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: 'space-between',
     backgroundColor: colors.eggshell,
   },
   headerRow: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingVertical: 8,
     paddingHorizontal: 16,
   },
   header: {
-    fontFamily: "open-sans-bold",
+    fontFamily: 'open-sans-bold',
     fontSize: 12,
     color: colors.stardust,
   },
   confirmButton: {
     height: 64,
     backgroundColor: colors.purp,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 4,
     margin: 16,
   },
   confirmButtonText: {
-    fontFamily: "open-sans-bold",
-    color: "white",
+    fontFamily: 'open-sans-bold',
+    color: 'white',
     fontSize: 24,
   },
   radioGroupContainer: {},
   radioContainer: {
     padding: 16,
-    flexDirection: "row",
-    backgroundColor: "white",
+    flexDirection: 'row',
+    backgroundColor: 'white',
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: colors.lightGrey,
   },
   outerCircle: {
     height: 24,
     width: 24,
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     borderRadius: 12,
     borderColor: colors.purp,
     borderWidth: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   innerCircle: {
     height: 16,
@@ -366,12 +363,12 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   buttonLabelContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   label: {
     marginLeft: 16,
-    fontFamily: "open-sans",
+    fontFamily: 'open-sans',
     fontSize: 18,
     color: colors.black,
   },

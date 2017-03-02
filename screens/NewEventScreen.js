@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component, PropTypes } from 'react';
 import {
   StatusBar,
   View,
@@ -7,28 +7,28 @@ import {
   Platform,
   TextInput,
   ActivityIndicator,
-} from "react-native";
-import { NavigationStyles } from "@exponent/ex-navigation";
-import colors from "../config/colors";
-import KeyboardEventListener from "KeyboardEventListener";
-import Swiper from "react-native-swiper";
-import Icon from "../components/CrossPlatformIcon";
-import GetEventName from "../components/GetEventName";
-import GetEventType from "../components/GetEventType";
-import GetEventDate from "../components/GetEventDate";
-import GetEventTime from "../components/GetEventTime";
-import GetEventUrl from "../components/GetEventUrl";
-import GetEventDescription from "../components/GetEventDescription";
-import GetEventLocation from "../components/GetEventLocation";
-import CancelButton from "../components/NavBarCancelButton";
-import moment from "moment";
-import filter from "../utils/filter";
-import connectDropdownAlert from "../utils/connectDropdownAlert";
+} from 'react-native';
+import { NavigationStyles } from '@exponent/ex-navigation';
+import colors from '../config/colors';
+import KeyboardEventListener from 'KeyboardEventListener';
+import Swiper from 'react-native-swiper';
+import Icon from '../components/CrossPlatformIcon';
+import GetEventName from '../components/GetEventName';
+import GetEventType from '../components/GetEventType';
+import GetEventDate from '../components/GetEventDate';
+import GetEventTime from '../components/GetEventTime';
+import GetEventUrl from '../components/GetEventUrl';
+import GetEventDescription from '../components/GetEventDescription';
+import GetEventLocation from '../components/GetEventLocation';
+import CancelButton from '../components/NavBarCancelButton';
+import moment from 'moment';
+import filter from '../utils/filter';
+import connectDropdownAlert from '../utils/connectDropdownAlert';
 import {
   isExponentPushToken,
   sendPushNotificationAsync,
-} from "../utils/ExponentPushClient";
-import _ from "lodash";
+} from '../utils/ExponentPushClient';
+import _ from 'lodash';
 /**
  *  Allows user to create new events for school
  */
@@ -37,15 +37,15 @@ export default class NewEventScreen extends Component {
   static route = {
     navigationBar: {
       visible: true,
-      title: "NEW EVENT",
+      title: 'NEW EVENT',
       tintColor: colors.black,
       renderLeft: () => null,
       renderRight: () => <CancelButton />,
-      borderBottomColor: "transparent",
+      borderBottomColor: 'transparent',
       titleStyle: {
-        fontFamily: "open-sans-bold",
+        fontFamily: 'open-sans-bold',
       },
-      backgroundColor: "white",
+      backgroundColor: 'white',
     },
     styles: {
       ...NavigationStyles.SlideHorizontal,
@@ -62,7 +62,7 @@ export default class NewEventScreen extends Component {
     name: null,
     date: moment.utc().toDate(),
     time: moment.utc().toDate().getTime(),
-    url: "",
+    url: '',
     submitting: false,
     type: null,
     description: null,
@@ -87,8 +87,8 @@ export default class NewEventScreen extends Component {
     const name = this.state.name !== null && this.state.name.name;
     const type = this.state.type !== null && this.state.type.type;
     const date = this.state.date.date
-      ? moment.utc(moment(this.state.date.date).startOf("day")).toJSON()
-      : moment.utc(moment(this.state.date).startOf("day")).toJSON();
+      ? moment.utc(moment(this.state.date.date).startOf('day')).toJSON()
+      : moment.utc(moment(this.state.date).startOf('day')).toJSON();
     const time = {
       hours: this.state.time.time
         ? moment(this.state.time.time).hours()
@@ -111,7 +111,7 @@ export default class NewEventScreen extends Component {
       date,
       time,
       url: url.toLowerCase(),
-      createdInDev: __DEV__, // eslint-disable-line jsx-control-statements/jsx-jcs-no-undef
+      createdInDev: __DEV__,
       location,
       description: description && filter.clean(description.trim()),
     };
@@ -120,10 +120,10 @@ export default class NewEventScreen extends Component {
   checkDataAndPush = () => {
     let propertiesAreValid = true;
 
-    const name = this.state.name !== null ? this.state.name.name : "";
+    const name = this.state.name !== null ? this.state.name.name : '';
     const date = this.state.date.date
-      ? moment.utc(moment(this.state.date.date).startOf("day"))
-      : moment.utc(moment(this.state.date).startOf("day"));
+      ? moment.utc(moment(this.state.date.date).startOf('day'))
+      : moment.utc(moment(this.state.date).startOf('day'));
     const time = {
       hours: this.state.time.time
         ? moment(this.state.time.time).hours()
@@ -135,28 +135,28 @@ export default class NewEventScreen extends Component {
 
     if (name !== filter.clean(name)) {
       this.props.alertWithType(
-        "error",
-        "Error",
-        "Please mind your choice of words.",
+        'error',
+        'Error',
+        'Please mind your choice of words.',
       );
       propertiesAreValid = false;
     }
     if (
       !date
-        .add(time.hours, "hours")
-        .add(time.minutes, "minutes")
-        .isAfter(moment().add(3, "hours"))
+        .add(time.hours, 'hours')
+        .add(time.minutes, 'minutes')
+        .isAfter(moment().add(3, 'hours'))
     ) {
       this.props.alertWithType(
-        "error",
-        "Error",
-        "Event should be scheduled at least three hours in advance.",
+        'error',
+        'Error',
+        'Event should be scheduled at least three hours in advance.',
       );
       propertiesAreValid = false;
     }
-    ["name", "date", "time", "url", "type", "description"].forEach(elem => {
+    ['name', 'date', 'time', 'url', 'type', 'description'].forEach(elem => {
       if (!this[elem].isValid()) {
-        this.props.alertWithType("error", "Error", `Event ${elem} is invalid.`);
+        this.props.alertWithType('error', 'Error', `Event ${elem} is invalid.`);
         propertiesAreValid = false;
       }
     });
@@ -195,9 +195,9 @@ export default class NewEventScreen extends Component {
   submitEvent = event => {
     if (this.state.submitting) {
       this.props.alertWithType(
-        "info",
-        "Info",
-        "Your submission is in progress.",
+        'info',
+        'Info',
+        'Your submission is in progress.',
       );
       return;
     }
@@ -208,23 +208,23 @@ export default class NewEventScreen extends Component {
 
     global.firebaseApp
       .database()
-      .ref("users")
+      .ref('users')
       .child(global.firebaseApp.auth().currentUser.uid)
-      .once("value")
+      .once('value')
       .then(snap => {
         const schoolUID = snap.val().school;
         global.firebaseApp
           .database()
-          .ref("schools")
+          .ref('schools')
           .child(schoolUID)
-          .child("events")
+          .child('events')
           .push(event)
           .then(() => {
             // send pushes to peers
             global.firebaseApp
               .database()
-              .ref("users")
-              .once("value")
+              .ref('users')
+              .once('value')
               .then(usersSnap => {
                 _.each(usersSnap.val(), user => {
                   if (
@@ -232,14 +232,13 @@ export default class NewEventScreen extends Component {
                     isExponentPushToken(user.pushToken) &&
                     user.school === schoolUID
                   ) {
-                    // eslint-disable-line jsx-control-statements/jsx-jcs-no-undef
                     sendPushNotificationAsync({
                       exponentPushToken: user.pushToken,
                       message: `There's a new ${event.type.toLowerCase()} event at your school!`,
                     }).catch(err => {
                       this.props.alertWithType(
-                        "error",
-                        "Error",
+                        'error',
+                        'Error',
                         err.toString(),
                       );
                     });
@@ -247,9 +246,9 @@ export default class NewEventScreen extends Component {
                 });
 
                 this.props.alertWithType(
-                  "success",
-                  "Success",
-                  "Your event was submitted successfully!",
+                  'success',
+                  'Success',
+                  'Your event was submitted successfully!',
                 );
                 this.props.refresh();
                 this.props.navigator.pop();
@@ -260,7 +259,7 @@ export default class NewEventScreen extends Component {
         this.setState(() => {
           return { submitting: false };
         });
-        this.props.alertWithType("error", "Error", err.toString());
+        this.props.alertWithType('error', 'Error', err.toString());
       });
   };
 
@@ -296,7 +295,7 @@ export default class NewEventScreen extends Component {
               onScroll={this._blurFocusedTextInput}
               scrollEventThrottle={32}
               keyboardShouldPersistTaps="always"
-              keyboardDismissMode={Platform.OS === "ios" ? "none" : "on-drag"}
+              keyboardDismissMode={Platform.OS === 'ios' ? 'none' : 'on-drag'}
               height={this.state.swiperHeight}
               contentContainerStyle={styles.swiperWrapper}
               showsButtons
@@ -325,7 +324,7 @@ export default class NewEventScreen extends Component {
                   />
                 )
               }>
-              <GetEventName // attach validate() to component and access via refs
+              <GetEventName
                 ref={r => {
                   this.name = r;
                 }}
@@ -399,18 +398,18 @@ export default class NewEventScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   swiperWrapper: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   slide: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

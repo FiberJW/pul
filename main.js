@@ -1,13 +1,7 @@
 import Exponent, { Font, Components, Permissions } from 'exponent';
 import React, { Component, PropTypes } from 'react';
-import {
-  AsyncStorage,
-  Alert,
-} from 'react-native';
-import {
-  NavigationProvider,
-  StackNavigation,
-} from '@exponent/ex-navigation';
+import { AsyncStorage, Alert } from 'react-native';
+import { NavigationProvider, StackNavigation } from '@exponent/ex-navigation';
 import Router from './navigation/Router';
 import * as firebase from 'firebase';
 import { firebaseConfig, sentryURL } from './config/keys';
@@ -20,15 +14,36 @@ import authStore from './stores/AuthStore';
 import eventStore from './stores/EventStore';
 import trexStore from './stores/TrexStore';
 
-if (!__DEV__) { // eslint-disable-line jsx-control-statements/jsx-jcs-no-undef
+if (!__DEV__) {
   // this guards against console usage in production builds since
   // babel transform of remove console won't work with react-native preset
-  ['assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'error', 'exception',
-    'group', 'groupCollapsed', 'groupEnd', 'info', 'log', 'profile', 'profileEnd',
-    'table', 'time', 'timeEnd', 'timeStamp', 'trace', 'warn'].forEach(
-    (methodName) => {
-      console[methodName] = () => { /* noop */ };
-    });
+  [
+    'assert',
+    'clear',
+    'count',
+    'debug',
+    'dir',
+    'dirxml',
+    'error',
+    'exception',
+    'group',
+    'groupCollapsed',
+    'groupEnd',
+    'info',
+    'log',
+    'profile',
+    'profileEnd',
+    'table',
+    'time',
+    'timeEnd',
+    'timeStamp',
+    'trace',
+    'warn',
+  ].forEach(methodName => {
+    console[methodName] = () => {
+      /* noop */
+    };
+  });
 
   ExponentSentryClient.setupSentry(
     sentryURL,
@@ -38,16 +53,17 @@ if (!__DEV__) { // eslint-disable-line jsx-control-statements/jsx-jcs-no-undef
 }
 
 @connectDropdownAlert
-@inject('authStore') @observer
+@inject('authStore')
+@observer
 class App extends Component {
   static propTypes = {
     authStore: PropTypes.object,
     alertWithType: PropTypes.func,
-  }
+  };
   state = {
     loading: true,
     loggedIn: false,
-  }
+  };
 
   componentDidMount() {
     this.setup().catch(e => {
@@ -80,9 +96,11 @@ class App extends Component {
     try {
       global.firebaseApp = firebase.initializeApp(firebaseConfig);
     } catch (error) {
-      Alert.alert(null, 'Something\'s on fire. Please press \'OK\' to try again.', [
-        { text: 'OK', onPress: this.startFirebase },
-      ]);
+      Alert.alert(
+        null,
+        "Something's on fire. Please press 'OK' to try again.",
+        [{ text: 'OK', onPress: this.startFirebase }],
+      );
     }
     try {
       await this.signIn();
@@ -92,7 +110,7 @@ class App extends Component {
         return { loading: false };
       });
     }
-  }
+  };
 
   signIn = async () => {
     let userCredentials = await AsyncStorage.getItem('@PUL:user');
@@ -107,9 +125,11 @@ class App extends Component {
         if (error.code) {
           switch (error.code) {
             case 'auth/network-request-failed':
-              Alert.alert(null, 'No Internet connection. Please press \'OK\' when connected.', [
-                { text: 'OK', onPress: this.signIn },
-              ]);
+              Alert.alert(
+                null,
+                "No Internet connection. Please press 'OK' when connected.",
+                [{ text: 'OK', onPress: this.signIn }],
+              );
               break;
             case 'auth/user-not-found':
             case 'auth/invalid-email':
@@ -120,9 +140,7 @@ class App extends Component {
               });
               break;
             default:
-              Alert.alert(null, 'Something is on fire.', [
-                { text: 'OK' },
-              ]);
+              Alert.alert(null, 'Something is on fire.', [{ text: 'OK' }]);
               this.setState(() => {
                 return { loading: false };
               });
@@ -142,16 +160,22 @@ class App extends Component {
   };
 
   render() {
-    const route = this.props.authStore.state === this.props.authStore.authStates[1] ? 'tabs' : 'onboarding';
+    const route = this.props.authStore.state ===
+      this.props.authStore.authStates[1]
+      ? 'tabs'
+      : 'onboarding';
 
     return (
       <Choose>
-        <When condition={ this.state.loading }>
+        <When condition={this.state.loading}>
           <Components.AppLoading />
         </When>
         <Otherwise>
-          <NavigationProvider router={ Router }>
-            <StackNavigation id="master" initialRoute={ Router.getRoute(route) } />
+          <NavigationProvider router={Router}>
+            <StackNavigation
+              id="master"
+              initialRoute={Router.getRoute(route)}
+            />
           </NavigationProvider>
         </Otherwise>
       </Choose>
@@ -160,7 +184,7 @@ class App extends Component {
 }
 
 const Main = () => (
-  <MobXProvider { ...{ authStore, eventStore, trexStore } }>
+  <MobXProvider {...{ authStore, eventStore, trexStore }}>
     <DropdownAlertProvider>
       <ActionSheetProvider>
         <App />

@@ -31,43 +31,50 @@ export default class Event extends Component {
     navigation: PropTypes.object.isRequired,
     refresh: PropTypes.func,
     alertWithType: PropTypes.func.isRequired,
-  }
+  };
 
   state = {
     isCollapsed: true,
     isRider: false,
     isDriver: false,
-  }
+  };
 
   componentWillMount() {
-    !!this.props.event.rides && this.props.event.rides.forEach(ride => { // eslint-disable-line no-unused-expressions
-      if (ride.driver === global.firebaseApp.auth().currentUser.uid) {
-        this.setState(() => {
-          return {
-            isDriver: true,
-          };
-        });
-      }
-      !!ride.passengers && ride.passengers.some(passenger => { // eslint-disable-line no-unused-expressions
-        if (passenger.userUID === global.firebaseApp.auth().currentUser.uid) {
+    !!this.props.event.rides &&
+      this.props.event.rides.forEach(ride => {
+        if (ride.driver === global.firebaseApp.auth().currentUser.uid) {
           this.setState(() => {
             return {
-              isRider: true,
+              isDriver: true,
             };
           });
-          return true;
         }
-        return false;
+        !!ride.passengers &&
+          ride.passengers.some(passenger => {
+            if (
+              passenger.userUID === global.firebaseApp.auth().currentUser.uid
+            ) {
+              this.setState(() => {
+                return {
+                  isRider: true,
+                };
+              });
+              return true;
+            }
+            return false;
+          });
       });
-    });
   }
 
   render() {
     return (
       <TouchableOpacity
-        activeOpacity={ 0.8 }
-        onLongPress={ () => {
-          if (this.props.event.createdBy === global.firebaseApp.auth().currentUser.uid) {
+        activeOpacity={0.8}
+        onLongPress={() => {
+          if (
+            this.props.event.createdBy ===
+            global.firebaseApp.auth().currentUser.uid
+          ) {
             Vibration.vibrate([0, 25]);
             Alert.alert(
               Platform.OS === 'ios' ? 'Delete Event' : 'Delete event',
@@ -81,202 +88,227 @@ export default class Event extends Component {
                 {
                   text: 'OK',
                   onPress: () => {
-                    global.firebaseApp.database()
-                    .ref('users')
-                    .child(global.firebaseApp.auth().currentUser.uid)
-                    .once('value')
-                    .then((userSnap) => {
-                      const school = userSnap.val().school;
-                      global.firebaseApp.database()
-                      .ref('schools')
-                      .child(school)
-                      .child('events')
-                      .child(this.props.event.uid)
-                      .remove();
-                    })
-                    .catch(error => {
-                      this.props.alertWithType('error', 'Error', error.toString());
-                    });
+                    global.firebaseApp
+                      .database()
+                      .ref('users')
+                      .child(global.firebaseApp.auth().currentUser.uid)
+                      .once('value')
+                      .then(userSnap => {
+                        const school = userSnap.val().school;
+                        global.firebaseApp
+                          .database()
+                          .ref('schools')
+                          .child(school)
+                          .child('events')
+                          .child(this.props.event.uid)
+                          .remove();
+                      })
+                      .catch(error => {
+                        this.props.alertWithType(
+                          'error',
+                          'Error',
+                          error.toString(),
+                        );
+                      });
                   },
                 },
               ],
             );
           }
-        } }
-        onPress={ () => this.setState(prevState => {
+        }}
+        onPress={() => this.setState(prevState => {
           return {
             isCollapsed: !prevState.isCollapsed,
           };
-        }) }
-      >
-        <ElevatedView
-          style={ styles.cardContainer }
-          elevation={ 2 }
-        >
-          <View style={ styles.headerRow }>
-            <Text style={ styles.name }>
+        })}>
+        <ElevatedView style={styles.cardContainer} elevation={2}>
+          <View style={styles.headerRow}>
+            <Text style={styles.name}>
               {filter.clean(this.props.event.name.toUpperCase())}
             </Text>
-            <Text style={ styles.type }>
+            <Text style={styles.type}>
               {this.props.event.type.toUpperCase()}
             </Text>
           </View>
           <Text
-            onPress={ () => this.setState(prevState => {
+            onPress={() => this.setState(prevState => {
               return {
                 isCollapsed: !prevState.isCollapsed,
               };
-            }) }
-            onLongPress={ () => {
-              this.props.navigation.getNavigator('master').push(Router.getRoute('location', { event: this.props.event }));
-            } }
-            style={ styles.location }
-          >
+            })}
+            onLongPress={() => {
+              this.props.navigation
+                .getNavigator('master')
+                .push(Router.getRoute('location', { event: this.props.event }));
+            }}
+            style={styles.location}>
             {this.props.event.location.address}
           </Text>
-          <Text style={ styles.time }>
-            {
-              moment(this.props.event.date)
+          <Text style={styles.time}>
+            {moment(this.props.event.date)
               .add(this.props.event.time.hours, 'hours')
               .add(this.props.event.time.minutes, 'minutes')
-              .format('LLLL')
-            }
+              .format('LLLL')}
           </Text>
-          <Collapsible duration={ 200 } collapsed={ this.state.isCollapsed }>
-            <If condition={ this.props.event.description }>
-              <Text style={ styles.description }>
-                { filter.clean(this.props.event.description) }
+          <Collapsible duration={200} collapsed={this.state.isCollapsed}>
+            <If condition={this.props.event.description}>
+              <Text style={styles.description}>
+                {filter.clean(this.props.event.description)}
               </Text>
             </If>
-            <If condition={ this.props.event.url }>
+            <If condition={this.props.event.url}>
               <Text
-                style={ styles.website }
-                onPress={ () => this.setState(prevState => {
+                style={styles.website}
+                onPress={() => this.setState(prevState => {
                   return {
                     isCollapsed: !prevState.isCollapsed,
                   };
-                }) }
-                onLongPress={ () => {
+                })}
+                onLongPress={() => {
                   let url;
-                  if (this.props.event.url.includes('http') || this.props.event.url.includes('https')) {
+                  if (
+                    this.props.event.url.includes('http') ||
+                    this.props.event.url.includes('https')
+                  ) {
                     url = this.props.event.url;
                   } else {
                     url = `http://${this.props.event.url}`;
                   }
-                  Linking.canOpenURL(url).then(supported => {
-                    if (!supported) {
-                      return false;
-                    }
-                    return Linking.openURL(url);
-                  })
-                  .catch(err => {
-                    this.props.alertWithType('error', 'Error', err.toString());
-                  });
-                } }
-              >
-                { filter.clean(this.props.event.url) }
+                  Linking.canOpenURL(url)
+                    .then(supported => {
+                      if (!supported) {
+                        return false;
+                      }
+                      return Linking.openURL(url);
+                    })
+                    .catch(err => {
+                      this.props.alertWithType(
+                        'error',
+                        'Error',
+                        err.toString(),
+                      );
+                    });
+                }}>
+                {filter.clean(this.props.event.url)}
               </Text>
             </If>
-            <View
-              style={ styles.buttons }
-            >
+            <View style={styles.buttons}>
               <TouchableOpacity
-                disabled={ !this.props.event.availableRides || this.state.isRider || this.state.isDriver }
-                onPress={
-                  () => {
-                    if (global.firebaseApp.auth().currentUser.emailVerified) {
-                      this.props.navigation.getNavigator('master').push(
-                        Router.getRoute('setPickupLocation', { refresh: this.props.refresh, event: this.props.event })
-                      );
-                    } else {
-                      this.props.alertWithType('error', 'Error', 'You must verify your email before continuing. No creepers allowed!');
-                    }
-                  }
+                disabled={
+                  !this.props.event.availableRides ||
+                    this.state.isRider ||
+                    this.state.isDriver
                 }
-                style={ [styles.rideButton, {
-                  backgroundColor: !this.props.event.availableRides
-                    || this.state.isRider
-                    || this.state.isDriver ?
-                    colors.disabledBlue : colors.blue,
-                }] }
-              >
-                <Text
-                  style={ styles.rideButtonText }
-                >
+                onPress={() => {
+                  if (global.firebaseApp.auth().currentUser.emailVerified) {
+                    this.props.navigation.getNavigator('master').push(
+                      Router.getRoute('setPickupLocation', {
+                        refresh: this.props.refresh,
+                        event: this.props.event,
+                      }),
+                    );
+                  } else {
+                    this.props.alertWithType(
+                      'error',
+                      'Error',
+                      'You must verify your email before continuing. No creepers allowed!',
+                    );
+                  }
+                }}
+                style={[
+                  styles.rideButton,
+                  {
+                    backgroundColor: !this.props.event.availableRides ||
+                      this.state.isRider ||
+                      this.state.isDriver
+                      ? colors.disabledBlue
+                      : colors.blue,
+                  },
+                ]}>
+                <Text style={styles.rideButtonText}>
                   RIDE
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                disabled={ this.state.isRider || this.state.isDriver }
-                onPress={ () => {
+                disabled={this.state.isRider || this.state.isDriver}
+                onPress={() => {
                   if (global.firebaseApp.auth().currentUser.emailVerified) {
-                    this.props.navigation.getNavigator('master').push(Router.getRoute(
-                        'setDriveOptions',
-                        { refresh: this.props.refresh, event: this.props.event }
-                      )
+                    this.props.navigation.getNavigator('master').push(
+                      Router.getRoute('setDriveOptions', {
+                        refresh: this.props.refresh,
+                        event: this.props.event,
+                      }),
                     );
                   } else {
-                    this.props.alertWithType('error', 'Error', 'You must verify your email before continuing. No creepers allowed!');
+                    this.props.alertWithType(
+                      'error',
+                      'Error',
+                      'You must verify your email before continuing. No creepers allowed!',
+                    );
                   }
-                } }
-                style={ [styles.driveButton, {
-                  backgroundColor: this.state.isRider ||
-                    this.state.isDriver ?
-                     colors.disabledPurp : colors.purp,
-                }] }
-              >
-                <Text
-                  style={ styles.driveButtonText }
-                >
+                }}
+                style={[
+                  styles.driveButton,
+                  {
+                    backgroundColor: this.state.isRider || this.state.isDriver
+                      ? colors.disabledPurp
+                      : colors.purp,
+                  },
+                ]}>
+                <Text style={styles.driveButtonText}>
                   DRIVE
                 </Text>
               </TouchableOpacity>
             </View>
-            <Text
-              style={ styles.driversAvailable }
-            >
-              { !!this.state.isRider && 'You\'re receiving a ride.' }
-              { !!this.state.isDriver && 'You\'re giving a ride.' }
-              {
-                !!(!this.state.isRider && !this.state.isDriver && this.props.event.availableRides > 0) &&
-                `${this.props.event.availableRides} driver${this.props.event.availableRides > 1 ? 's' : ''} available`.toUpperCase()
-              }
-              { !!(!this.state.isRider && !this.state.isDriver && !this.props.event.availableRides) &&
-                'No drivers available'.toUpperCase()
-              }
+            <Text style={styles.driversAvailable}>
+              {!!this.state.isRider && "You're receiving a ride."}
+              {!!this.state.isDriver && "You're giving a ride."}
+              {!!(!this.state.isRider &&
+                !this.state.isDriver &&
+                this.props.event.availableRides > 0) &&
+                `${this.props.event.availableRides} driver${this.props.event.availableRides > 1 ? 's' : ''} available`.toUpperCase()}
+              {!!(!this.state.isRider &&
+                !this.state.isDriver &&
+                !this.props.event.availableRides) &&
+                'No drivers available'.toUpperCase()}
             </Text>
 
-            { !!(!this.state.isDriver && !this.state.isRider) &&
+            {!!(!this.state.isDriver && !this.state.isRider) &&
               <TouchableOpacity
-                onPress={ () => {
-                  createLyftDeepLink(this.props.event).then((url) => {
-                    maybeOpenURL(url, {
-                      appName: 'Lyft',
-                      appStoreId: 'id529379082',
-                      playStoreId: 'me.lyft.android',
-                    }).catch(err => {
-                      this.props.alertWithType('error', 'Error', err.toString());
+                onPress={() => {
+                  createLyftDeepLink(this.props.event)
+                    .then(url => {
+                      maybeOpenURL(url, {
+                        appName: 'Lyft',
+                        appStoreId: 'id529379082',
+                        playStoreId: 'me.lyft.android',
+                      }).catch(err => {
+                        this.props.alertWithType(
+                          'error',
+                          'Error',
+                          err.toString(),
+                        );
+                      });
+                    })
+                    .catch(err => {
+                      this.props.alertWithType(
+                        'error',
+                        'Error',
+                        err.toString(),
+                      );
                     });
-                  })
-                  .catch(err => {
-                    this.props.alertWithType('error', 'Error', err.toString());
-                  });
-                } }
-                style={ styles.lyftButton }
-              >
+                }}
+                style={styles.lyftButton}>
                 <Image
                   resizeMode="contain"
-                  style={ styles.lyftIcon }
-                  source={ require('pul/assets/images/lyft_logo_white.png') }
+                  style={styles.lyftIcon}
+                  source={require('pul/assets/images/lyft_logo_white.png')}
                 />
-                <Text
-                  style={ styles.lyftButtonText }
-                >
-                    RIDE WITH LYFT
+                <Text style={styles.lyftButtonText}>
+                  RIDE WITH LYFT
                 </Text>
                 <View />
-              </TouchableOpacity>
-            }
+              </TouchableOpacity>}
           </Collapsible>
         </ElevatedView>
       </TouchableOpacity>
