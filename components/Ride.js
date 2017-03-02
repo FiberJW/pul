@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component, PropTypes } from 'react';
 import {
   View,
   ListView,
@@ -7,16 +7,16 @@ import {
   StyleSheet,
   Alert,
   Platform,
-} from "react-native";
-import colors from "../config/colors";
-import Carpooler from "../components/Carpooler";
-import { connectActionSheet } from "@exponent/react-native-action-sheet";
-import { withNavigation } from "@exponent/ex-navigation";
-import ElevatedView from "react-native-elevated-view";
-import { maybeOpenURL } from "react-native-app-link";
-import connectDropdownAlert from "../utils/connectDropdownAlert";
-import { observer } from "mobx-react/native";
-import { Notifications } from "exponent";
+} from 'react-native';
+import colors from '../config/colors';
+import Carpooler from '../components/Carpooler';
+import { connectActionSheet } from '@exponent/react-native-action-sheet';
+import { withNavigation } from '@exponent/ex-navigation';
+import ElevatedView from 'react-native-elevated-view';
+import { maybeOpenURL } from 'react-native-app-link';
+import connectDropdownAlert from '../utils/connectDropdownAlert';
+import { observer } from 'mobx-react/native';
+import { Notifications } from 'exponent';
 
 @withNavigation
 @connectActionSheet
@@ -44,14 +44,14 @@ export default class Ride extends Component {
     let pickedUpUsers = 0;
     global.firebaseApp
       .database()
-      .ref("users")
+      .ref('users')
       .child(this.props.event.yourRide.driver)
-      .once("value")
+      .once('value')
       .then(userSnap => {
         passengers.push({
           userUID: this.props.event.yourRide.driver,
           ...userSnap.val(),
-          type: "driver",
+          type: 'driver',
         });
 
         // now get other users and push to arr
@@ -59,14 +59,14 @@ export default class Ride extends Component {
           this.props.event.yourRide.passengers.slice().forEach(pass => {
             global.firebaseApp
               .database()
-              .ref("users")
+              .ref('users')
               .child(pass.userUID)
-              .once("value")
+              .once('value')
               .then(passSnap => {
                 passengers.push({
                   ...pass,
                   ...passSnap.val(),
-                  type: "rider",
+                  type: 'rider',
                 });
                 if (pass.isPickedUp) {
                   pickedUpUsers++;
@@ -87,7 +87,7 @@ export default class Ride extends Component {
         });
       })
       .catch(err => {
-        this.props.alertWithType("error", "Error", err.toString());
+        this.props.alertWithType('error', 'Error', err.toString());
       });
   }
 
@@ -95,7 +95,7 @@ export default class Ride extends Component {
 
   _onOpenActionSheet = () => {
     // Same interface as https://facebook.github.io/react-native/docs/actionsheetios.html
-    const options = ["Leave Ride", "Navigate", "Cancel"];
+    const options = ['Leave Ride', 'Navigate', 'Cancel'];
     const destructiveButtonIndex = 0;
     const navigateButtonIndex = 1;
     const cancelButtonIndex = 2;
@@ -109,20 +109,20 @@ export default class Ride extends Component {
         if (buttonIndex === destructiveButtonIndex) {
           if (this.state.selfIsDriver) {
             Alert.alert(
-              Platform.OS === "ios" ? "Leave Ride" : "Leave ride",
-              "Are you sure? Leaving this ride will strand your passengers. 😢",
+              Platform.OS === 'ios' ? 'Leave Ride' : 'Leave ride',
+              'Are you sure? Leaving this ride will strand your passengers. 😢',
               [
-                { text: "Cancel", style: "cancel" },
+                { text: 'Cancel', style: 'cancel' },
                 {
-                  text: "OK",
+                  text: 'OK',
                   onPress: () => {
                     global.firebaseApp
                       .database()
-                      .ref("schools")
+                      .ref('schools')
                       .child(this.props.event.schoolUID)
-                      .child("events")
+                      .child('events')
                       .child(this.props.event.uid)
-                      .child("rides")
+                      .child('rides')
                       .child(this.props.event.yourRide.uid)
                       .remove()
                       .then(() => {
@@ -130,16 +130,16 @@ export default class Ride extends Component {
                           this.props.event.yourRide.notiID,
                         );
                         this.props.alertWithType(
-                          "error",
-                          "😢",
+                          'error',
+                          '😢',
                           `You left ${this.props.event.name}.`,
                         );
                         this.props.refresh(false);
                       })
                       .catch(err => {
                         this.props.alertWithType(
-                          "error",
-                          "Error",
+                          'error',
+                          'Error',
                           err.toString(),
                         );
                       });
@@ -149,12 +149,12 @@ export default class Ride extends Component {
             );
           } else {
             Alert.alert(
-              Platform.OS === "ios" ? "Leave Ride" : "Leave ride",
-              "Are you sure? Leaving this ride so not lit.",
+              Platform.OS === 'ios' ? 'Leave Ride' : 'Leave ride',
+              'Are you sure? Leaving this ride so not lit.',
               [
-                { text: "Cancel", style: "cancel" },
+                { text: 'Cancel', style: 'cancel' },
                 {
-                  text: "OK",
+                  text: 'OK',
                   onPress: () => {
                     const passIndex = this.props.event.yourRide.passengers
                       .slice()
@@ -165,29 +165,29 @@ export default class Ride extends Component {
                       );
                     global.firebaseApp
                       .database()
-                      .ref("schools")
+                      .ref('schools')
                       .child(this.props.event.schoolUID)
-                      .child("events")
+                      .child('events')
                       .child(this.props.event.uid)
-                      .child("rides")
+                      .child('rides')
                       .child(this.props.event.yourRide.uid)
-                      .child("passengers")
+                      .child('passengers')
                       .child(
                         this.props.event.yourRide.passengers[passIndex].passUID,
                       )
                       .remove()
                       .then(() => {
                         this.props.alertWithType(
-                          "error",
-                          "😢",
+                          'error',
+                          '😢',
                           `You left ${this.props.event.name}.`,
                         );
                         this.props.refresh(false);
                       })
                       .catch(err => {
                         this.props.alertWithType(
-                          "error",
-                          "Error",
+                          'error',
+                          'Error',
                           err.toString(),
                         );
                       });
@@ -201,11 +201,11 @@ export default class Ride extends Component {
           const wazeUrl = `waze://?ll=${this.props.event.location.geometry.location.lat},` +
             `${this.props.event.location.geometry.location.lng}&z=10&navigate=yes`;
           maybeOpenURL(wazeUrl, {
-            appName: "Waze",
-            appStoreId: "id323229106",
-            playStoreId: "com.waze",
+            appName: 'Waze',
+            appStoreId: 'id323229106',
+            playStoreId: 'com.waze',
           }).catch(err => {
-            this.props.alertWithType("error", "Error", err.toString());
+            this.props.alertWithType('error', 'Error', err.toString());
           });
         }
       },
@@ -255,20 +255,20 @@ export default class Ride extends Component {
             }>
             <TouchableOpacity
               onPress={() => Alert.alert(
-                Platform.OS === "ios" ? "Start Ride" : "Start ride",
+                Platform.OS === 'ios' ? 'Start Ride' : 'Start ride',
                 "Are you sure? Just making sure you didn't click this by mistake.",
                 [
-                  { text: "Cancel", style: "cancel" },
+                  { text: 'Cancel', style: 'cancel' },
                   {
-                    text: "OK",
+                    text: 'OK',
                     onPress: () => {
                       global.firebaseApp
                         .database()
-                        .ref("schools")
+                        .ref('schools')
                         .child(this.props.event.schoolUID)
-                        .child("events")
+                        .child('events')
                         .child(this.props.event.uid)
-                        .child("rides")
+                        .child('rides')
                         .child(this.props.event.yourRide.uid)
                         .update(
                           {
@@ -278,13 +278,13 @@ export default class Ride extends Component {
                             const wazeUrl = `waze://?ll=${this.props.event.location.geometry.location.lat},` +
                               `${this.props.event.location.geometry.location.lng}&z=10&navigate=yes`;
                             maybeOpenURL(wazeUrl, {
-                              appName: "Waze",
-                              appStoreId: "id323229106",
-                              playStoreId: "com.waze",
+                              appName: 'Waze',
+                              appStoreId: 'id323229106',
+                              playStoreId: 'com.waze',
                             }).catch(err => {
                               this.props.alertWithType(
-                                "error",
-                                "Error",
+                                'error',
+                                'Error',
                                 err.toString(),
                               );
                             });
@@ -292,8 +292,8 @@ export default class Ride extends Component {
                         )
                         .catch(err => {
                           this.props.alertWithType(
-                            "error",
-                            "Error",
+                            'error',
+                            'Error',
                             err.toString(),
                           );
                         });
@@ -317,20 +317,20 @@ export default class Ride extends Component {
             }>
             <TouchableOpacity
               onPress={() => Alert.alert(
-                Platform.OS === "ios" ? "End Ride" : "End ride",
+                Platform.OS === 'ios' ? 'End Ride' : 'End ride',
                 "Are you sure? Just making sure you didn't click this by mistake.",
                 [
-                  { text: "Cancel", style: "cancel" },
+                  { text: 'Cancel', style: 'cancel' },
                   {
-                    text: "OK",
+                    text: 'OK',
                     onPress: () => {
                       global.firebaseApp
                         .database()
-                        .ref("schools")
+                        .ref('schools')
                         .child(this.props.event.schoolUID)
-                        .child("events")
+                        .child('events')
                         .child(this.props.event.uid)
-                        .child("rides")
+                        .child('rides')
                         .child(this.props.event.yourRide.uid)
                         .update(
                           {
@@ -338,16 +338,16 @@ export default class Ride extends Component {
                           },
                           () => {
                             this.props.alertWithType(
-                              "success",
-                              "YEET",
-                              "Aye you made it!",
+                              'success',
+                              'YEET',
+                              'Aye you made it!',
                             );
                           },
                         )
                         .catch(err => {
                           this.props.alertWithType(
-                            "error",
-                            "Error",
+                            'error',
+                            'Error',
                             err.toString(),
                           );
                         });
@@ -368,9 +368,9 @@ export default class Ride extends Component {
             }>
             <Text
               style={{
-                fontFamily: "open-sans-semibold",
+                fontFamily: 'open-sans-semibold',
                 fontSize: 18,
-                alignSelf: "center",
+                alignSelf: 'center',
                 paddingTop: 16,
               }}>
               NO PASSENGERS AVAILABLE
@@ -383,9 +383,9 @@ export default class Ride extends Component {
             }>
             <Text
               style={{
-                fontFamily: "open-sans-semibold",
+                fontFamily: 'open-sans-semibold',
                 fontSize: 18,
-                alignSelf: "center",
+                alignSelf: 'center',
                 paddingTop: 16,
               }}>
               RIDE IN PROGRESS
@@ -394,9 +394,9 @@ export default class Ride extends Component {
           <When condition={this.props.event.yourRide.rideCompleted}>
             <Text
               style={{
-                fontFamily: "open-sans-semibold",
+                fontFamily: 'open-sans-semibold',
                 fontSize: 18,
-                alignSelf: "center",
+                alignSelf: 'center',
                 paddingTop: 16,
               }}>
               RIDE COMPLETED
@@ -413,32 +413,32 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   label: {
-    fontFamily: "open-sans-semibold",
+    fontFamily: 'open-sans-semibold',
     fontSize: 12,
-    color: "rgba(128, 128, 128, 0.7)",
+    color: 'rgba(128, 128, 128, 0.7)',
   },
   headerRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     marginHorizontal: 8,
     paddingBottom: 4,
   },
   moreContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     width: 24,
   },
   moreItem: {
-    backgroundColor: "#546E7A",
+    backgroundColor: '#546E7A',
     height: 5,
     width: 5,
     borderRadius: 5,
   },
   startDrivingButton: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 4,
     marginHorizontal: 8,
     paddingVertical: 8,
@@ -446,8 +446,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.purp,
   },
   rideCompleteButton: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 4,
     marginHorizontal: 8,
     paddingVertical: 8,
@@ -455,8 +455,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.neonGreen,
   },
   buttonText: {
-    fontFamily: "open-sans-bold",
+    fontFamily: 'open-sans-bold',
     fontSize: 18,
-    color: "white",
+    color: 'white',
   },
 });
