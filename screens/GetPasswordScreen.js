@@ -13,9 +13,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import colors from '../config/colors';
-import {
-  NavigationStyles,
-} from '@exponent/ex-navigation';
+import { NavigationStyles } from '@exponent/ex-navigation';
 import Router from 'Router';
 import Icon from '../components/CrossPlatformIcon';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
@@ -26,7 +24,8 @@ import { observer, inject } from 'mobx-react/native';
  *  For getting a user's password in signup or login
  */
 @connectDropdownAlert
-@inject('authStore') @observer
+@inject('authStore')
+@observer
 export default class GetPasswordScreen extends Component {
   static route = {
     navigationBar: {
@@ -38,7 +37,7 @@ export default class GetPasswordScreen extends Component {
     styles: {
       ...NavigationStyles.SlideHorizontal,
     },
-  }
+  };
 
   static propTypes = {
     school: PropTypes.object.isRequired,
@@ -47,151 +46,192 @@ export default class GetPasswordScreen extends Component {
     navigator: PropTypes.object.isRequired,
     intent: PropTypes.string.isRequired,
     alertWithType: PropTypes.func.isRequired,
-  }
+  };
 
   state = {
     password: '',
     loggingIn: false,
     checkedPassword: false,
     visible: false,
-  }
-
+  };
 
   pushToNextScreen = () => {
     Keyboard.dismiss();
-    setTimeout(() => { // to make sure the keyboard goes down before autofocus on the next screen
-      if (this.state.loggingIn) {
-        return;
-      }
-      this.setState(() => {
-        return { loggingIn: true };
-      });
-      if (this.state.password.length < 6) {
+    setTimeout(
+      () => {
+        // to make sure the keyboard goes down before autofocus on the next screen
+        if (this.state.loggingIn) {
+          return;
+        }
         this.setState(() => {
-          return { loggingIn: false };
+          return { loggingIn: true };
         });
-        this.props.alertWithType('error', 'Error', 'Password must be at least 6 characters long.');
-        return;
-      }
-
-      if (this.props.intent === 'signup' && !this.state.checkedPassword) {
-        this.props.alertWithType('success', '', 'Make sure you\'ve created a memorable password!');
-        this.setState(() => {
-          return {
-            checkedPassword: true,
-            loggingIn: false,
-          };
-        });
-        return;
-      }
-
-      if (this.props.intent === 'signup') {
-        this.props.authStore.signup({
-          password: this.state.password,
-          school: this.props.school,
-          ...this.props.credentials,
-        }).then(() => {
-          this.props.navigator.immediatelyResetStack([Router.getRoute('tabs')], 0);
-          setTimeout(() => {
-            this.props.alertWithType('info', 'Info', 'Make sure to enable push notifications to stay in the loop!');
-          }, 5000);
-        }).catch(error => {
+        if (this.state.password.length < 6) {
           this.setState(() => {
             return { loggingIn: false };
           });
-          this.props.alertWithType('error', 'Error', error.toString());
-        });
-      } else {
-        this.props.authStore.login({
-          ...this.props.credentials,
-          password: this.state.password,
-        }).then(() => {
-          try {
-            AsyncStorage.setItem('@PUL:user', JSON.stringify({
+          this.props.alertWithType(
+            'error',
+            'Error',
+            'Password must be at least 6 characters long.',
+          );
+          return;
+        }
+
+        if (this.props.intent === 'signup' && !this.state.checkedPassword) {
+          this.props.alertWithType(
+            'success',
+            '',
+            "Make sure you've created a memorable password!",
+          );
+          this.setState(() => {
+            return {
+              checkedPassword: true,
+              loggingIn: false,
+            };
+          });
+          return;
+        }
+
+        if (this.props.intent === 'signup') {
+          this.props.authStore
+            .signup({
+              password: this.state.password,
+              school: this.props.school,
+              ...this.props.credentials,
+            })
+            .then(() => {
+              this.props.navigator.immediatelyResetStack(
+                [Router.getRoute('tabs')],
+                0,
+              );
+              setTimeout(
+                () => {
+                  this.props.alertWithType(
+                    'info',
+                    'Info',
+                    'Make sure to enable push notifications to stay in the loop!',
+                  );
+                },
+                5000,
+              );
+            })
+            .catch(error => {
+              this.setState(() => {
+                return { loggingIn: false };
+              });
+              this.props.alertWithType('error', 'Error', error.toString());
+            });
+        } else {
+          this.props.authStore
+            .login({
               ...this.props.credentials,
               password: this.state.password,
-            }));
-          } catch (error) {
-            this.props.alertWithType('error', 'Error', error.toString());
-          }
-          this.props.navigator.immediatelyResetStack([Router.getRoute('tabs')], 0);
-          setTimeout(() => {
-            this.props.alertWithType('info', 'Info', 'Make sure to enable push notifications to stay in the loop!');
-          }, 5000);
-        }).catch(error => {
-          this.setState(() => {
-            return { loggingIn: false };
-          });
-          this.props.alertWithType('error', 'Error', error.toString());
-        });
-      }
-    }, 10);
-  }
+            })
+            .then(() => {
+              try {
+                AsyncStorage.setItem(
+                  '@PUL:user',
+                  JSON.stringify({
+                    ...this.props.credentials,
+                    password: this.state.password,
+                  }),
+                );
+              } catch (error) {
+                this.props.alertWithType('error', 'Error', error.toString());
+              }
+              this.props.navigator.immediatelyResetStack(
+                [Router.getRoute('tabs')],
+                0,
+              );
+              setTimeout(
+                () => {
+                  this.props.alertWithType(
+                    'info',
+                    'Info',
+                    'Make sure to enable push notifications to stay in the loop!',
+                  );
+                },
+                5000,
+              );
+            })
+            .catch(error => {
+              this.setState(() => {
+                return { loggingIn: false };
+              });
+              this.props.alertWithType('error', 'Error', error.toString());
+            });
+        }
+      },
+      10,
+    );
+  };
 
   render() {
     return (
-      <KeyboardAwareScrollView
-        contentContainerStyle={ styles.container }
-      >
+      <KeyboardAwareScrollView contentContainerStyle={styles.container}>
         <View />
         <Choose>
-          <When condition={ this.state.loggingIn }>
+          <When condition={this.state.loggingIn}>
             <ActivityIndicator size="large" />
           </When>
           <Otherwise>
             <View>
-              <View style={ styles.assistedTextInputContainer }>
+              <View style={styles.assistedTextInputContainer}>
                 <TextInput
+                  autoCorrect={false}
                   underlineColorAndroid="transparent"
-                  secureTextEntry={ !this.state.visible }
+                  secureTextEntry={!this.state.visible}
                   autoFocus
-                  style={ styles.fieldContents }
-                  onChangeText={ (password) => this.setState(() => {
+                  style={styles.fieldContents}
+                  onChangeText={password => this.setState(() => {
                     return {
                       password: password.trim(),
                     };
-                  }) }
+                  })}
                   blurOnSubmit
                   returnKeyType="done"
-                  onSubmitEditing={ () => this.pushToNextScreen() }
-                  value={ this.state.password }
+                  onSubmitEditing={() => this.pushToNextScreen()}
+                  value={this.state.password}
                   placeholder="Password"
                 />
                 <TouchableOpacity
-                  activeOpacity={ 1 }
-                  onPress={ () => this.setState((prevState) => {
+                  activeOpacity={1}
+                  onPress={() => this.setState(prevState => {
                     return {
                       visible: !prevState.visible,
                     };
-                  }) }
-                >
+                  })}>
                   <Icon
                     name="eye"
-                    size={ 24 }
-                    color={ !this.state.visible ? colors.grey : colors.black }
+                    size={24}
+                    color={!this.state.visible ? colors.grey : colors.black}
                   />
                 </TouchableOpacity>
               </View>
               <Choose>
-                <When condition={ this.props.intent === 'login' }>
+                <When condition={this.props.intent === 'login'}>
                   <TouchableOpacity
-                    onPress={ () => {
+                    onPress={() => {
                       Alert.alert(
-                        Platform.OS === 'ios' ? 'Reset Password' : 'Reset password',
+                        Platform.OS === 'ios'
+                          ? 'Reset Password'
+                          : 'Reset password',
                         'Send a password reset email to your email address.',
                         [
                           { text: 'Cancel', style: 'cancel' },
                           {
                             text: 'OK',
                             onPress: () => {
-                              this.props.authStore.sendPasswordResetEmail(this.props.credentials.email);
+                              this.props.authStore.sendPasswordResetEmail(
+                                this.props.credentials.email,
+                              );
                             },
                           },
-                        ]
+                        ],
                       );
-                    } }
-                  >
-                    <Text style={ styles.resetPassword }>Forgot it?</Text>
+                    }}>
+                    <Text style={styles.resetPassword}>Forgot it?</Text>
                   </TouchableOpacity>
                 </When>
               </Choose>
@@ -199,15 +239,18 @@ export default class GetPasswordScreen extends Component {
           </Otherwise>
         </Choose>
         <Choose>
-          <When condition={ this.state.loggingIn }>
-            <Text style={ styles.statusText }>{ this.props.intent === 'signup' ? 'Signup in progress...' : 'Logging in...'}</Text>
+          <When condition={this.state.loggingIn}>
+            <Text style={styles.statusText}>
+              {this.props.intent === 'signup'
+                ? 'Signup in progress...'
+                : 'Logging in...'}
+            </Text>
           </When>
           <Otherwise>
             <TouchableOpacity
-              onPress={ () => this.pushToNextScreen() }
-              style={ styles.touchable }
-            >
-              <Text style={ styles.touchableText }>Done</Text>
+              onPress={() => this.pushToNextScreen()}
+              style={styles.touchable}>
+              <Text style={styles.touchableText}>Done</Text>
             </TouchableOpacity>
           </Otherwise>
         </Choose>

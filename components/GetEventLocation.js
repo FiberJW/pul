@@ -37,11 +37,11 @@ export default class GetEventLocation extends Component {
   });
   render() {
     return (
-      <View style={ styles.container }>
+      <View style={styles.container}>
         {!!(!this.props.submitting && this.props.location) &&
           <Components.MapView
-            style={ StyleSheet.absoluteFillObject }
-            scrollEnabled={ false }
+            style={StyleSheet.absoluteFillObject}
+            scrollEnabled={false}
             initialRegion={{
               latitude: this.props.location.details.geometry.location.lat,
               longitude: this.props.location.details.geometry.location.lng,
@@ -53,8 +53,7 @@ export default class GetEventLocation extends Component {
               longitude: this.props.location.details.geometry.location.lng,
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421,
-            }}
-          >
+            }}>
             <Components.MapView.Marker
               coordinate={{
                 latitude: this.props.location.details.geometry.location.lat,
@@ -65,18 +64,19 @@ export default class GetEventLocation extends Component {
         {!this.props.submitting &&
           <GooglePlacesAutocomplete
             placeholder="Event Location"
-            minLength={ 2 }
+            minLength={2}
             listViewDisplayed="auto" /* true/false/undefined*/
             fetchDetails
             textInputProps={{
+              autoCorrect: false,
               onFocus: this.focusTextInput,
               onBlur: this.blurTextInput,
             }}
-            enablePoweredByContainer={ !this.props.location }
-            onPress={ this.props.onLocationSelect }
-            getDefaultValue={ () => {
+            enablePoweredByContainer={!this.props.location}
+            onPress={this.props.onLocationSelect}
+            getDefaultValue={() => {
               return ''; // text input default value
-            } }
+            }}
             query={{
               key: googleApiKey,
               language: 'en', // language of the results
@@ -96,6 +96,7 @@ export default class GetEventLocation extends Component {
               },
             }}
             textInputProps={{
+              autoCorrect: false,
               underlineColorAndroid: 'transparent',
             }}
             nearbyPlacesAPI="GooglePlacesSearch" /* Which API to use: GoogleReverseGeocoding or GooglePlacesSearch*/
@@ -107,12 +108,11 @@ export default class GetEventLocation extends Component {
           !this.props.submitting &&
           this.props.location) &&
           <TouchableOpacity
-            onPress={ this.props.onSubmit }
-            activeOpacity={ 0.7 }
-            style={ styles.submitButtonContainer }
-          >
-            <ElevatedView style={ styles.submitButton } elevation={ 4 }>
-              <Text style={ styles.submitText }>
+            onPress={this.props.onSubmit}
+            activeOpacity={0.7}
+            style={styles.submitButtonContainer}>
+            <ElevatedView style={styles.submitButton} elevation={4}>
+              <Text style={styles.submitText}>
                 SUBMIT EVENT
               </Text>
             </ElevatedView>
