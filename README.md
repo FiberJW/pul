@@ -1,37 +1,27 @@
-<p align="center">
-  <img alt="flavor" src="http://i.imgur.com/Ha8Eaey.png" width="256">
-</p>
+# [Start Bootstrap](http://startbootstrap.com/) - [New Age](http://startbootstrap.com/template-overviews/new-age/)
 
-<h2 align="center" style="font-weight:600">
-  PÜL
-</h2>
+[New Age](http://startbootstrap.com/template-overviews/new-age/) is a web app landing page theme for [Bootstrap](http://getbootstrap.com/) created by [Start Bootstrap](http://startbootstrap.com/).
 
-<p align="center">
-  A carpooling app designed for students to help each other get more involved in their community.
-</p>
+## Getting Started
 
----
+To begin using this template, choose one of the following options to get started:
+* [Download the latest release on Start Bootstrap](http://startbootstrap.com/template-overviews/new-age/)
+* Clone the repo: `git clone https://github.com/BlackrockDigital/startbootstrap-new-age.git`
+* Fork the repo
 
-[![Build Status](https://travis-ci.org/datwheat/pul.svg?branch=master)](https://travis-ci.org/datwheat/pul)
+## Bugs and Issues
 
-<a href='https://play.google.com/store/apps/details?id=io.github.datwheat.pul&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'>Google Play</a>
+Have a bug or an issue with this template? [Open a new issue](https://github.com/BlackrockDigital/startbootstrap-new-age/issues) here on GitHub or leave a comment on the [template overview page at Start Bootstrap](http://startbootstrap.com/template-overviews/new-age/).
 
-<a href='https://itunes.apple.com/us/app/p%C3%BCl-carpooling-for-students-by-students/id1196047562?ls=1&mt=8'>App Store</a>
+## Creator
 
-## Screenshots
+Start Bootstrap was created by and is maintained by **[David Miller](http://davidmiller.io/)**, Owner of [Blackrock Digital](http://blackrockdigital.io/).
 
-<p align="center">
-  <img style="display:inline-block" alt="Events Feed" src="./docs/events.png" width="170">
-  <img style="display:inline-block" alt="Upcoming Rides" src="./docs/ride.png" width="170">
-  <img style="display:inline-block" alt="Event Submission" src="./docs/submitevent.png" width="170">
-  <img style="display:inline-block" alt="Trex Game" src="./docs/trex.jpg" width="170">
-</p>
+* https://twitter.com/davidmillerskt
+* https://github.com/davidtmiller
 
-## Major technologies used
+Start Bootstrap is based on the [Bootstrap](http://getbootstrap.com/) framework created by [Mark Otto](https://twitter.com/mdo) and [Jacob Thorton](https://twitter.com/fat).
 
-- Exponent
-- React Native
-- ex-navigation
-- MobX
-- Firebase
- 
+## Copyright and License
+
+Copyright 2013-2016 Blackrock Digital LLC. Code released under the [MIT](https://github.com/BlackrockDigital/startbootstrap-new-age/blob/gh-pages/LICENSE) license.

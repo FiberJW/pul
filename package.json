@@ -1,55 +1,30 @@
 {
-  "name": "pul",
-  "version": "0.1.2",
-  "description": "A Middle-Out Transportation Solution for Students on the Go.",
-  "author": "Juwan Wheatley",
-  "private": true,
-  "main": "main.js",
-  "scripts": {
-    "upload-sourcemaps:android": "publish-sentry-release --platform android --team juwan-wheatley --project pul --auth-token ba831e90c8b5421b907731c3bc77415161fa905c437e4572ae79ad2192886adc",
-    "upload-sourcemaps:ios": "publish-sentry-release --platform ios --team juwan-wheatley --project pul --auth-token ba831e90c8b5421b907731c3bc77415161fa905c437e4572ae79ad2192886adc",
-    "upload-sourcemaps": "npm run upload-sourcemaps:android && npm run upload-sourcemaps:ios",
-    "lint:staged": "lint-staged",
-    "precommit": "npm run lint:staged"
-  },
-  "lint-staged": {
-    "*.js": [
-      "prettier --write --single-quote --jsx-bracket-same-line --trailing-comma all ",
-      "git add"
-    ]
-  },
-  "dependencies": {
-    "@exponent/ex-navigation": "^2.9.0",
-    "@exponent/react-native-action-sheet": "^0.3.0",
-    "@exponent/sentry-utils": "*",
-    "@exponent/vector-icons": "~2.0.3",
-    "babel-preset-react-native-stage-0": "^1.0.1",
-    "bad-words": "^1.4.2",
-    "exponent": "^14.0.0",
-    "firebase": "^3.6.3",
-    "hoist-non-react-statics": "^1.2.0",
-    "jsx-control-statements": "^3.1.5",
-    "lodash": "^4.17.2",
-    "mobx": "^3.1.0",
-    "mobx-react": "^4.1.0",
-    "moment": "^2.17.0",
-    "react": "~15.4.1",
-    "react-native": "https://github.com/exponent/react-native/archive/sdk-14.0.0.tar.gz",
-    "react-native-action-button": "^2.0.18",
-    "react-native-app-link": "*",
-    "react-native-collapsible": "^0.8.0",
-    "react-native-communications": "^2.2.1",
-    "react-native-dropdownalert": "^2.5.0",
-    "react-native-elevated-view": "0.0.1",
-    "react-native-google-places-autocomplete": "^1.2.6",
-    "react-native-swiper": "^1.5.4",
-    "tcomb-form-native": "^0.6.1",
-    "tinycolor2": "^1.4.1",
-    "validator": "^6.2.1"
+  "name": "new-age",
+  "title": "New Age",
+  "version": "3.3.7",
+  "homepage": "http://startbootstrap.com/template-overviews/new-age",
+  "author": "Start Bootstrap",
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE"
   },
   "devDependencies": {
-    "husky": "^0.13.1",
-    "lint-staged": "^3.3.1",
-    "prettier": "^0.20.0"
+    "bootstrap": "^3.3.7",
+    "browser-sync": "^2.13.0",
+    "font-awesome": "^4.6.3",
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^2.0.10",
+    "gulp-header": "^1.8.7",
+    "gulp-less": "^3.1.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.5.4",
+    "jquery": "^1.11.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BlackrockDigital/startbootstrap-new-age.git"
+  },
+  "dependencies": {
+    "simple-line-icons": "^2.3.2"
   }
 }
