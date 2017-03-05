@@ -26,7 +26,13 @@
     "config": {
       "usesNonExemptEncryption": false
     },
-    "supportsTablet": false
+    "supportsTablet": false,
+    "infoPlist": {
+      "LSApplicationQueriesSchemes": [
+        "waze",
+        "lyft"
+      ]
+    }
   },
   "android": {
     "package": "io.github.datwheat.pul",
@@ -35,12 +41,6 @@
       "googleMaps": {
         "apiKey": "AIzaSyAgFjSKPvJ-YjqpN-uSdyQYFzaJSTWhmSA"
       }
-    },
-    "infoPlist": {
-      "LSApplicationQueriesSchemes": [
-        "waze",
-        "lyft"
-      ]
     }
   }
 }

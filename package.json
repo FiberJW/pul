@@ -44,6 +44,7 @@
     "react-native-google-places-autocomplete": "^1.2.6",
     "react-native-swiper": "^1.5.4",
     "tcomb-form-native": "^0.6.1",
+    "tinycolor2": "^1.4.1",
     "validator": "^6.2.1"
   },
   "devDependencies": {

@@ -1,33 +1,39 @@
 import React, { PropTypes } from 'react';
-import {
-  TouchableOpacity,
-  Text,
-  Image,
-  StyleSheet,
-} from 'react-native';
+import { TouchableOpacity, Text, Image, StyleSheet } from 'react-native';
 import Icon from '../components/CrossPlatformIcon';
 import { withNavigation } from '@exponent/ex-navigation';
 import Router from '../navigation/Router';
+import tinycolor from 'tinycolor2';
+import colors from '../config/colors';
 
 const SchoolOption = ({ school, intent, navigator }) => (
   <TouchableOpacity
-    onPress={ () => navigator.push(Router.getRoute('getEmail', { school, intent })) }
-    style={ [styles.container,
+    onPress={() =>
+      navigator.push(Router.getRoute('getEmail', { school, intent }))}
+    style={[
+      styles.container,
       {
         backgroundColor: school.primaryColor,
       },
-    ] }
-  >
+    ]}>
     <Image
       resizeMode="contain"
       source={{ uri: school.logoUrl }}
-      style={ styles.schoolIcon }
+      style={styles.schoolIcon}
     />
-    <Text style={ styles.schoolName }>{school.name}</Text>
+    <Text
+      style={[
+        styles.schoolName,
+        {
+          color: tinycolor(school.primaryColor).isDark()
+            ? 'white'
+            : colors.black,
+        },
+      ]}>{school.name}</Text>
     <Icon
       name="arrow-forward"
-      size={ 24 }
-      color="white"
+      size={24}
+      color={tinycolor(school.primaryColor).isDark() ? 'white' : colors.black}
     />
   </TouchableOpacity>
 );
@@ -52,7 +58,6 @@ const styles = StyleSheet.create({
   },
   schoolName: {
     fontFamily: 'open-sans',
-    color: 'white',
     fontSize: 16,
   },
 });
