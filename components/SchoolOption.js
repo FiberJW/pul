@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { TouchableOpacity, Text, Image, StyleSheet } from 'react-native';
 import Icon from '../components/CrossPlatformIcon';
-import { withNavigation } from '@exponent/ex-navigation';
+import { withNavigation } from '@expo/ex-navigation';
 import Router from '../navigation/Router';
 import tinycolor from 'tinycolor2';
 import colors from '../config/colors';

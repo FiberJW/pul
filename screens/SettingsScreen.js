@@ -12,8 +12,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import colors from '../config/colors';
-import { Notifications, Permissions } from 'exponent';
-import { NavigationStyles } from '@exponent/ex-navigation';
+import { Notifications, Permissions } from 'expo';
+import { NavigationStyles } from '@expo/ex-navigation';
 import Router from '../navigation/Router';
 import { observer, inject } from 'mobx-react/native';
 import connectDropdownAlert from '../utils/connectDropdownAlert';

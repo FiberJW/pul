@@ -1,6 +1,6 @@
 import { observable, action } from 'mobx';
 import { AsyncStorage } from 'react-native';
-import Exponent from 'exponent';
+import Expo from 'expo';
 import _ from 'lodash';
 
 export class AuthStore {
@@ -30,7 +30,7 @@ export class AuthStore {
         ridesGiven: 0,
         ridesReceived: 0,
         pushToken: null,
-        deviceId: Exponent.Constants.deviceId,
+        deviceId: Expo.Constants.deviceId,
         settings: {
           notifications: false,
         },
@@ -81,9 +81,9 @@ export class AuthStore {
             .ref('users')
             .child(user.uid)
             .update({
-              deviceId: Exponent.Constants.deviceId,
+              deviceId: Expo.Constants.deviceId,
             });
-        } else if (userSnap.val().deviceId !== Exponent.Constants.deviceId) {
+        } else if (userSnap.val().deviceId !== Expo.Constants.deviceId) {
           // if this is not the same device as last time, sign out
           await global.firebaseApp.auth().signOut();
           this.state = this.authStates[0];
@@ -95,7 +95,7 @@ export class AuthStore {
           .ref('users')
           .child(user.uid)
           .update({
-            deviceId: Exponent.Constants.deviceId,
+            deviceId: Expo.Constants.deviceId,
             pushToken: null,
             settings: {
               notifications: false,

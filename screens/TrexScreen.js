@@ -9,7 +9,7 @@ import {
   AppState,
 } from 'react-native';
 import colors from '../config/colors';
-import { NavigationStyles } from '@exponent/ex-navigation';
+import { NavigationStyles } from '@expo/ex-navigation';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import TrexPlayer from '../components/TrexPlayer';
 import { observer, inject } from 'mobx-react/native';

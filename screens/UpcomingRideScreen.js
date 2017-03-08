@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import colors from '../config/colors';
-import { NavigationStyles } from '@exponent/ex-navigation';
+import { NavigationStyles } from '@expo/ex-navigation';
 import Ride from '../components/Ride';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import { observer, inject } from 'mobx-react/native';
@@ -19,63 +19,75 @@ import { observer, inject } from 'mobx-react/native';
  *  Shows upcoming rides to user
  */
 @connectDropdownAlert
-@inject('eventStore') @observer
+@inject('eventStore')
+@observer
 export default class UpcomingRideScreen extends Component {
   static route = {
     styles: {
       ...NavigationStyles.Fade,
     },
-  }
+  };
   static propTypes = {
     navigator: PropTypes.object,
     navigation: PropTypes.object,
     eventStore: PropTypes.object,
     alertWithType: PropTypes.func.isRequired,
-  }
+  };
 
   componentWillUpdate(nextProps) {
     if (nextProps.eventStore.error) {
-      nextProps.alertWithType('error', 'Error', nextProps.eventStore.error.toString());
+      nextProps.alertWithType(
+        'error',
+        'Error',
+        nextProps.eventStore.error.toString(),
+      );
     }
   }
 
-  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
   render() {
     return (
-      <View style={ styles.container }>
+      <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
         <Choose>
-          <When condition={ this.props.eventStore.loading }>
+          <When condition={this.props.eventStore.loading}>
             <View
               style={{
                 justifyContent: 'center',
                 alignItems: 'center',
                 flex: 1,
-              }}
-            >
+              }}>
               <ActivityIndicator size="large" />
             </View>
           </When>
-          <When condition={ this.props.eventStore.rides.slice().length || this.props.eventStore.refreshing }>
+          <When
+            condition={
+              this.props.eventStore.rides.slice().length ||
+                this.props.eventStore.refreshing
+            }>
             <ListView
               enableEmptySections
-              dataSource={ this.ds.cloneWithRows(this.props.eventStore.rides.slice()) }
+              dataSource={this.ds.cloneWithRows(
+                this.props.eventStore.rides.slice(),
+              )}
               refreshControl={
-                <RefreshControl
-                  enabled
-                  colors={ [colors.blue, colors.hotPink] }
-                  refreshing={ this.props.eventStore.refreshing }
-                  onRefresh={ this.props.eventStore.refresh }
-                />
+                (
+                  <RefreshControl
+                    enabled
+                    colors={[colors.blue, colors.hotPink]}
+                    refreshing={this.props.eventStore.refreshing}
+                    onRefresh={this.props.eventStore.refresh}
+                  />
+                )
               }
-              renderRow={ r => (
+              renderRow={r => (
                 <Ride
-                  event={ r }
-                  refreshing={ this.props.eventStore.refreshing }
-                  refresh={ this.props.eventStore.refresh }
+                  event={r}
+                  refreshing={this.props.eventStore.refreshing}
+                  refresh={this.props.eventStore.refresh}
                 />
-              ) }
+              )}
             />
           </When>
           <Otherwise>
@@ -84,8 +96,7 @@ export default class UpcomingRideScreen extends Component {
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
-              }}
-            >
+              }}>
               <Image
                 resizeMode="contain"
                 style={{
@@ -93,7 +104,7 @@ export default class UpcomingRideScreen extends Component {
                   height: 150,
                   opacity: 0.3,
                 }}
-                source={ require('pul/assets/images/forever_alone.png') }
+                source={require('pul/assets/images/forever_alone.png')}
               />
               <Text
                 style={{
@@ -103,8 +114,7 @@ export default class UpcomingRideScreen extends Component {
                   paddingHorizontal: 8,
                   color: '#AEAEAF',
                   textAlign: 'center',
-                }}
-              >
+                }}>
                 No need to feel alone. Check out your school's events and make it out to one!
               </Text>
             </View>

@@ -7,14 +7,14 @@ import {
   ScrollView,
   StyleSheet,
 } from 'react-native';
-import { NavigationStyles } from '@exponent/ex-navigation';
+import { NavigationStyles } from '@expo/ex-navigation';
 import colors from '../config/colors';
 import moment from 'moment';
 import t from 'tcomb-form-native';
 import pickupTimeStylesheet from '../config/pickupTimeStylesheet';
 import ElevatedView from 'react-native-elevated-view';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
-import { Notifications } from 'exponent';
+import { Notifications } from 'expo';
 import {
   isExponentPushToken,
   sendPushNotificationAsync,

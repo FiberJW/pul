@@ -12,7 +12,7 @@ import {
   Alert,
 } from 'react-native';
 import Router from '../navigation/Router';
-import { withNavigation } from '@exponent/ex-navigation';
+import { withNavigation } from '@expo/ex-navigation';
 import colors from '../config/colors';
 import Collapsible from 'react-native-collapsible';
 import moment from 'moment';

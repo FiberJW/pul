@@ -10,13 +10,13 @@ import {
 } from 'react-native';
 import colors from '../config/colors';
 import Carpooler from '../components/Carpooler';
-import { connectActionSheet } from '@exponent/react-native-action-sheet';
-import { withNavigation } from '@exponent/ex-navigation';
+import { connectActionSheet } from '@expo/react-native-action-sheet';
+import { withNavigation } from '@expo/ex-navigation';
 import ElevatedView from 'react-native-elevated-view';
 import { maybeOpenURL } from 'react-native-app-link';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import { observer } from 'mobx-react/native';
-import { Notifications } from 'exponent';
+import { Notifications } from 'expo';
 
 @withNavigation
 @connectActionSheet

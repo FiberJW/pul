@@ -7,7 +7,7 @@ import {
   ListView,
   ActivityIndicator,
 } from 'react-native';
-import { NavigationStyles } from '@exponent/ex-navigation';
+import { NavigationStyles } from '@expo/ex-navigation';
 import colors from '../config/colors';
 import ElevatedView from 'react-native-elevated-view';
 import shuffle from '../utils/shuffle';

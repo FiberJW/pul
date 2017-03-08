@@ -1,4 +1,4 @@
-import Exponent from 'exponent';
+import Expo from 'expo';
 import { lyftClientId } from '../config/keys';
 
 /**
@@ -9,7 +9,7 @@ import { lyftClientId } from '../config/keys';
 export default async event => {
   const {
     coords: { latitude, longitude },
-  } = await Exponent.Location.getCurrentPositionAsync({
+  } = await Expo.Location.getCurrentPositionAsync({
     enableHighAccuracy: false,
   });
   const dropoffLat = event.location.geometry.location.lat;

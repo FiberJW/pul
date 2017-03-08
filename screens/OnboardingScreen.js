@@ -8,7 +8,7 @@ import {
   StatusBar,
   Dimensions,
 } from 'react-native';
-import { Components } from 'exponent';
+import { Components } from 'expo';
 import Router from '../navigation/Router';
 
 /**
@@ -17,42 +17,43 @@ import Router from '../navigation/Router';
 export default class OnboardingScreen extends Component {
   static propTypes = {
     navigator: PropTypes.object,
-  }
+  };
 
   render() {
     return (
       <Components.LinearGradient
-        style={ styles.container }
-        colors={ ['#D500F9', '#007AFF'] }
-      >
+        style={styles.container}
+        colors={['#D500F9', '#007AFF']}>
         <StatusBar barStyle="light-content" />
-        <View style={ styles.innerContainer }>
+        <View style={styles.innerContainer}>
           <Image
             resizeMode="contain"
-            style={ styles.logo }
-            source={ require('pul/assets/images/pul_logo_white.png') }
+            style={styles.logo}
+            source={require('pul/assets/images/pul_logo_white.png')}
           />
-          <View style={ styles.taglineContainer }>
-            <Text style={ styles.tagline }>
+          <View style={styles.taglineContainer}>
+            <Text style={styles.tagline}>
               Bringing your school community closer, one ride at a time.
             </Text>
           </View>
         </View>
         <TouchableOpacity
-          onPress={ () => {
-            this.props.navigator.push(Router.getRoute('chooseSchool', { intent: 'signup' }));
-          } }
-          style={ styles.buttonContainer }
-        >
-          <Text style={ styles.buttonText }>GET STARTED</Text>
+          onPress={() => {
+            this.props.navigator.push(
+              Router.getRoute('chooseSchool', { intent: 'signup' }),
+            );
+          }}
+          style={styles.buttonContainer}>
+          <Text style={styles.buttonText}>GET STARTED</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={ () => {
-            this.props.navigator.push(Router.getRoute('chooseSchool', { intent: 'login' }));
-          } }
-          style={ styles.loginContainer }
-        >
-          <Text style={ styles.loginText }>
+          onPress={() => {
+            this.props.navigator.push(
+              Router.getRoute('chooseSchool', { intent: 'login' }),
+            );
+          }}
+          style={styles.loginContainer}>
+          <Text style={styles.loginText}>
             Have an account? Log in!
           </Text>
         </TouchableOpacity>

@@ -7,10 +7,10 @@ import {
   TouchableOpacity,
   Text,
 } from 'react-native';
-import { NavigationStyles } from '@exponent/ex-navigation';
+import { NavigationStyles } from '@expo/ex-navigation';
 import _ from 'lodash';
 import colors from '../config/colors';
-import { Components, Location } from 'exponent';
+import { Components, Location } from 'expo';
 import ElevatedView from 'react-native-elevated-view';
 import { maybeOpenURL } from 'react-native-app-link';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
@@ -25,7 +25,7 @@ export default class MeetDriverScreen extends Component {
     styles: {
       ...NavigationStyles.SlideHorizontal,
     },
-  }
+  };
 
   static propTypes = {
     navigator: PropTypes.object.isRequired,
@@ -33,7 +33,7 @@ export default class MeetDriverScreen extends Component {
     self: PropTypes.object.isRequired,
     driver: PropTypes.string.isRequired,
     alertWithType: PropTypes.func.isRequired,
-  }
+  };
 
   state = {
     pickupLocation: null,
@@ -41,81 +41,88 @@ export default class MeetDriverScreen extends Component {
     region: null,
     currentUserLocation: null,
     driverData: null,
-  }
+  };
 
   componentWillMount() {
-    global.firebaseApp.database().ref('schools')
-    .child(this.props.self.school)
-    .child('pickupLocations')
-    .once('value')
-    .then(pickupLocationsSnap => {
-      const pickupLocations = pickupLocationsSnap.val();
-      _.each(pickupLocations, (pickupLocation) => {
-        if (pickupLocation.name === this.props.self.location) {
-          Location
-          .watchPositionAsync({
-            enableHighAccuracy: true,
-            timeInterval: 1000,
-            distanceInterval: 1,
-          }, (data) => {
-            this.setState({
-              location: {
-                latitude: data.coords.latitude,
-                longitude: data.coords.longitude,
+    global.firebaseApp
+      .database()
+      .ref('schools')
+      .child(this.props.self.school)
+      .child('pickupLocations')
+      .once('value')
+      .then(pickupLocationsSnap => {
+        const pickupLocations = pickupLocationsSnap.val();
+        _.each(pickupLocations, pickupLocation => {
+          if (pickupLocation.name === this.props.self.location) {
+            Location.watchPositionAsync(
+              {
+                enableHighAccuracy: true,
+                timeInterval: 1000,
+                distanceInterval: 1,
               },
+              data => {
+                this.setState({
+                  location: {
+                    latitude: data.coords.latitude,
+                    longitude: data.coords.longitude,
+                  },
+                });
+              },
+            );
+            this.setState(() => {
+              return {
+                pickupLocation,
+              };
+            });
+          }
+        });
+        global.firebaseApp
+          .database()
+          .ref('users')
+          .child(this.props.driver)
+          .once('value')
+          .then(driverSnap => {
+            const driverData = driverSnap.val();
+            this.setState({
+              driverData,
+              loading: false,
             });
           });
-          this.setState(() => {
-            return {
-              pickupLocation,
-            };
-          });
-        }
-      });
-      global.firebaseApp.database().ref('users')
-      .child(this.props.driver)
-      .once('value')
-      .then(driverSnap => {
-        const driverData = driverSnap.val();
-        this.setState({
-          driverData,
-          loading: false,
+      })
+      .catch(err => {
+        this.setState(() => {
+          return {
+            loading: false,
+          };
         });
+        this.props.alertWithType('error', 'Error', err.toString());
       });
-    })
-    .catch(err => {
-      this.setState(() => {
-        return {
-          loading: false,
-        };
-      });
-      this.props.alertWithType('error', 'Error', err.toString());
-    });
   }
 
-  onRegionChange = (region) => {
+  onRegionChange = region => {
     this.setState({ region });
-  }
+  };
 
   render() {
     return (
       <Choose>
-        <When condition={ this.state.loading }>
+        <When condition={this.state.loading}>
           <View
             style={{
               justifyContent: 'center',
               alignItems: 'center',
               flex: 1,
-            }}
-          >
+            }}>
             <ActivityIndicator size="large" />
           </View>
         </When>
         <Otherwise>
-          <View style={ styles.container }>
+          <View style={styles.container}>
             <Components.MapView
-              ref={ c => { this.map = c; } }
-              style={ StyleSheet.absoluteFillObject }
+              ref={c => {
+                this.map = c;
+              }}
+              style={StyleSheet.absoluteFillObject}
               initialRegion={{
                 latitude: this.state.pickupLocation.lat,
                 longitude: this.state.pickupLocation.lon,
@@ -124,85 +131,80 @@ export default class MeetDriverScreen extends Component {
               }}
               showsUserLocation
               followsUserLocation
-              toolbarEnabled={ false }
+              toolbarEnabled={false}
               loadingEnabled
-              region={ this.state.region }
-              onRegionChange={ this.onRegionChange }
-            >
+              region={this.state.region}
+              onRegionChange={this.onRegionChange}>
               <StatusBar hidden />
               <Components.MapView.Marker
-                title={ this.state.pickupLocation.name }
+                title={this.state.pickupLocation.name}
                 coordinate={{
                   latitude: this.state.pickupLocation.lat,
                   longitude: this.state.pickupLocation.lon,
                 }}
-                onCalloutPress={ () => {
+                onCalloutPress={() => {
                   const wazeUrl = `waze://?ll=${this.state.pickupLocation.lat},` +
-                  `${this.state.pickupLocation.lon}&z=10&navigate=yes`;
-                  maybeOpenURL(wazeUrl, { appName: 'Waze', appStoreId: 'id323229106', playStoreId: 'com.waze' })
-                  .catch(err => {
+                    `${this.state.pickupLocation.lon}&z=10&navigate=yes`;
+                  maybeOpenURL(wazeUrl, {
+                    appName: 'Waze',
+                    appStoreId: 'id323229106',
+                    playStoreId: 'com.waze',
+                  }).catch(err => {
                     this.props.alertWithType('error', 'Error', err.toString());
                   });
-                } }
-              >
-                <ElevatedView style={ styles.marker } elevation={ 6 }>
-                  <View style={ styles.markerInner } />
+                }}>
+                <ElevatedView style={styles.marker} elevation={6}>
+                  <View style={styles.markerInner} />
                 </ElevatedView>
               </Components.MapView.Marker>
-              <If condition={ this.state.location }>
+              <If condition={this.state.location}>
                 <Components.MapView.Polyline
-                  strokeWidth={ 2 }
-                  strokeColor={ colors.black }
+                  strokeWidth={2}
+                  strokeColor={colors.black}
                   geodesic
-                  lineDashPattern={ [4, 8, 4, 8] }
-                  coordinates={ [
+                  lineDashPattern={[4, 8, 4, 8]}
+                  coordinates={[
                     {
                       latitude: this.state.pickupLocation.lat,
                       longitude: this.state.pickupLocation.lon,
                     },
                     this.state.location,
-                  ] }
+                  ]}
                 />
               </If>
             </Components.MapView>
             <TouchableOpacity
-              onPress={ () => this.map.animateToCoordinate({
+              onPress={() => this.map.animateToCoordinate({
                 latitude: this.state.pickupLocation.lat,
                 longitude: this.state.pickupLocation.lon,
-              }) }
-            >
-              <ElevatedView
-                style={ styles.infoBox }
-                elevation={ 4 }
-              >
-                <Text style={ styles.infoBoxText }>
-                  Meet at the {this.state.pickupLocation.name.toLowerCase().trim()}.
+              })}>
+              <ElevatedView style={styles.infoBox} elevation={4}>
+                <Text style={styles.infoBoxText}>
+                  Meet at the
+                  {' '}
+                  {this.state.pickupLocation.name.toLowerCase().trim()}
+                  .
                 </Text>
               </ElevatedView>
             </TouchableOpacity>
-            <View
-              style={ styles.actionContainer }
-            >
+            <View style={styles.actionContainer}>
               <View>
-                <Text style={ styles.driverName }>{this.state.driverData.displayName.toUpperCase()}</Text>
+                <Text style={styles.driverName}>
+                  {this.state.driverData.displayName.toUpperCase()}
+                </Text>
               </View>
-              <View
-                style={ styles.buttonRow }
-              >
-                <TouchableOpacity
-                  onPress={ () => this.props.navigator.pop() }
-                >
-                  <View style={ [styles.button, styles.cancelButton] }>
-                    <Text style={ styles.cancel }>CLOSE</Text>
+              <View style={styles.buttonRow}>
+                <TouchableOpacity onPress={() => this.props.navigator.pop()}>
+                  <View style={[styles.button, styles.cancelButton]}>
+                    <Text style={styles.cancel}>CLOSE</Text>
                   </View>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={ () => {
+                  onPress={() => {
                     phonecall(this.state.driverData.phoneNumber, true);
-                  } }
-                >
-                  <View style={ styles.button }>
-                    <Text style={ styles.contact }>CONTACT</Text>
+                  }}>
+                  <View style={styles.button}>
+                    <Text style={styles.contact}>CONTACT</Text>
                   </View>
                 </TouchableOpacity>
               </View>

@@ -9,7 +9,7 @@ import {
   Keyboard,
 } from 'react-native';
 import colors from '../config/colors';
-import { NavigationStyles } from '@exponent/ex-navigation';
+import { NavigationStyles } from '@expo/ex-navigation';
 import Router from 'Router';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import KeyboardAwareScrollView from '../components/KeyboardAwareScrollView';

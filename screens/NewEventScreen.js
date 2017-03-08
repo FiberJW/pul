@@ -8,7 +8,7 @@ import {
   TextInput,
   ActivityIndicator,
 } from 'react-native';
-import { NavigationStyles } from '@exponent/ex-navigation';
+import { NavigationStyles } from '@expo/ex-navigation';
 import colors from '../config/colors';
 import KeyboardEventListener from 'KeyboardEventListener';
 import Swiper from 'react-native-swiper';

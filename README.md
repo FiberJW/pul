@@ -29,7 +29,7 @@
 
 ## Major technologies used
 
-- Exponent
+- Expo
 - React Native
 - ex-navigation
 - MobX

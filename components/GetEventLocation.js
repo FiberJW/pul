@@ -6,7 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { Components } from 'exponent';
+import { Components } from 'expo';
 import {
   GooglePlacesAutocomplete,
 } from 'react-native-google-places-autocomplete';

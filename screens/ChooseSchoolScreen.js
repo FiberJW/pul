@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import colors from '../config/colors';
-import { NavigationStyles } from '@exponent/ex-navigation';
+import { NavigationStyles } from '@expo/ex-navigation';
 import SchoolOption from '../components/SchoolOption';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import { email } from 'react-native-communications';
@@ -29,63 +29,71 @@ export default class ChooseSchoolScreen extends Component {
     styles: {
       ...NavigationStyles.SlideHorizontal,
     },
-  }
+  };
 
   static propTypes = {
     navigator: PropTypes.object,
     intent: PropTypes.string.isRequired,
     alertWithType: PropTypes.func.isRequired,
-  }
+  };
 
   state = {
     loading: true,
     schools: [],
-  }
+  };
 
   componentWillMount() {
-    global.firebaseApp.database()
-    .ref('schools')
-    .once('value')
-    .then((snap) => {
-      const schools = Object.keys(snap.val()).map(schoolUID => {
-        return {
-          ...snap.val()[schoolUID],
-          uid: schoolUID,
-        };
+    global.firebaseApp
+      .database()
+      .ref('schools')
+      .once('value')
+      .then(snap => {
+        const schools = Object.keys(snap.val()).map(schoolUID => {
+          return {
+            ...snap.val()[schoolUID],
+            uid: schoolUID,
+          };
+        });
+        this.setState(() => {
+          return { loading: false, schools };
+        });
+      })
+      .catch(err => {
+        this.props.alertWithType('error', 'Error', err.toString());
       });
-      this.setState(() => {
-        return { loading: false, schools };
-      });
-    })
-    .catch((err) => {
-      this.props.alertWithType('error', 'Error', err.toString());
-    });
   }
 
-  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 })
+  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
   render() {
     return (
-      <View style={ styles.container }>
+      <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
         <Choose>
-          <When condition={ this.state.loading }>
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <When condition={this.state.loading}>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
               <ActivityIndicator size="large" />
             </View>
           </When>
           <Otherwise>
             <ListView
               enableEmptySections
-              dataSource={ this.ds.cloneWithRows(this.state.schools) }
-              renderRow={ s => <SchoolOption intent={ this.props.intent } school={ s } /> }
+              dataSource={this.ds.cloneWithRows(this.state.schools)}
+              renderRow={s => (
+                <SchoolOption intent={this.props.intent} school={s} />
+              )}
             />
           </Otherwise>
         </Choose>
         <Choose>
-          <When condition={ this.props.intent === 'signup' }>
+          <When condition={this.props.intent === 'signup'}>
             <TouchableOpacity
-              onPress={ () => {
+              onPress={() => {
                 email(
                   ['datwheat@gmail.com'],
                   null,
@@ -111,15 +119,12 @@ Our hotspots for pickups are:
 
 Thanks a lot for considering adding <SCHOOL NAME> to PÜL!
 
-<SENDER NAME>`
+<SENDER NAME>`,
                 );
-              } }
-            >
-              <Text
-                style={ styles.notExist }
-              >
-              School not listed?
-            </Text>
+              }}>
+              <Text style={styles.notExist}>
+                School not listed?
+              </Text>
 
             </TouchableOpacity>
           </When>

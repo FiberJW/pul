@@ -1,13 +1,13 @@
 import React, { PropTypes } from 'react';
 import { Platform } from 'react-native';
-import { Ionicons } from '@exponent/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 const CrossPlatformIcon = ({ name, size, color, outline }) => {
   let iconName = Platform.OS === 'android' ? `md-${name}` : `ios-${name}`;
   if (Platform.OS === 'ios' && outline) {
     iconName = `${iconName}-outline`;
   }
-  return <Ionicons name={ iconName } size={ size } color={ color } />;
+  return <Ionicons name={iconName} size={size} color={color} />;
 };
 
 CrossPlatformIcon.propTypes = {

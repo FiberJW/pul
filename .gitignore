@@ -1,7 +1,7 @@
 .DS_Store
 npm-debug.*
 .idea/
-.exponent/
+.expo/*
 node_modules/
 config/keys.js
 .release/

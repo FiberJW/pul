@@ -1,13 +1,13 @@
-import Exponent, { Font, Components, Permissions } from 'exponent';
+import Expo, { Font, Components, Permissions } from 'expo';
 import React, { Component, PropTypes } from 'react';
 import { AsyncStorage, Alert } from 'react-native';
-import { NavigationProvider, StackNavigation } from '@exponent/ex-navigation';
+import { NavigationProvider, StackNavigation } from '@expo/ex-navigation';
 import Router from './navigation/Router';
 import * as firebase from 'firebase';
 import { firebaseConfig, sentryURL } from './config/keys';
-import { ActionSheetProvider } from '@exponent/react-native-action-sheet';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import DropdownAlertProvider from './components/DropdownAlertProvider';
-import ExponentSentryClient from '@exponent/sentry-utils';
+import ExpoSentryClient from '@expo/sentry-utils';
 import connectDropdownAlert from './utils/connectDropdownAlert';
 import { inject, observer, Provider as MobXProvider } from 'mobx-react/native';
 import authStore from './stores/AuthStore';
@@ -45,7 +45,7 @@ if (!__DEV__) {
     };
   });
 
-  ExponentSentryClient.setupSentry(
+  ExpoSentryClient.setupSentry(
     sentryURL,
     require('./exp.json').version,
     require('./package.json').main,
@@ -193,4 +193,4 @@ const Main = () => (
   </MobXProvider>
 );
 
-Exponent.registerRootComponent(Main);
+Expo.registerRootComponent(Main);

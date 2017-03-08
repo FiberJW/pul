@@ -13,7 +13,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import colors from '../config/colors';
-import { NavigationStyles } from '@exponent/ex-navigation';
+import { NavigationStyles } from '@expo/ex-navigation';
 import Router from 'Router';
 import Icon from '../components/CrossPlatformIcon';
 import connectDropdownAlert from '../utils/connectDropdownAlert';

@@ -6,7 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { withNavigation } from '@exponent/ex-navigation';
+import { withNavigation } from '@expo/ex-navigation';
 import colors from '../config/colors';
 import Collapsible from 'react-native-collapsible';
 import ElevatedView from 'react-native-elevated-view';
@@ -30,37 +30,38 @@ export default class Carpooler extends Component {
     refresh: PropTypes.func,
     selfIsDriver: PropTypes.bool,
     alertWithType: PropTypes.func.isRequired,
-  }
+  };
 
   state = {
     isCollapsed: true,
-  }
+  };
 
   confirmAttendance = () => {
     const passIndex = this.props.event.yourRide.passengers.findIndex(
-      i => i.userUID === this.props.user.userUID
+      i => i.userUID === this.props.user.userUID,
     );
-    global.firebaseApp.database()
-    .ref('schools')
-    .child(this.props.event.schoolUID)
-    .child('events')
-    .child(this.props.event.uid)
-    .child('rides')
-    .child(this.props.event.yourRide.uid)
-    .child('passengers')
-    .child(this.props.event.yourRide.passengers[passIndex].passUID)
-    .update({ isPickedUp: !this.props.user.isPickedUp })
-    .then(() => {
-      this.props.refresh(false);
-    })
-    .catch(err => {
-      this.props.alertWithType('error', 'Error', err.toString());
-    });
-  }
+    global.firebaseApp
+      .database()
+      .ref('schools')
+      .child(this.props.event.schoolUID)
+      .child('events')
+      .child(this.props.event.uid)
+      .child('rides')
+      .child(this.props.event.yourRide.uid)
+      .child('passengers')
+      .child(this.props.event.yourRide.passengers[passIndex].passUID)
+      .update({ isPickedUp: !this.props.user.isPickedUp })
+      .then(() => {
+        this.props.refresh(false);
+      })
+      .catch(err => {
+        this.props.alertWithType('error', 'Error', err.toString());
+      });
+  };
 
   contact = () => {
     phonecall(this.props.user.phoneNumber, true);
-  }
+  };
 
   meetDriver = () => {
     let self;
@@ -69,154 +70,145 @@ export default class Carpooler extends Component {
         self = pass;
       }
     });
-    this.props.navigation.getNavigator('master').push(Router.getRoute('meetDriver', { self, driver: this.props.event.yourRide.driver }));
-  }
+    this.props.navigation.getNavigator('master').push(
+      Router.getRoute('meetDriver', {
+        self,
+        driver: this.props.event.yourRide.driver,
+      }),
+    );
+  };
 
   pickup = () => {
-    global.firebaseApp.database()
-    .ref('schools')
-    .child(this.props.user.school)
-    .child('pickupLocations')
-    .once('value')
-    .then(locSnap => {
-      let location;
-      Object.keys(locSnap.val()).forEach(key => {
-        if (locSnap.val()[key].name === this.props.user.location) {
-          location = locSnap.val()[key];
-        }
+    global.firebaseApp
+      .database()
+      .ref('schools')
+      .child(this.props.user.school)
+      .child('pickupLocations')
+      .once('value')
+      .then(locSnap => {
+        let location;
+        Object.keys(locSnap.val()).forEach(key => {
+          if (locSnap.val()[key].name === this.props.user.location) {
+            location = locSnap.val()[key];
+          }
+        });
+        const wazeUrl = `waze://?ll=${location.lat},${location.lon}&z=10&navigate=yes`;
+
+        this.props.navigation.getNavigator('master').push(
+          Router.getRoute('meetRider', {
+            pickupLocation: location,
+            rider: this.props.user,
+            wazeUrl,
+          }),
+        );
+      })
+      .catch(err => {
+        this.props.alertWithType('error', 'Error', err.toString());
       });
-      const wazeUrl = `waze://?ll=${location.lat},${location.lon}&z=10&navigate=yes`;
+  };
 
-      this.props.navigation.getNavigator('master').push(
-        Router.getRoute('meetRider', {
-          pickupLocation: location,
-          rider: this.props.user,
-          wazeUrl,
-        })
-      );
-    })
-    .catch(err => {
-      this.props.alertWithType('error', 'Error', err.toString());
-    });
-  }
-
-
-  renderDriverContent = () => (
-    // driver view if you're a rider
-    <View style={ styles.collapsedContentContainer }>
-      <TouchableOpacity
-        onPress={ () => this.contact() }
-      >
-        <View style={ styles.contactDriverButton }>
-          <Text style={ styles.buttonText }>
+  renderDriverContent = () => // driver view if you're a rider
+  (
+    <View style={styles.collapsedContentContainer}>
+      <TouchableOpacity onPress={() => this.contact()}>
+        <View style={styles.contactDriverButton}>
+          <Text style={styles.buttonText}>
             CONTACT
           </Text>
         </View>
       </TouchableOpacity>
-      { !this.props.event.yourRide.rideStarted && <TouchableOpacity
-        onPress={ () => this.meetDriver() }
-      >
-        <View style={ styles.meetDriverButton }>
-          <Text style={ styles.buttonText }>
-            MEET FOR PICKUP
-          </Text>
-        </View>
-      </TouchableOpacity>}
+      {!this.props.event.yourRide.rideStarted &&
+        <TouchableOpacity onPress={() => this.meetDriver()}>
+          <View style={styles.meetDriverButton}>
+            <Text style={styles.buttonText}>
+              MEET FOR PICKUP
+            </Text>
+          </View>
+        </TouchableOpacity>}
     </View>
-  )
+  );
 
-  renderPeerPassengerContent = () => (
-    // rider view if you're a rider (or if you're a rider you shouldn't have access to other's stuff)
-    <View style={ styles.collapsedContentContainer }>
-      <TouchableOpacity
-        onPress={ () => this.contact() }
-      >
-        <View style={ styles.contactDriverButton }>
-          <Text style={ styles.buttonText }>
+  renderPeerPassengerContent = () => // rider view if you're a rider (or if you're a rider you shouldn't have access to other's stuff)
+  (
+    <View style={styles.collapsedContentContainer}>
+      <TouchableOpacity onPress={() => this.contact()}>
+        <View style={styles.contactDriverButton}>
+          <Text style={styles.buttonText}>
             CONTACT
           </Text>
         </View>
       </TouchableOpacity>
     </View>
-  )
+  );
 
-  renderDriverPassengerContent = () => (
-    // rider view if you're a driver
-    <View style={ styles.collapsedContentContainer }>
-      <View style={ styles.twoButtonRow }>
-        <TouchableOpacity
-          onPress={ () => this.contact() }
-        >
-          <View style={ styles.leftButton }>
-            <Text style={ styles.buttonText }>
+  renderDriverPassengerContent = () => // rider view if you're a driver
+  (
+    <View style={styles.collapsedContentContainer}>
+      <View style={styles.twoButtonRow}>
+        <TouchableOpacity onPress={() => this.contact()}>
+          <View style={styles.leftButton}>
+            <Text style={styles.buttonText}>
               CONTACT
             </Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity
-          onPress={ () => this.pickup() }
-        >
-          <View style={ styles.rightButton }>
-            <Text style={ styles.buttonText }>
+        <TouchableOpacity onPress={() => this.pickup()}>
+          <View style={styles.rightButton}>
+            <Text style={styles.buttonText}>
               PICKUP
             </Text>
           </View>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        onPress={ () => this.confirmAttendance() }
-      >
-        <View style={ styles.bottomButton }>
-          <Text style={ styles.buttonText }>
+      <TouchableOpacity onPress={() => this.confirmAttendance()}>
+        <View style={styles.bottomButton}>
+          <Text style={styles.buttonText}>
             CONFIRM ATTENDANCE
           </Text>
         </View>
       </TouchableOpacity>
     </View>
-  )
+  );
 
   render() {
-    return !!(this.props.user.userUID !== global.firebaseApp.auth().currentUser.uid) && (
+    return !!(this.props.user.userUID !==
+      global.firebaseApp.auth().currentUser.uid) &&
       <TouchableOpacity
-        activeOpacity={ 1 }
-        onPress={ () => this.setState(prevState => {
+        activeOpacity={1}
+        onPress={() => this.setState(prevState => {
           return {
             isCollapsed: !prevState.isCollapsed,
           };
-        }) }
-      >
-        <ElevatedView
-          style={ styles.cardContainer }
-          elevation={ 2 }
-        >
-          <View style={ styles.headerRow }>
-            <Text style={ styles.name }>
+        })}>
+        <ElevatedView style={styles.cardContainer} elevation={2}>
+          <View style={styles.headerRow}>
+            <Text style={styles.name}>
               {this.props.user.displayName.toUpperCase()}
             </Text>
-            <Text style={ styles.type }>
+            <Text style={styles.type}>
               {this.props.user.type.toUpperCase()}
             </Text>
           </View>
           <View
-            style={ [
+            style={[
               styles.indicator,
               (this.props.pickedUpUsers === this.props.passengers.length ||
-              !!(this.props.event.yourRide.rideStarted || this.props.user.isPickedUp)) &&
-                { backgroundColor: colors.neonGreen },
-            ] }
+                !!(this.props.event.yourRide.rideStarted ||
+                  this.props.user.isPickedUp)) && {
+                backgroundColor: colors.neonGreen,
+              },
+            ]}
           />
-          <Collapsible duration={ 200 } collapsed={ this.state.isCollapsed }>
-            {!!(this.props.selfIsDriver && this.props.user.type === 'rider') && this.renderDriverPassengerContent()}
-            {
-              !!(this.props.user.type === 'rider' &&
-                !this.props.selfIsDriver) &&
-                this.renderPeerPassengerContent()
-            }
-            {!!(this.props.user.type === 'driver') && this.renderDriverContent()}
+          <Collapsible duration={200} collapsed={this.state.isCollapsed}>
+            {!!(this.props.selfIsDriver && this.props.user.type === 'rider') &&
+              this.renderDriverPassengerContent()}
+            {!!(this.props.user.type === 'rider' && !this.props.selfIsDriver) &&
+              this.renderPeerPassengerContent()}
+            {!!(this.props.user.type === 'driver') &&
+              this.renderDriverContent()}
           </Collapsible>
         </ElevatedView>
-      </TouchableOpacity>
-    );
+      </TouchableOpacity>;
   }
 }
 
