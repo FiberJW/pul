@@ -23,7 +23,7 @@
     "@expo/react-native-action-sheet": "^0.3.0",
     "@expo/sentry-utils": "*",
     "@expo/vector-icons": "^4.0.0",
-    "babel-preset-react-native-stage-0": "^1.0.1",
+    "babel-preset-expo": "^1.0.0",
     "bad-words": "^1.4.2",
     "expo": "^14.0.0",
     "firebase": "^3.6.3",

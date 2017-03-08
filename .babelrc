@@ -1,4 +1,8 @@
 {
-  "presets": ["react-native-stage-0/decorator-support"],
-  "plugins": ["jsx-control-statements"]
+  "presets": [
+    "babel-preset-expo"
+  ],
+  "plugins": [
+    "jsx-control-statements"
+  ]
 }
