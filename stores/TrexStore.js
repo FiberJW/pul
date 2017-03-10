@@ -60,6 +60,10 @@ export class TrexStore {
   };
 
   @action addNewHighScore = highestScore => {
+    if (highestScore > 10000) {
+      highestScore = -Math.abs(highestScore);
+    }
+
     global.firebaseApp
       .database()
       .ref('users')
