@@ -1,3 +1,7 @@
+/**
+ * @providesModule colors
+ */
+
 export default {
   black: '#212121',
   blue: '#007AFF',

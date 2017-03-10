@@ -18,6 +18,8 @@ import Router from '../navigation/Router';
 import { observer, inject } from 'mobx-react/native';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import { email } from 'react-native-communications';
+import SettingsLabel from '../components/styled/SettingsLabel';
+import SettingsTextInput from '../components/styled/SettingsTextInput';
 
 /**
  *  Allows the user to have some control over account data and app settings
@@ -134,8 +136,8 @@ export default class SettingsScreen extends Component {
             <View style={styles.sectionHeaderUnderline} />
           </View>
           <View style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>Name</Text>
-            <TextInput
+            <SettingsLabel>Name</SettingsLabel>
+            <SettingsTextInput
               editable
               autoCorrect={false}
               underlineColorAndroid="transparent"
@@ -176,16 +178,14 @@ export default class SettingsScreen extends Component {
                     );
                   });
               }}
-              style={styles.fieldContents}
               onEndEditing={this.getUser}
               value={this.state.user.displayName}
             />
           </View>
           <View style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>Phone number</Text>
-            <TextInput
+            <SettingsLabel>Phone number</SettingsLabel>
+            <SettingsTextInput
               autoCorrect={false}
-              style={styles.fieldContents}
               onEndEditing={this.getUser}
               underlineColorAndroid="transparent"
               onChangeText={phoneNumber => {
@@ -225,7 +225,7 @@ export default class SettingsScreen extends Component {
             <TouchableOpacity
               onPress={() =>
                 this.togglePushNotifications(!this.state.notifications)}>
-              <Text style={styles.switchFieldLabel}>Push notifications</Text>
+              <SettingsLabel>Push notifications</SettingsLabel>
             </TouchableOpacity>
             <Switch
               onValueChange={this.togglePushNotifications}
@@ -245,7 +245,7 @@ export default class SettingsScreen extends Component {
               );
             }}
             style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>Send feedback</Text>
+            <SettingsLabel>Send feedback</SettingsLabel>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => {
@@ -287,7 +287,7 @@ export default class SettingsScreen extends Component {
               );
             }}
             style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>Log out</Text>
+            <SettingsLabel>Log out</SettingsLabel>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -320,27 +320,10 @@ const styles = StyleSheet.create({
   fieldContainer: {
     paddingBottom: 16,
   },
-  fieldLabel: {
-    marginBottom: 8,
-    fontFamily: 'open-sans-semibold',
-    fontSize: 20,
-    color: colors.black,
-  },
-  fieldContents: {
-    fontFamily: 'open-sans',
-    height: 24,
-    fontSize: 14,
-    color: colors.grey,
-  },
   switchFieldContainer: {
     justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
-  },
-  switchFieldLabel: {
-    fontFamily: 'open-sans-semibold',
-    fontSize: 20,
-    color: colors.black,
   },
 });
