@@ -72,7 +72,7 @@ export default class TrexScreen extends Component {
       nextAppState === 'active'
     ) {
       this.setState({ softBanned: true }); // to prevent guys hacking
-      setTimeout(() => this.setState({ softBanned: false }), 30000);
+      setTimeout(() => this.setState({ softBanned: false }), 120000);
     }
     this.setState({ appState: nextAppState });
   };
