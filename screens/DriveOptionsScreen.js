@@ -20,7 +20,7 @@ import {
   sendPushNotificationAsync,
 } from '../utils/ExponentPushClient';
 import _ from 'lodash';
-import RadioButton from '../components/RadioButton';
+import RadioOption from '../components/RadioOption';
 
 const Form = t.form.Form;
 
@@ -68,6 +68,7 @@ export default class DriveOptionsScreen extends Component {
 
   state = {
     passengerLimit: 1,
+    numPassengerOptions: _.range(4),
     submitting: false,
     pickupTime: moment().toDate().getTime(),
   };
@@ -222,59 +223,18 @@ export default class DriveOptionsScreen extends Component {
                 PASSENGER LIMIT
               </Text>
             </View>
-            <View style={styles.radioGroupContainer}>
-              <TouchableOpacity
-                style={styles.radioContainer}
-                onPress={() => this.setState(() => {
-                  return { passengerLimit: 1 };
-                })}>
-                <View style={styles.buttonLabelContainer}>
-                  <RadioButton
-                    color={colors.purp}
-                    selected={!!(this.state.passengerLimit === 1)}
-                  />
-                  <Text style={styles.label}>1</Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.radioContainer}
-                onPress={() => this.setState(() => {
-                  return { passengerLimit: 2 };
-                })}>
-                <View style={styles.buttonLabelContainer}>
-                  <RadioButton
-                    color={colors.purp}
-                    selected={!!(this.state.passengerLimit === 2)}
-                  />
-                  <Text style={styles.label}>2</Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.radioContainer}
-                onPress={() => this.setState(() => {
-                  return { passengerLimit: 3 };
-                })}>
-                <View style={styles.buttonLabelContainer}>
-                  <RadioButton
-                    color={colors.purp}
-                    selected={!!(this.state.passengerLimit === 3)}
-                  />
-                  <Text style={styles.label}>3</Text>
-                </View>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.radioContainer}
-                onPress={() => this.setState(() => {
-                  return { passengerLimit: 4 };
-                })}>
-                <View style={styles.buttonLabelContainer}>
-                  <RadioButton
-                    color={colors.purp}
-                    selected={!!(this.state.passengerLimit === 4)}
-                  />
-                  <Text style={styles.label}>4</Text>
-                </View>
-              </TouchableOpacity>
+            <View>
+              {this.state.numPassengerOptions.map(n => (
+                <RadioOption
+                  key={n}
+                  onPress={() => this.setState(() => {
+                    return { passengerLimit: n + 1 };
+                  })}
+                  color={colors.purp}
+                  selected={!!(this.state.passengerLimit === n + 1)}
+                  label={`${n + 1}`}
+                />
+              ))}
             </View>
             <View style={styles.headerRow}>
               <Text style={styles.header}>
@@ -338,23 +298,5 @@ const styles = StyleSheet.create({
     fontFamily: 'open-sans-bold',
     color: 'white',
     fontSize: 24,
-  },
-  radioGroupContainer: {},
-  radioContainer: {
-    padding: 16,
-    flexDirection: 'row',
-    backgroundColor: 'white',
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.lightGrey,
-  },
-  buttonLabelContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  label: {
-    marginLeft: 16,
-    fontFamily: 'open-sans',
-    fontSize: 18,
-    color: colors.black,
   },
 });
