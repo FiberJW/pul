@@ -17,6 +17,7 @@ import {
   sendPushNotificationAsync,
 } from '../utils/ExponentPushClient';
 import { inject, observer } from 'mobx-react/native';
+import RadioButton from '../components/RadioButton';
 
 /**
  *  For setting where you want to get picked up as a rider
@@ -97,10 +98,10 @@ export default class SetPickupLocationScreen extends Component {
         })}
         style={styles.radioContainer}>
         <View style={styles.buttonLabelContainer}>
-          <View style={styles.outerCircle}>
-            {!!(this.state.location === location.name) &&
-              <View style={styles.innerCircle} />}
-          </View>
+          <RadioButton
+            color={colors.blue}
+            selected={!!(this.state.location === location.name)}
+          />
           <Text style={styles.label}>{location.name}</Text>
         </View>
       </TouchableOpacity>
@@ -280,22 +281,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: colors.lightGrey,
-  },
-  outerCircle: {
-    height: 24,
-    width: 24,
-    backgroundColor: 'transparent',
-    borderRadius: 12,
-    borderColor: colors.blue,
-    borderWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  innerCircle: {
-    height: 16,
-    width: 16,
-    backgroundColor: colors.blue,
-    borderRadius: 8,
   },
   buttonLabelContainer: {
     flexDirection: 'row',

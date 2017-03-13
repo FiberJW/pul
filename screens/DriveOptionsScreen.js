@@ -20,6 +20,7 @@ import {
   sendPushNotificationAsync,
 } from '../utils/ExponentPushClient';
 import _ from 'lodash';
+import RadioButton from '../components/RadioButton';
 
 const Form = t.form.Form;
 
@@ -228,10 +229,10 @@ export default class DriveOptionsScreen extends Component {
                   return { passengerLimit: 1 };
                 })}>
                 <View style={styles.buttonLabelContainer}>
-                  <View style={styles.outerCircle}>
-                    {!!(this.state.passengerLimit === 1) &&
-                      <View style={styles.innerCircle} />}
-                  </View>
+                  <RadioButton
+                    color={colors.purp}
+                    selected={!!(this.state.passengerLimit === 1)}
+                  />
                   <Text style={styles.label}>1</Text>
                 </View>
               </TouchableOpacity>
@@ -241,10 +242,10 @@ export default class DriveOptionsScreen extends Component {
                   return { passengerLimit: 2 };
                 })}>
                 <View style={styles.buttonLabelContainer}>
-                  <View style={styles.outerCircle}>
-                    {!!(this.state.passengerLimit === 2) &&
-                      <View style={styles.innerCircle} />}
-                  </View>
+                  <RadioButton
+                    color={colors.purp}
+                    selected={!!(this.state.passengerLimit === 2)}
+                  />
                   <Text style={styles.label}>2</Text>
                 </View>
               </TouchableOpacity>
@@ -254,10 +255,10 @@ export default class DriveOptionsScreen extends Component {
                   return { passengerLimit: 3 };
                 })}>
                 <View style={styles.buttonLabelContainer}>
-                  <View style={styles.outerCircle}>
-                    {!!(this.state.passengerLimit === 3) &&
-                      <View style={styles.innerCircle} />}
-                  </View>
+                  <RadioButton
+                    color={colors.purp}
+                    selected={!!(this.state.passengerLimit === 3)}
+                  />
                   <Text style={styles.label}>3</Text>
                 </View>
               </TouchableOpacity>
@@ -267,10 +268,10 @@ export default class DriveOptionsScreen extends Component {
                   return { passengerLimit: 4 };
                 })}>
                 <View style={styles.buttonLabelContainer}>
-                  <View style={styles.outerCircle}>
-                    {!!(this.state.passengerLimit === 4) &&
-                      <View style={styles.innerCircle} />}
-                  </View>
+                  <RadioButton
+                    color={colors.purp}
+                    selected={!!(this.state.passengerLimit === 4)}
+                  />
                   <Text style={styles.label}>4</Text>
                 </View>
               </TouchableOpacity>
@@ -345,22 +346,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: colors.lightGrey,
-  },
-  outerCircle: {
-    height: 24,
-    width: 24,
-    backgroundColor: 'transparent',
-    borderRadius: 12,
-    borderColor: colors.purp,
-    borderWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  innerCircle: {
-    height: 16,
-    width: 16,
-    backgroundColor: colors.purp,
-    borderRadius: 8,
   },
   buttonLabelContainer: {
     flexDirection: 'row',
