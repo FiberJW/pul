@@ -17,12 +17,15 @@ import CardSublabel from './styled/CardSublabel';
 import CardLabel from './styled/CardLabel';
 import CardHeader from './styled/CardHeader';
 import CardIndicator from './styled/CardIndicator';
+import { observer } from 'mobx-react/native';
+import { observable } from 'mobx';
 
 /**
 *  Renders a Carpooler
 */
 @withNavigation
 @connectDropdownAlert
+@observer
 export default class Carpooler extends Component {
   static propTypes = {
     user: PropTypes.object.isRequired,
@@ -36,9 +39,7 @@ export default class Carpooler extends Component {
     alertWithType: PropTypes.func.isRequired,
   };
 
-  state = {
-    isCollapsed: true,
-  };
+  @observable isCollapsed = true;
 
   confirmAttendance = () => {
     const passIndex = this.props.event.yourRide.passengers.findIndex(
@@ -179,11 +180,7 @@ export default class Carpooler extends Component {
       global.firebaseApp.auth().currentUser.uid &&
       <TouchableOpacity
         activeOpacity={1}
-        onPress={() => this.setState(prevState => {
-          return {
-            isCollapsed: !prevState.isCollapsed,
-          };
-        })}
+        onPress={() => this.isCollapsed = !this.isCollapsed}
       >
         <ElevatedView style={styles.cardContainer} elevation={2}>
           <CardHeader>
@@ -201,7 +198,7 @@ export default class Carpooler extends Component {
                   this.props.user.isPickedUp)
             }
           />
-          <Collapsible duration={200} collapsed={this.state.isCollapsed}>
+          <Collapsible duration={200} collapsed={this.isCollapsed}>
             {this.props.selfIsDriver &&
               this.props.user.type === 'rider' &&
               this.renderDriverPassengerContent()}
