@@ -17,6 +17,7 @@ import { maybeOpenURL } from 'react-native-app-link';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import { observer } from 'mobx-react/native';
 import { Notifications } from 'expo';
+import RideStatus from './styled/RideStatus';
 
 @withNavigation
 @connectActionSheet
@@ -371,16 +372,9 @@ export default class Ride extends Component {
               this.state.selfIsDriver && this.state.passengers.length === 1
             }
           >
-            <Text
-              style={{
-                fontFamily: 'open-sans-semibold',
-                fontSize: 18,
-                alignSelf: 'center',
-                paddingTop: 16,
-              }}
-            >
+            <RideStatus>
               NO PASSENGERS AVAILABLE
-            </Text>
+            </RideStatus>
           </When>
           <When
             condition={
@@ -388,28 +382,14 @@ export default class Ride extends Component {
                 !this.props.event.yourRide.rideCompleted
             }
           >
-            <Text
-              style={{
-                fontFamily: 'open-sans-semibold',
-                fontSize: 18,
-                alignSelf: 'center',
-                paddingTop: 16,
-              }}
-            >
+            <RideStatus>
               RIDE IN PROGRESS
-            </Text>
+            </RideStatus>
           </When>
           <When condition={this.props.event.yourRide.rideCompleted}>
-            <Text
-              style={{
-                fontFamily: 'open-sans-semibold',
-                fontSize: 18,
-                alignSelf: 'center',
-                paddingTop: 16,
-              }}
-            >
+            <RideStatus>
               RIDE COMPLETED
-            </Text>
+            </RideStatus>
           </When>
         </Choose>
       </View>
