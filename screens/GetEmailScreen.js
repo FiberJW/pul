@@ -7,7 +7,7 @@ import {
   TextInput,
   Keyboard,
 } from 'react-native';
-import colors from '../config/colors';
+import colors from 'kolors';
 import { NavigationStyles } from '@expo/ex-navigation';
 import Router from 'Router';
 import validator from 'validator';

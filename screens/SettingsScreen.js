@@ -11,7 +11,7 @@ import {
   Platform,
   TouchableOpacity,
 } from 'react-native';
-import colors from '../config/colors';
+import colors from 'kolors';
 import { Notifications, Permissions } from 'expo';
 import { NavigationStyles } from '@expo/ex-navigation';
 import Router from '../navigation/Router';

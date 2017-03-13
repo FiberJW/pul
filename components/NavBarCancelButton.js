@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 import { withNavigation } from '@expo/ex-navigation';
-import colors from '../config/colors';
+import colors from 'kolors';
 
 const NavBarCancelButton = ({ navigator }) => (
   <TouchableOpacity

@@ -8,7 +8,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { NavigationStyles } from '@expo/ex-navigation';
-import colors from '../config/colors';
+import colors from 'kolors';
 import moment from 'moment';
 import t from 'tcomb-form-native';
 import pickupTimeStylesheet from '../config/pickupTimeStylesheet';

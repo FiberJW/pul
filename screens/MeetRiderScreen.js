@@ -7,7 +7,7 @@ import {
   Text,
 } from 'react-native';
 import { NavigationStyles } from '@expo/ex-navigation';
-import colors from '../config/colors';
+import colors from 'kolors';
 import { Components, Location } from 'expo';
 import ElevatedView from 'react-native-elevated-view';
 import { maybeOpenURL } from 'react-native-app-link';

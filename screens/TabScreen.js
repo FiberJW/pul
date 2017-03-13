@@ -6,7 +6,7 @@ import {
 } from '@expo/ex-navigation';
 import { View, StyleSheet } from 'react-native';
 import Icon from '../components/CrossPlatformIcon';
-import colors from '../config/colors';
+import colors from 'kolors';
 import ShareButton from '../components/ShareButton';
 import NavbarTitle from '../components/NavbarTitle';
 import Router from '../navigation/Router';

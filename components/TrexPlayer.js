@@ -1,29 +1,24 @@
 import React, { PropTypes } from 'react';
-import {
-  View,
-  Text,
-  Dimensions,
-  StyleSheet,
-} from 'react-native';
-import colors from '../config/colors';
+import { View, Text, Dimensions, StyleSheet } from 'react-native';
+import colors from 'kolors';
 import ElevatedView from 'react-native-elevated-view';
+import CardSublabel from './styled/CardSublabel';
+import CardLabel from './styled/CardLabel';
+import CardHeader from './styled/CardHeader';
 
-const TrexPlayer = (props) => (
-  <ElevatedView
-    style={ styles.cardContainer }
-    elevation={ 2 }
-  >
-    <View style={ styles.headerRow }>
-      <Text style={ styles.place }>
+const TrexPlayer = props => (
+  <ElevatedView style={styles.cardContainer} elevation={2}>
+    <CardHeader>
+      <CardLabel>
         {`#${props.place}`}
-      </Text>
-      <Text style={ styles.name }>
+      </CardLabel>
+      <CardLabel>
         {props.player.displayName.toUpperCase()}
-      </Text>
-      <Text style={ styles.type }>
+      </CardLabel>
+      <CardSublabel>
         {props.player.trexHighestScore}
-      </Text>
-    </View>
+      </CardSublabel>
+    </CardHeader>
   </ElevatedView>
 );
 
@@ -43,23 +38,7 @@ const styles = StyleSheet.create({
   },
   headerRow: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  name: {
-    fontFamily: 'open-sans-bold',
-    fontSize: 16,
-    color: colors.black,
-    width: Dimensions.get('window').width / 2,
-  },
-  place: {
-    fontFamily: 'open-sans-bold',
-    fontSize: 16,
-    color: colors.black,
-  },
-  type: {
-    fontFamily: 'open-sans-bold',
-    fontSize: 12,
   },
 });
 

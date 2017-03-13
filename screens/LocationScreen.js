@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { StyleSheet } from 'react-native';
 import { Components } from 'expo';
-import colors from '../config/colors';
+import colors from 'kolors';
 import { NavigationStyles } from '@expo/ex-navigation';
 
 /**

@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import Router from '../navigation/Router';
 import { withNavigation } from '@expo/ex-navigation';
-import colors from '../config/colors';
+import colors from 'kolors';
 import Collapsible from 'react-native-collapsible';
 import moment from 'moment';
 import ElevatedView from 'react-native-elevated-view';
@@ -21,6 +21,9 @@ import createLyftDeepLink from '../utils/createLyftDeepLink';
 import filter from '../utils/filter';
 import { maybeOpenURL } from 'react-native-app-link';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
+import CardLabel from './styled/CardLabel';
+import CardHeader from './styled/CardHeader';
+import CardSublabel from './styled/CardSublabel';
 
 @withNavigation
 @connectDropdownAlert
@@ -122,14 +125,14 @@ export default class Event extends Component {
           };
         })}>
         <ElevatedView style={styles.cardContainer} elevation={2}>
-          <View style={styles.headerRow}>
-            <Text style={styles.name}>
+          <CardHeader>
+            <CardLabel>
               {filter.clean(this.props.event.name.toUpperCase())}
-            </Text>
-            <Text style={styles.type}>
+            </CardLabel>
+            <CardSublabel>
               {this.props.event.type.toUpperCase()}
-            </Text>
-          </View>
+            </CardSublabel>
+          </CardHeader>
           <Text
             onPress={() => this.setState(prevState => {
               return {
@@ -326,21 +329,6 @@ const styles = StyleSheet.create({
     marginVertical: 4,
     marginHorizontal: 8,
     backgroundColor: 'white',
-  },
-  headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  name: {
-    fontFamily: 'open-sans-bold',
-    fontSize: 16,
-    color: colors.black,
-    width: Dimensions.get('window').width / 2,
-  },
-  type: {
-    alignSelf: 'flex-start',
-    fontFamily: 'open-sans-bold',
-    fontSize: 12,
   },
   location: {
     paddingTop: 8,

@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import colors from 'colors';
+import colors from 'kolors';
 
 export default styled.Text`
   margin-left: 16;

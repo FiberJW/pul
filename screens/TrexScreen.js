@@ -8,7 +8,7 @@ import {
   Text,
   AppState,
 } from 'react-native';
-import colors from '../config/colors';
+import colors from 'kolors';
 import { NavigationStyles } from '@expo/ex-navigation';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import TrexPlayer from '../components/TrexPlayer';

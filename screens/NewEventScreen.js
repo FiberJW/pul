@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { NavigationStyles } from '@expo/ex-navigation';
-import colors from '../config/colors';
+import colors from 'kolors';
 import KeyboardEventListener from 'KeyboardEventListener';
 import Swiper from 'react-native-swiper';
 import Icon from '../components/CrossPlatformIcon';

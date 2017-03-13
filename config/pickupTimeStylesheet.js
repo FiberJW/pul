@@ -1,6 +1,6 @@
 import t from 'tcomb-form-native';
 import _ from 'lodash';
-import colors from './colors';
+import colors from 'kolors';
 
 const defaultStylesheet = _.cloneDeep(t.form.Form.stylesheet);
 

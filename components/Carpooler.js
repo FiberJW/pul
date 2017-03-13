@@ -7,12 +7,16 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { withNavigation } from '@expo/ex-navigation';
-import colors from '../config/colors';
+import colors from 'kolors';
 import Collapsible from 'react-native-collapsible';
 import ElevatedView from 'react-native-elevated-view';
 import Router from 'Router';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import { phonecall } from 'react-native-communications';
+import CardSublabel from './styled/CardSublabel';
+import CardLabel from './styled/CardLabel';
+import CardHeader from './styled/CardHeader';
+import CardIndicator from './styled/CardIndicator';
 
 /**
 *  Renders a Carpooler
@@ -181,23 +185,20 @@ export default class Carpooler extends Component {
           };
         })}>
         <ElevatedView style={styles.cardContainer} elevation={2}>
-          <View style={styles.headerRow}>
-            <Text style={styles.name}>
+          <CardHeader>
+            <CardLabel>
               {this.props.user.displayName.toUpperCase()}
-            </Text>
-            <Text style={styles.type}>
+            </CardLabel>
+            <CardSublabel>
               {this.props.user.type.toUpperCase()}
-            </Text>
-          </View>
-          <View
-            style={[
-              styles.indicator,
-              (this.props.pickedUpUsers === this.props.passengers.length ||
+            </CardSublabel>
+          </CardHeader>
+          <CardIndicator
+            active={
+              this.props.pickedUpUsers === this.props.passengers.length ||
                 (this.props.event.yourRide.rideStarted ||
-                  this.props.user.isPickedUp)) && {
-                backgroundColor: colors.neonGreen,
-              },
-            ]}
+                  this.props.user.isPickedUp)
+            }
           />
           <Collapsible duration={200} collapsed={this.state.isCollapsed}>
             {this.props.selfIsDriver &&
@@ -222,31 +223,6 @@ const styles = StyleSheet.create({
     // borderRadius: 4,
     marginVertical: 4,
     backgroundColor: 'white',
-  },
-  headerRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  name: {
-    fontFamily: 'open-sans-bold',
-    fontSize: 16,
-    color: colors.black,
-    width: Dimensions.get('window').width / 2,
-  },
-  type: {
-    fontFamily: 'open-sans-bold',
-    fontSize: 12,
-  },
-  indicator: {
-    position: 'absolute',
-    top: 8,
-    right: 0,
-    width: 4,
-    height: 24,
-    backgroundColor: colors.amber,
-    borderTopLeftRadius: 4,
-    borderBottomLeftRadius: 4,
   },
   collapsedContentContainer: {
     marginTop: 16,

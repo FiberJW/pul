@@ -11,7 +11,7 @@ import {
   GooglePlacesAutocomplete,
 } from 'react-native-google-places-autocomplete';
 import { googleApiKey } from '../config/keys';
-import colors from '../config/colors';
+import colors from 'kolors';
 import ElevatedView from 'react-native-elevated-view';
 
 export default class GetEventLocation extends Component {

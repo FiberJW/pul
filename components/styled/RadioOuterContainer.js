@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
-import colors from 'colors';
+import colors from 'kolors';
 
 export default styled.TouchableOpacity`
   padding: 16;

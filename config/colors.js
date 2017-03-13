@@ -1,5 +1,5 @@
 /**
- * @providesModule colors
+ * @providesModule kolors
  */
 
 export default {

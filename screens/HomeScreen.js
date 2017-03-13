@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import Event from '../components/Event';
 import ActionButton from 'react-native-action-button';
-import colors from '../config/colors';
+import colors from 'kolors';
 import Icon from '../components/CrossPlatformIcon';
 import { NavigationStyles } from '@expo/ex-navigation';
 import Router from '../navigation/Router';

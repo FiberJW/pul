@@ -4,7 +4,7 @@ import Icon from '../components/CrossPlatformIcon';
 import { withNavigation } from '@expo/ex-navigation';
 import Router from '../navigation/Router';
 import tinycolor from 'tinycolor2';
-import colors from '../config/colors';
+import colors from 'kolors';
 
 const SchoolOption = ({ school, intent, navigator }) => (
   <TouchableOpacity

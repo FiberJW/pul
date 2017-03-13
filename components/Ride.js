@@ -8,7 +8,7 @@ import {
   Alert,
   Platform,
 } from 'react-native';
-import colors from '../config/colors';
+import colors from 'kolors';
 import Carpooler from '../components/Carpooler';
 import { connectActionSheet } from '@expo/react-native-action-sheet';
 import { withNavigation } from '@expo/ex-navigation';
