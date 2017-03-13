@@ -1,7 +1,10 @@
 import React, { PropTypes, Component } from 'react';
 import { View, StyleSheet, StatusBar } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert';
+import { observer } from 'mobx-react/native';
+import { observable } from 'mobx';
 
+@observer
 export default class DropdownAlertProvider extends Component {
   static propTypes = {
     children: React.PropTypes.any,
@@ -12,9 +15,7 @@ export default class DropdownAlertProvider extends Component {
     alert: PropTypes.func,
   };
 
-  state = {
-    barStyle: 'default',
-  };
+  @observable barStyle = 'default';
 
   getChildContext() {
     return {
@@ -26,17 +27,13 @@ export default class DropdownAlertProvider extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar barStyle={this.state.barStyle} />
+        <StatusBar barStyle={this.barStyle} />
         {React.Children.only(this.props.children)}
         <DropdownAlert
           ref={ref => {
             this.dropdown = ref;
           }}
-          onClose={() => {
-            this.setState(() => ({
-              barStyle: 'default',
-            }));
-          }}
+          onClose={() => this.barStyle = 'default'}
           endDelta={StatusBar.currentHeight}
         />
       </View>
