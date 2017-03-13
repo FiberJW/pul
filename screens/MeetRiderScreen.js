@@ -53,7 +53,7 @@ export default class MeetRiderScreen extends Component {
             longitude: data.coords.longitude,
           },
         });
-      },
+      }
     );
   }
 
@@ -80,7 +80,8 @@ export default class MeetRiderScreen extends Component {
           toolbarEnabled={false}
           loadingEnabled
           region={this.state.region}
-          onRegionChange={this.onRegionChange}>
+          onRegionChange={this.onRegionChange}
+        >
           <StatusBar hidden />
           <Components.MapView.Marker
             title={this.props.pickupLocation.name}
@@ -98,7 +99,8 @@ export default class MeetRiderScreen extends Component {
               }).catch(err => {
                 this.props.alertWithType('error', 'Error', err.toString());
               });
-            }}>
+            }}
+          >
             <ElevatedView style={styles.marker} elevation={6}>
               <View style={styles.markerInner} />
             </ElevatedView>
@@ -123,7 +125,8 @@ export default class MeetRiderScreen extends Component {
           onPress={() => this.map.animateToCoordinate({
             latitude: this.props.pickupLocation.lat,
             longitude: this.props.pickupLocation.lon,
-          })}>
+          })}
+        >
           <ElevatedView style={styles.infoBox} elevation={4}>
             <Text style={styles.infoBoxText}>
               Pickup at the
@@ -148,7 +151,8 @@ export default class MeetRiderScreen extends Component {
             <TouchableOpacity
               onPress={() => {
                 phonecall(this.props.rider.phoneNumber, true);
-              }}>
+              }}
+            >
               <View style={styles.button}>
                 <Text style={styles.contact}>CONTACT</Text>
               </View>

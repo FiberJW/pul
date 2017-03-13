@@ -51,7 +51,7 @@ export default class GetEmailScreen extends Component {
           this.props.alertWithType(
             'error',
             'Error',
-            'Email username must be provided.',
+            'Email username must be provided.'
           );
           return;
         }
@@ -59,7 +59,7 @@ export default class GetEmailScreen extends Component {
           this.props.alertWithType(
             'error',
             'Error',
-            'Supply your email username only.',
+            'Supply your email username only.'
           );
           return;
         }
@@ -74,10 +74,10 @@ export default class GetEmailScreen extends Component {
               email: this.state.emailUsername.toLowerCase().trim() +
                 this.props.school.emailSuffix,
             },
-          }),
+          })
         );
       },
-      10,
+      10
     );
   };
 
@@ -109,7 +109,8 @@ export default class GetEmailScreen extends Component {
         </View>
         <TouchableOpacity
           onPress={() => this.pushToNextScreen()}
-          style={styles.touchable}>
+          style={styles.touchable}
+        >
           <Text style={styles.touchableText}>Next</Text>
         </TouchableOpacity>
       </KeyboardAwareScrollView>

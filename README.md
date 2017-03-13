@@ -34,4 +34,5 @@
 - ex-navigation
 - MobX
 - Firebase
+- Prettier
  

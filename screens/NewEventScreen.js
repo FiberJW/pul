@@ -72,7 +72,7 @@ export default class NewEventScreen extends Component {
 
   componentWillMount() {
     this._unsubscribe = KeyboardEventListener.subscribe(
-      this._onKeyboardVisibilityChange,
+      this._onKeyboardVisibilityChange
     );
   }
 
@@ -137,7 +137,7 @@ export default class NewEventScreen extends Component {
       this.props.alertWithType(
         'error',
         'Error',
-        'Please mind your choice of words.',
+        'Please mind your choice of words.'
       );
       propertiesAreValid = false;
     }
@@ -150,7 +150,7 @@ export default class NewEventScreen extends Component {
       this.props.alertWithType(
         'error',
         'Error',
-        'Event should be scheduled at least three hours in advance.',
+        'Event should be scheduled at least three hours in advance.'
       );
       propertiesAreValid = false;
     }
@@ -177,7 +177,7 @@ export default class NewEventScreen extends Component {
     {
       keyboardHeight,
       layoutAnimationConfig,
-    }: { keyboardHeight: number, layoutAnimationConfig: ?Object },
+    }: { keyboardHeight: number, layoutAnimationConfig: ?Object }
   ) => {
     if (keyboardHeight === 0) {
       this._blurFocusedTextInput();
@@ -197,7 +197,7 @@ export default class NewEventScreen extends Component {
       this.props.alertWithType(
         'info',
         'Info',
-        'Your submission is in progress.',
+        'Your submission is in progress.'
       );
       return;
     }
@@ -239,7 +239,7 @@ export default class NewEventScreen extends Component {
                       this.props.alertWithType(
                         'error',
                         'Error',
-                        err.toString(),
+                        err.toString()
                       );
                     });
                   }
@@ -248,7 +248,7 @@ export default class NewEventScreen extends Component {
                 this.props.alertWithType(
                   'success',
                   'Success',
-                  'Your event was submitted successfully!',
+                  'Your event was submitted successfully!'
                 );
                 this.props.refresh();
                 this.props.navigator.pop();
@@ -280,7 +280,8 @@ export default class NewEventScreen extends Component {
               swiperWidth: width,
             };
           });
-        }}>
+        }}
+      >
         <StatusBar barStyle="dark-content" />
         <Choose>
           <When condition={this.state.submitting}>
@@ -323,7 +324,8 @@ export default class NewEventScreen extends Component {
                     size={32}
                   />
                 )
-              }>
+              }
+            >
               <GetEventName
                 ref={r => {
                   this.name = r;

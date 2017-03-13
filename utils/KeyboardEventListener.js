@@ -4,11 +4,7 @@
  */
 
 import type EmitterSubscription from 'EmitterSubscription';
-import {
-  LayoutAnimation,
-  Keyboard,
-  Platform,
-} from 'react-native';
+import { LayoutAnimation, Keyboard, Platform } from 'react-native';
 
 /**
  *  Listens to Keyboard Events
@@ -25,7 +21,9 @@ export default class KeyboardEventListener {
    */
   static subscribe(callback) {
     const listener = new KeyboardEventListener(callback);
-    return () => { listener.unsubscribe(); };
+    return () => {
+      listener.unsubscribe();
+    };
   }
 
   /**
@@ -36,10 +34,19 @@ export default class KeyboardEventListener {
     this._callback = callback;
 
     if (Platform.OS === 'ios') {
-      this._keyboardDidChangeSubscription = Keyboard.addListener('keyboardWillChangeFrame', this._onKeyboardChange);
+      this._keyboardDidChangeSubscription = Keyboard.addListener(
+        'keyboardWillChangeFrame',
+        this._onKeyboardChange
+      );
     } else {
-      this._keyboardDidShowSubscription = Keyboard.addListener('keyboardDidShow', this._onKeyboardChange);
-      this._keyboardDidHideSubscription = Keyboard.addListener('keyboardDidHide', this._onKeyboardChange);
+      this._keyboardDidShowSubscription = Keyboard.addListener(
+        'keyboardDidShow',
+        this._onKeyboardChange
+      );
+      this._keyboardDidHideSubscription = Keyboard.addListener(
+        'keyboardDidHide',
+        this._onKeyboardChange
+      );
     }
   }
 
@@ -47,9 +54,12 @@ export default class KeyboardEventListener {
    *  unsubscribes from the KeyboardEventListener
    */
   unsubscribe() {
-    if (this._keyboardDidChangeSubscription) this._keyboardDidChangeSubscription.remove();
-    if (this._keyboardDidShowSubscription) this._keyboardDidShowSubscription.remove();
-    if (this._keyboardDidHideSubscription) this._keyboardDidHideSubscription.remove();
+    if (this._keyboardDidChangeSubscription)
+      this._keyboardDidChangeSubscription.remove();
+    if (this._keyboardDidShowSubscription)
+      this._keyboardDidShowSubscription.remove();
+    if (this._keyboardDidHideSubscription)
+      this._keyboardDidHideSubscription.remove();
   }
 
   _onKeyboardChange = (event: any) => {
@@ -61,9 +71,14 @@ export default class KeyboardEventListener {
     const { duration, easing, startCoordinates, endCoordinates } = event;
 
     let keyboardHeight;
-    if (Platform.OS === 'ios' && endCoordinates.screenY > startCoordinates.screenY) {
+    if (
+      Platform.OS === 'ios' && endCoordinates.screenY > startCoordinates.screenY
+    ) {
       keyboardHeight = 0;
-    } else if (Platform.OS === 'ios' && endCoordinates.screenY === startCoordinates.screenY) {
+    } else if (
+      Platform.OS === 'ios' &&
+      endCoordinates.screenY === startCoordinates.screenY
+    ) {
       // Just return -- not sure where this event comes from and seems unnecessary
       return;
     } else {

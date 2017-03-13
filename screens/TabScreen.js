@@ -56,7 +56,8 @@ export default class TabScreen extends Component {
           renderLabel={this._renderLabel}
           barBackgroundColor="white"
           indicatorStyle={{ backgroundColor: colors.black }}
-          initialTab="home">
+          initialTab="home"
+        >
           <SlidingTabNavigationItem id="ride">
             <StackNavigation
               id="ride"

@@ -13,7 +13,7 @@ export class TrexStore {
       () => {
         this.error = null;
       },
-      timeInSeconds * 1000,
+      timeInSeconds * 1000
     );
   };
 

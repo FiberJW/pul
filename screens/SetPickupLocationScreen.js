@@ -181,7 +181,7 @@ export default class SetPickupLocationScreen extends Component {
                         this.props.alertWithType(
                           'error',
                           'Error',
-                          err.toString(),
+                          err.toString()
                         );
                       });
                     }
@@ -192,7 +192,7 @@ export default class SetPickupLocationScreen extends Component {
             this.props.alertWithType(
               'success',
               'Success',
-              'Thanks for requesting a ride! Make sure to say hello to your driver!',
+              'Thanks for requesting a ride! Make sure to say hello to your driver!'
             );
             this.setState(() => {
               return {
@@ -226,7 +226,8 @@ export default class SetPickupLocationScreen extends Component {
                 justifyContent: 'center',
                 alignItems: 'center',
                 flex: 1,
-              }}>
+              }}
+            >
               <ActivityIndicator size="large" />
             </View>
           </When>

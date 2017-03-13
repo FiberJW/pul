@@ -59,10 +59,10 @@ export default class GetNameScreen extends Component {
               email: this.props.credentials.email,
               name: this.state.name.trim(),
             },
-          }),
+          })
         );
       },
-      10,
+      10
     );
   };
 
@@ -87,7 +87,8 @@ export default class GetNameScreen extends Component {
         </View>
         <TouchableOpacity
           onPress={() => this.pushToNextScreen()}
-          style={styles.touchable}>
+          style={styles.touchable}
+        >
           <Text style={styles.touchableText}>Next</Text>
         </TouchableOpacity>
       </KeyboardAwareScrollView>

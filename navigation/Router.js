@@ -41,5 +41,5 @@ export default createRouter(
     meetRider: () => MeetRiderScreen,
     trex: () => TrexScreen,
   }),
-  { ignoreSerializableWarnings: true },
+  { ignoreSerializableWarnings: true }
 );

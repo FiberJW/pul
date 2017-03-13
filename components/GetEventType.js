@@ -1,8 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import {
-  View,
-  StyleSheet,
-} from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import t from 'tcomb-form-native';
 import newEventFormStylesheet from '../config/newEventFormStylesheet';
 
@@ -26,7 +23,6 @@ const types = t.enums({
   dance: 'Dance',
 });
 
-
 const Type = t.struct({
   type: types,
 });
@@ -45,7 +41,7 @@ export default class GetEventType extends Component {
   static propTypes = {
     value: PropTypes.any,
     onChange: PropTypes.func,
-  }
+  };
 
   componentDidMount() {
     this.type.validate();
@@ -53,21 +49,23 @@ export default class GetEventType extends Component {
 
   isValid = () => {
     return this.type.validate().isValid();
-  }
+  };
 
   render() {
     return (
-      <View style={ styles.container }>
+      <View style={styles.container}>
         <Form
-          { ...this.props }
-          type={ Type }
-          ref={ r => { this.type = r; } }
-          value={ this.props.value }
-          onChange={ (type) => {
+          {...this.props}
+          type={Type}
+          ref={r => {
+            this.type = r;
+          }}
+          value={this.props.value}
+          onChange={type => {
             this.props.onChange(type);
             this.type.validate();
-          } }
-          options={ TypeOptions }
+          }}
+          options={TypeOptions}
         />
       </View>
     );

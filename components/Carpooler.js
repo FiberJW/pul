@@ -42,7 +42,7 @@ export default class Carpooler extends Component {
 
   confirmAttendance = () => {
     const passIndex = this.props.event.yourRide.passengers.findIndex(
-      i => i.userUID === this.props.user.userUID,
+      i => i.userUID === this.props.user.userUID
     );
     global.firebaseApp
       .database()
@@ -78,7 +78,7 @@ export default class Carpooler extends Component {
       Router.getRoute('meetDriver', {
         self,
         driver: this.props.event.yourRide.driver,
-      }),
+      })
     );
   };
 
@@ -103,7 +103,7 @@ export default class Carpooler extends Component {
             pickupLocation: location,
             rider: this.props.user,
             wazeUrl,
-          }),
+          })
         );
       })
       .catch(err => {
@@ -183,7 +183,8 @@ export default class Carpooler extends Component {
           return {
             isCollapsed: !prevState.isCollapsed,
           };
-        })}>
+        })}
+      >
         <ElevatedView style={styles.cardContainer} elevation={2}>
           <CardHeader>
             <CardLabel>

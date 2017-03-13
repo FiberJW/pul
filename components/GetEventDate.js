@@ -1,8 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import {
-  View,
-  StyleSheet,
-} from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import moment from 'moment';
 import t from 'tcomb-form-native';
 import newEventFormStylesheet from '../config/newEventFormStylesheet';
@@ -30,7 +27,7 @@ export default class GetEventDate extends Component {
   static propTypes = {
     value: PropTypes.any,
     onChange: PropTypes.func,
-  }
+  };
 
   componentDidMount() {
     this.date.validate();
@@ -38,21 +35,23 @@ export default class GetEventDate extends Component {
 
   isValid = () => {
     return this.date.validate().isValid();
-  }
+  };
 
   render() {
     return (
-      <View style={ styles.container }>
+      <View style={styles.container}>
         <Form
-          { ...this.props }
-          type={ _Date }
-          ref={ r => { this.date = r; } }
-          value={ this.props.value }
-          onChange={ (date) => {
+          {...this.props}
+          type={_Date}
+          ref={r => {
+            this.date = r;
+          }}
+          value={this.props.value}
+          onChange={date => {
             this.props.onChange(date);
             this.date.validate();
-          } }
-          options={ DateOptions }
+          }}
+          options={DateOptions}
         />
       </View>
     );

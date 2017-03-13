@@ -88,13 +88,13 @@ export default class DriveOptionsScreen extends Component {
     const pickupDatePlusHours = moment(pickupDate).add(pickupHours, 'hours');
     const completePickupMoment = moment(pickupDatePlusHours).add(
       pickUpMinutes,
-      'minutes',
+      'minutes'
     );
 
     const addedHours = moment(date).add(this.props.event.time.hours, 'hours');
     const completeEventMoment = moment(addedHours).add(
       this.props.event.time.minutes,
-      'minutes',
+      'minutes'
     );
     return completePickupMoment.isBefore(completeEventMoment);
   };
@@ -125,7 +125,7 @@ export default class DriveOptionsScreen extends Component {
       this.props.alertWithType(
         'error',
         'Error',
-        'Your pickup time is invalid.',
+        'Your pickup time is invalid.'
       );
       return;
     }
@@ -133,7 +133,7 @@ export default class DriveOptionsScreen extends Component {
       this.props.alertWithType(
         'info',
         'Info',
-        'Your submission is in progress.',
+        'Your submission is in progress.'
       );
       return;
     }
@@ -160,7 +160,7 @@ export default class DriveOptionsScreen extends Component {
             title: 'Time to pickup your passengers!',
             body: `Pickup your riders for ${this.props.event.name}`,
           },
-          { time: pickupTime.subtract(30, 'minutes').toDate() },
+          { time: pickupTime.subtract(30, 'minutes').toDate() }
         ).then(notiID => {
           ride.update({
             notiID,
@@ -191,7 +191,7 @@ export default class DriveOptionsScreen extends Component {
         this.props.alertWithType(
           'success',
           'Success',
-          'Thanks for offering a ride!',
+          'Thanks for offering a ride!'
         );
         this.props.navigator.pop();
         this.props.refresh(false);
@@ -213,7 +213,8 @@ export default class DriveOptionsScreen extends Component {
               justifyContent: 'center',
               alignItems: 'center',
               flex: 1,
-            }}>
+            }}
+          >
             <ActivityIndicator size="large" />
           </View>
         </When>

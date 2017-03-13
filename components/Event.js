@@ -110,12 +110,12 @@ export default class Event extends Component {
                         this.props.alertWithType(
                           'error',
                           'Error',
-                          error.toString(),
+                          error.toString()
                         );
                       });
                   },
                 },
-              ],
+              ]
             );
           }
         }}
@@ -123,7 +123,8 @@ export default class Event extends Component {
           return {
             isCollapsed: !prevState.isCollapsed,
           };
-        })}>
+        })}
+      >
         <ElevatedView style={styles.cardContainer} elevation={2}>
           <CardHeader>
             <CardLabel>
@@ -144,7 +145,8 @@ export default class Event extends Component {
                 .getNavigator('master')
                 .push(Router.getRoute('location', { event: this.props.event }));
             }}
-            style={styles.location}>
+            style={styles.location}
+          >
             {this.props.event.location.address}
           </Text>
           <Text style={styles.time}>
@@ -188,10 +190,11 @@ export default class Event extends Component {
                       this.props.alertWithType(
                         'error',
                         'Error',
-                        err.toString(),
+                        err.toString()
                       );
                     });
-                }}>
+                }}
+              >
                 {filter.clean(this.props.event.url)}
               </Text>
             </If>
@@ -208,13 +211,13 @@ export default class Event extends Component {
                       Router.getRoute('setPickupLocation', {
                         refresh: this.props.refresh,
                         event: this.props.event,
-                      }),
+                      })
                     );
                   } else {
                     this.props.alertWithType(
                       'error',
                       'Error',
-                      'You must verify your email before continuing. No creepers allowed!',
+                      'You must verify your email before continuing. No creepers allowed!'
                     );
                   }
                 }}
@@ -227,7 +230,8 @@ export default class Event extends Component {
                       ? colors.disabledBlue
                       : colors.blue,
                   },
-                ]}>
+                ]}
+              >
                 <Text style={styles.rideButtonText}>
                   RIDE
                 </Text>
@@ -240,13 +244,13 @@ export default class Event extends Component {
                       Router.getRoute('setDriveOptions', {
                         refresh: this.props.refresh,
                         event: this.props.event,
-                      }),
+                      })
                     );
                   } else {
                     this.props.alertWithType(
                       'error',
                       'Error',
-                      'You must verify your email before continuing. No creepers allowed!',
+                      'You must verify your email before continuing. No creepers allowed!'
                     );
                   }
                 }}
@@ -257,7 +261,8 @@ export default class Event extends Component {
                       ? colors.disabledPurp
                       : colors.purp,
                   },
-                ]}>
+                ]}
+              >
                 <Text style={styles.driveButtonText}>
                   DRIVE
                 </Text>
@@ -290,7 +295,7 @@ export default class Event extends Component {
                         this.props.alertWithType(
                           'error',
                           'Error',
-                          err.toString(),
+                          err.toString()
                         );
                       });
                     })
@@ -298,11 +303,12 @@ export default class Event extends Component {
                       this.props.alertWithType(
                         'error',
                         'Error',
-                        err.toString(),
+                        err.toString()
                       );
                     });
                 }}
-                style={styles.lyftButton}>
+                style={styles.lyftButton}
+              >
                 <Image
                   resizeMode="contain"
                   style={styles.lyftIcon}

@@ -5,9 +5,9 @@ export default function connectDropdownAlert(WrappedComponent) {
   const ConnectedDropdownAlert = (props, context) => {
     return (
       <WrappedComponent
-        { ...props }
-        alertWithType={ context.alertWithType }
-        alert={ context.alert }
+        {...props}
+        alertWithType={context.alertWithType}
+        alert={context.alert}
       />
     );
   };

@@ -23,7 +23,8 @@ export default class OnboardingScreen extends Component {
     return (
       <Components.LinearGradient
         style={styles.container}
-        colors={['#D500F9', '#007AFF']}>
+        colors={['#D500F9', '#007AFF']}
+      >
         <StatusBar barStyle="light-content" />
         <View style={styles.innerContainer}>
           <Image
@@ -40,19 +41,21 @@ export default class OnboardingScreen extends Component {
         <TouchableOpacity
           onPress={() => {
             this.props.navigator.push(
-              Router.getRoute('chooseSchool', { intent: 'signup' }),
+              Router.getRoute('chooseSchool', { intent: 'signup' })
             );
           }}
-          style={styles.buttonContainer}>
+          style={styles.buttonContainer}
+        >
           <Text style={styles.buttonText}>GET STARTED</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
             this.props.navigator.push(
-              Router.getRoute('chooseSchool', { intent: 'login' }),
+              Router.getRoute('chooseSchool', { intent: 'login' })
             );
           }}
-          style={styles.loginContainer}>
+          style={styles.loginContainer}
+        >
           <Text style={styles.loginText}>
             Have an account? Log in!
           </Text>

@@ -39,7 +39,7 @@ export default class UpcomingRideScreen extends Component {
       nextProps.alertWithType(
         'error',
         'Error',
-        nextProps.eventStore.error.toString(),
+        nextProps.eventStore.error.toString()
       );
     }
   }
@@ -57,7 +57,8 @@ export default class UpcomingRideScreen extends Component {
                 justifyContent: 'center',
                 alignItems: 'center',
                 flex: 1,
-              }}>
+              }}
+            >
               <ActivityIndicator size="large" />
             </View>
           </When>
@@ -65,11 +66,12 @@ export default class UpcomingRideScreen extends Component {
             condition={
               this.props.eventStore.rides.slice().length ||
                 this.props.eventStore.refreshing
-            }>
+            }
+          >
             <ListView
               enableEmptySections
               dataSource={this.ds.cloneWithRows(
-                this.props.eventStore.rides.slice(),
+                this.props.eventStore.rides.slice()
               )}
               refreshControl={
                 (
@@ -96,7 +98,8 @@ export default class UpcomingRideScreen extends Component {
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
-              }}>
+              }}
+            >
               <Image
                 resizeMode="contain"
                 style={{
@@ -114,7 +117,8 @@ export default class UpcomingRideScreen extends Component {
                   paddingHorizontal: 8,
                   color: '#AEAEAF',
                   textAlign: 'center',
-                }}>
+                }}
+              >
                 No need to feel alone. Check out your school's events and make it out to one!
               </Text>
             </View>

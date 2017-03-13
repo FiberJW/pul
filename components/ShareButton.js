@@ -11,7 +11,8 @@ const ShareButton = () => (
         'https://play.google.com/store/apps/details?id=io.github.datwheat.pul\n' +
         'https://itunes.apple.com/us/app/p%C3%BCl-carpooling-for-students-by-students/id1196047562?ls=1&mt=8',
     })}
-    style={styles.container}>
+    style={styles.container}
+  >
     <Icon name="share" outline size={24} color={colors.black} />
   </TouchableOpacity>
 );

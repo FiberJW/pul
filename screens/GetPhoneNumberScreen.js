@@ -55,7 +55,7 @@ export default class GetPhoneNumberScreen extends Component {
           this.props.alertWithType(
             'error',
             'Error',
-            'Phone number must be provided.',
+            'Phone number must be provided.'
           );
           return;
         }
@@ -69,10 +69,10 @@ export default class GetPhoneNumberScreen extends Component {
               name: this.props.credentials.name,
               phoneNumber: this.state.phoneNumber.trim(),
             },
-          }),
+          })
         );
       },
-      10,
+      10
     );
   };
 
@@ -103,7 +103,8 @@ export default class GetPhoneNumberScreen extends Component {
         </View>
         <TouchableOpacity
           onPress={() => this.pushToNextScreen()}
-          style={styles.touchable}>
+          style={styles.touchable}
+        >
           <Text style={styles.touchableText}>Next</Text>
         </TouchableOpacity>
       </KeyboardAwareScrollView>

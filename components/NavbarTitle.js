@@ -1,19 +1,12 @@
 import React from 'react';
-import {
-  View,
-  StyleSheet,
-  Image,
-  Platform,
-} from 'react-native';
+import { View, StyleSheet, Image, Platform } from 'react-native';
 
 const NavbarTitle = () => (
-  <View
-    style={ styles.container }
-  >
+  <View style={styles.container}>
     <Image
       resizeMethod="resize"
-      source={ require('../assets/images/pul_logo_black.png') }
-      style={ styles.logo }
+      source={require('../assets/images/pul_logo_black.png')}
+      style={styles.logo}
       resizeMode="contain"
     />
   </View>

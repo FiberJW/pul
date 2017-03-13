@@ -17,7 +17,7 @@ export class EventStore {
       const rides = _.map(event.rides || {}, (ride, rideUID) => {
         const passengers = _.map(ride.passengers || {}, (
           passenger,
-          passUID,
+          passUID
         ) => ({ ...passenger, passUID }));
 
         if (
@@ -48,7 +48,7 @@ export class EventStore {
           .diff(
             moment(rightEvent.date)
               .add(rightEvent.time.hours, 'hours')
-              .add(rightEvent.time.minutes, 'minutes'),
+              .add(rightEvent.time.minutes, 'minutes')
           );
       })
       .slice(0, 100);
@@ -105,7 +105,7 @@ export class EventStore {
       () => {
         this.error = null;
       },
-      timeInSeconds * 1000,
+      timeInSeconds * 1000
     );
   };
 
@@ -125,7 +125,7 @@ export class EventStore {
           return ride.driver === global.firebaseApp.auth().currentUser.uid ||
             ride.passengers.some(
               passenger =>
-                passenger.userUID === global.firebaseApp.auth().currentUser.uid,
+                passenger.userUID === global.firebaseApp.auth().currentUser.uid
             );
         });
     });
@@ -138,7 +138,7 @@ export class EventStore {
             ride.driver === global.firebaseApp.auth().currentUser.uid ||
             ride.passengers.some(
               passenger =>
-                passenger.userUID === global.firebaseApp.auth().currentUser.uid,
+                passenger.userUID === global.firebaseApp.auth().currentUser.uid
             )
           ) {
             yourRide = ride;

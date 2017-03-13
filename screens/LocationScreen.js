@@ -49,7 +49,8 @@ export default class LocationScreen extends Component {
         toolbarEnabled={false}
         loadingEnabled
         region={this.state.region}
-        onRegionChange={this.onRegionChange}>
+        onRegionChange={this.onRegionChange}
+      >
         <Components.MapView.Marker
           title={this.props.event.name}
           description={this.props.event.location.address}

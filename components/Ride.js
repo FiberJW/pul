@@ -127,12 +127,12 @@ export default class Ride extends Component {
                       .remove()
                       .then(() => {
                         Notifications.cancelScheduledNotificationAsync(
-                          this.props.event.yourRide.notiID,
+                          this.props.event.yourRide.notiID
                         );
                         this.props.alertWithType(
                           'error',
                           '😢',
-                          `You left ${this.props.event.name}.`,
+                          `You left ${this.props.event.name}.`
                         );
                         this.props.refresh(false);
                       })
@@ -140,12 +140,12 @@ export default class Ride extends Component {
                         this.props.alertWithType(
                           'error',
                           'Error',
-                          err.toString(),
+                          err.toString()
                         );
                       });
                   },
                 },
-              ],
+              ]
             );
           } else {
             Alert.alert(
@@ -161,7 +161,7 @@ export default class Ride extends Component {
                       .findIndex(
                         i =>
                           i.userUID ===
-                          global.firebaseApp.auth().currentUser.uid,
+                          global.firebaseApp.auth().currentUser.uid
                       );
                     global.firebaseApp
                       .database()
@@ -173,14 +173,14 @@ export default class Ride extends Component {
                       .child(this.props.event.yourRide.uid)
                       .child('passengers')
                       .child(
-                        this.props.event.yourRide.passengers[passIndex].passUID,
+                        this.props.event.yourRide.passengers[passIndex].passUID
                       )
                       .remove()
                       .then(() => {
                         this.props.alertWithType(
                           'error',
                           '😢',
-                          `You left ${this.props.event.name}.`,
+                          `You left ${this.props.event.name}.`
                         );
                         this.props.refresh(false);
                       })
@@ -188,12 +188,12 @@ export default class Ride extends Component {
                         this.props.alertWithType(
                           'error',
                           'Error',
-                          err.toString(),
+                          err.toString()
                         );
                       });
                   },
                 },
-              ],
+              ]
             );
           }
         }
@@ -208,7 +208,7 @@ export default class Ride extends Component {
             this.props.alertWithType('error', 'Error', err.toString());
           });
         }
-      },
+      }
     );
   };
 
@@ -223,7 +223,8 @@ export default class Ride extends Component {
             style={styles.moreContainer}
             onPress={this._onOpenActionSheet}
             // onPress open an action sheet
-            hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}>
+            hitSlop={{ top: 20, bottom: 20, left: 20, right: 20 }}
+          >
             <View style={styles.moreItem} />
             <View style={styles.moreItem} />
             <View style={styles.moreItem} />
@@ -252,7 +253,8 @@ export default class Ride extends Component {
                 !this.props.event.yourRide.rideStarted &&
                 this.state.passengers.length > 1 &&
                 this.state.pickedUpUsers === this.state.passengers.length - 1
-            }>
+            }
+          >
             <TouchableOpacity
               onPress={() => Alert.alert(
                 Platform.OS === 'ios' ? 'Start Ride' : 'Start ride',
@@ -285,22 +287,23 @@ export default class Ride extends Component {
                               this.props.alertWithType(
                                 'error',
                                 'Error',
-                                err.toString(),
+                                err.toString()
                               );
                             });
-                          },
+                          }
                         )
                         .catch(err => {
                           this.props.alertWithType(
                             'error',
                             'Error',
-                            err.toString(),
+                            err.toString()
                           );
                         });
                     },
                   },
-                ],
-              )}>
+                ]
+              )}
+            >
               <ElevatedView style={styles.startDrivingButton} elevation={4}>
                 <Text style={styles.buttonText}>
                   START DRIVING
@@ -313,7 +316,8 @@ export default class Ride extends Component {
               this.state.selfIsDriver &&
                 this.props.event.yourRide.rideStarted &&
                 !this.props.event.yourRide.rideCompleted
-            }>
+            }
+          >
             <TouchableOpacity
               onPress={() => Alert.alert(
                 Platform.OS === 'ios' ? 'End Ride' : 'End ride',
@@ -339,21 +343,22 @@ export default class Ride extends Component {
                             this.props.alertWithType(
                               'success',
                               'YEET',
-                              'Aye you made it!',
+                              'Aye you made it!'
                             );
-                          },
+                          }
                         )
                         .catch(err => {
                           this.props.alertWithType(
                             'error',
                             'Error',
-                            err.toString(),
+                            err.toString()
                           );
                         });
                     },
                   },
-                ],
-              )}>
+                ]
+              )}
+            >
               <ElevatedView style={styles.rideCompleteButton} elevation={4}>
                 <Text style={styles.buttonText}>
                   COMPLETE RIDE
@@ -364,14 +369,16 @@ export default class Ride extends Component {
           <When
             condition={
               this.state.selfIsDriver && this.state.passengers.length === 1
-            }>
+            }
+          >
             <Text
               style={{
                 fontFamily: 'open-sans-semibold',
                 fontSize: 18,
                 alignSelf: 'center',
                 paddingTop: 16,
-              }}>
+              }}
+            >
               NO PASSENGERS AVAILABLE
             </Text>
           </When>
@@ -379,14 +386,16 @@ export default class Ride extends Component {
             condition={
               this.props.event.yourRide.rideStarted &&
                 !this.props.event.yourRide.rideCompleted
-            }>
+            }
+          >
             <Text
               style={{
                 fontFamily: 'open-sans-semibold',
                 fontSize: 18,
                 alignSelf: 'center',
                 paddingTop: 16,
-              }}>
+              }}
+            >
               RIDE IN PROGRESS
             </Text>
           </When>
@@ -397,7 +406,8 @@ export default class Ride extends Component {
                 fontSize: 18,
                 alignSelf: 'center',
                 paddingTop: 16,
-              }}>
+              }}
+            >
               RIDE COMPLETED
             </Text>
           </When>

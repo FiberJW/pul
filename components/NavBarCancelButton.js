@@ -11,13 +11,15 @@ const NavBarCancelButton = ({ navigator }) => (
       alignItems: 'center',
       marginRight: 16,
     }}
-    onPress={() => navigator.pop()}>
+    onPress={() => navigator.pop()}
+  >
     <Text
       style={{
         fontFamily: 'open-sans-bold',
         color: colors.black,
         fontSize: 12,
-      }}>
+      }}
+    >
       CANCEL
     </Text>
   </TouchableOpacity>

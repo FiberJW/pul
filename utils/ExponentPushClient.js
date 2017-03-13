@@ -16,9 +16,8 @@ const BASE_API_URL = `${BASE_URL}--/api`;
  *
  */
 export function isExponentPushToken(token) {
-  return ((typeof(token) === 'string') && /^ExponentPushToken.+/.test(token));
+  return typeof token === 'string' && /^ExponentPushToken.+/.test(token);
 }
-
 
 /**
  * Sends a push notification with the given options and data
@@ -28,9 +27,11 @@ export async function sendPushNotificationAsync(opts) {
   let exponentPushToken = opts.exponentPushToken;
 
   if (!isExponentPushToken(exponentPushToken)) {
-    throw new Error(`Missing \`exponentPushToken\`. Should be something like \
+    throw new Error(
+      `Missing \`exponentPushToken\`. Should be something like \
 \`ExponentPushToken[Re4MeUKjYWNd0FXSj8Eppi]\` but instead got \
-\`${exponentPushToken}\``);
+\`${exponentPushToken}\``
+    );
   }
 
   let message = opts.message || undefined;

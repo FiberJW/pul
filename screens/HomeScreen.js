@@ -44,7 +44,7 @@ export default class HomeScreen extends Component {
       nextProps.alertWithType(
         'error',
         'Error',
-        nextProps.eventStore.error.toString(),
+        nextProps.eventStore.error.toString()
       );
     }
   }
@@ -62,7 +62,8 @@ export default class HomeScreen extends Component {
                 justifyContent: 'center',
                 alignItems: 'center',
                 flex: 1,
-              }}>
+              }}
+            >
               <ActivityIndicator size="large" />
             </View>
           </When>
@@ -70,12 +71,13 @@ export default class HomeScreen extends Component {
             condition={
               this.props.eventStore.events.length ||
                 this.props.eventStore.refreshing
-            }>
+            }
+          >
             <ListView
               enableEmptySections
               style={{ marginTop: 4 }}
               dataSource={this.ds.cloneWithRows(
-                this.props.eventStore.events.slice(),
+                this.props.eventStore.events.slice()
               )}
               refreshControl={
                 (
@@ -98,7 +100,8 @@ export default class HomeScreen extends Component {
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
-              }}>
+              }}
+            >
               <Image
                 resizeMode="contain"
                 style={{
@@ -116,7 +119,8 @@ export default class HomeScreen extends Component {
                   paddingHorizontal: 8,
                   color: '#AEAEAF',
                   textAlign: 'center',
-                }}>
+                }}
+              >
                 No events? Your school must be pretty lame.
               </Text>
             </View>
@@ -130,13 +134,13 @@ export default class HomeScreen extends Component {
               this.props.navigation.getNavigator('master').push(
                 Router.getRoute('newEvent', {
                   refresh: this.props.eventStore.refresh,
-                }),
+                })
               );
             } else {
               this.props.alertWithType(
                 'error',
                 'Error',
-                'You must verify your email before continuing. No creepers allowed!',
+                'You must verify your email before continuing. No creepers allowed!'
               );
             }
           }}
@@ -150,7 +154,7 @@ export default class HomeScreen extends Component {
               this.props.alertWithType(
                 'error',
                 'Error',
-                'You must verify your email before continuing. No creepers allowed!',
+                'You must verify your email before continuing. No creepers allowed!'
               );
             }
           }}

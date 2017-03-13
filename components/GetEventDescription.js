@@ -1,14 +1,14 @@
 import React, { Component, PropTypes } from 'react';
-import {
-  View,
-  StyleSheet,
-} from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import t from 'tcomb-form-native';
 import newEventFormStylesheet from '../config/newEventFormStylesheet';
 
 const Form = t.form.Form;
 
-const descriptionRefined = t.refinement(t.String, string => string.length > 0 && string.length <= 140);
+const descriptionRefined = t.refinement(
+  t.String,
+  string => string.length > 0 && string.length <= 140
+);
 
 const Description = t.struct({
   description: t.maybe(descriptionRefined),
@@ -32,7 +32,7 @@ export default class GetEventName extends Component {
   static propTypes = {
     value: PropTypes.any,
     onChange: PropTypes.func,
-  }
+  };
 
   componentDidMount() {
     this.description.validate();
@@ -40,20 +40,22 @@ export default class GetEventName extends Component {
 
   isValid = () => {
     return this.description.validate().isValid();
-  }
+  };
   render() {
     return (
-      <View style={ styles.container }>
+      <View style={styles.container}>
         <Form
-          { ...this.props }
-          type={ Description }
-          ref={ r => { this.description = r; } }
-          value={ this.props.value }
-          onChange={ (description) => {
+          {...this.props}
+          type={Description}
+          ref={r => {
+            this.description = r;
+          }}
+          value={this.props.value}
+          onChange={description => {
             this.props.onChange(description);
             this.description.validate();
-          } }
-          options={ DescriptionOptions }
+          }}
+          options={DescriptionOptions}
         />
       </View>
     );
@@ -67,4 +69,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-

@@ -1,9 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import {
-  TextInput,
-  ScrollView,
-  LayoutAnimation,
-} from 'react-native';
+import { TextInput, ScrollView, LayoutAnimation } from 'react-native';
 import KeyboardEventListener from 'KeyboardEventListener';
 
 export default class KeyboardAwareScrollView extends Component {
@@ -17,19 +13,21 @@ export default class KeyboardAwareScrollView extends Component {
       PropTypes.array,
       PropTypes.number,
     ]),
-  }
+  };
 
   static defaultProps = {
     children: [],
     contentContainerStyle: {},
-  }
+  };
 
   state = {
     keyboardHeight: 0,
-  }
+  };
 
   componentWillMount() {
-    this._unsubscribe = KeyboardEventListener.subscribe(this._onKeyboardVisibilityChange);
+    this._unsubscribe = KeyboardEventListener.subscribe(
+      this._onKeyboardVisibilityChange
+    );
   }
 
   componentWillUnmount() {
@@ -44,11 +42,14 @@ export default class KeyboardAwareScrollView extends Component {
 
   _isKeyboardOpen = () => {
     return this.state.keyboardHeight > 0;
-  }
+  };
 
   _onKeyboardVisibilityChange = (
-    { keyboardHeight, layoutAnimationConfig }:
-    { keyboardHeight: number, layoutAnimationConfig: ?Object }) => {
+    {
+      keyboardHeight,
+      layoutAnimationConfig,
+    }: { keyboardHeight: number, layoutAnimationConfig: ?Object }
+  ) => {
     if (keyboardHeight === 0) {
       this._blurFocusedTextInput();
     }
@@ -62,20 +63,21 @@ export default class KeyboardAwareScrollView extends Component {
         keyboardHeight,
       };
     });
-  }
+  };
 
   render() {
     return (
       <ScrollView
-        onScroll={ this._blurFocusedTextInput }
-        scrollEventThrottle={ 32 }
+        onScroll={this._blurFocusedTextInput}
+        scrollEventThrottle={32}
         keyboardDismissMode="on-drag"
         keyboardShouldPersistTaps="always"
-        contentContainerStyle={ [this.props.contentContainerStyle,
-          this.state.keyboardHeight ?
-          { flex: 1, marginBottom: this.state.keyboardHeight } :
-          { flex: 1 },
-        ] }
+        contentContainerStyle={[
+          this.props.contentContainerStyle,
+          this.state.keyboardHeight
+            ? { flex: 1, marginBottom: this.state.keyboardHeight }
+            : { flex: 1 },
+        ]}
       >
         {this.props.children}
       </ScrollView>

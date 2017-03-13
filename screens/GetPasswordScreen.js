@@ -73,7 +73,7 @@ export default class GetPasswordScreen extends Component {
           this.props.alertWithType(
             'error',
             'Error',
-            'Password must be at least 6 characters long.',
+            'Password must be at least 6 characters long.'
           );
           return;
         }
@@ -82,7 +82,7 @@ export default class GetPasswordScreen extends Component {
           this.props.alertWithType(
             'success',
             '',
-            "Make sure you've created a memorable password!",
+            "Make sure you've created a memorable password!"
           );
           this.setState(() => {
             return {
@@ -103,17 +103,17 @@ export default class GetPasswordScreen extends Component {
             .then(() => {
               this.props.navigator.immediatelyResetStack(
                 [Router.getRoute('tabs')],
-                0,
+                0
               );
               setTimeout(
                 () => {
                   this.props.alertWithType(
                     'info',
                     'Info',
-                    'Make sure to enable push notifications to stay in the loop!',
+                    'Make sure to enable push notifications to stay in the loop!'
                   );
                 },
-                5000,
+                5000
               );
             })
             .catch(error => {
@@ -135,24 +135,24 @@ export default class GetPasswordScreen extends Component {
                   JSON.stringify({
                     ...this.props.credentials,
                     password: this.state.password,
-                  }),
+                  })
                 );
               } catch (error) {
                 this.props.alertWithType('error', 'Error', error.toString());
               }
               this.props.navigator.immediatelyResetStack(
                 [Router.getRoute('tabs')],
-                0,
+                0
               );
               setTimeout(
                 () => {
                   this.props.alertWithType(
                     'info',
                     'Info',
-                    'Make sure to enable push notifications to stay in the loop!',
+                    'Make sure to enable push notifications to stay in the loop!'
                   );
                 },
-                5000,
+                5000
               );
             })
             .catch(error => {
@@ -163,7 +163,7 @@ export default class GetPasswordScreen extends Component {
             });
         }
       },
-      10,
+      10
     );
   };
 
@@ -201,7 +201,8 @@ export default class GetPasswordScreen extends Component {
                     return {
                       visible: !prevState.visible,
                     };
-                  })}>
+                  })}
+                >
                   <Icon
                     name="eye"
                     size={24}
@@ -224,13 +225,14 @@ export default class GetPasswordScreen extends Component {
                             text: 'OK',
                             onPress: () => {
                               this.props.authStore.sendPasswordResetEmail(
-                                this.props.credentials.email,
+                                this.props.credentials.email
                               );
                             },
                           },
-                        ],
+                        ]
                       );
-                    }}>
+                    }}
+                  >
                     <Text style={styles.resetPassword}>Forgot it?</Text>
                   </TouchableOpacity>
                 </When>
@@ -249,7 +251,8 @@ export default class GetPasswordScreen extends Component {
           <Otherwise>
             <TouchableOpacity
               onPress={() => this.pushToNextScreen()}
-              style={styles.touchable}>
+              style={styles.touchable}
+            >
               <Text style={styles.touchableText}>Done</Text>
             </TouchableOpacity>
           </Otherwise>

@@ -55,7 +55,7 @@ export default class TrexScreen extends Component {
       nextProps.alertWithType(
         'error',
         'Error',
-        nextProps.trexStore.error.toString(),
+        nextProps.trexStore.error.toString()
       );
     }
   }
@@ -105,7 +105,7 @@ export default class TrexScreen extends Component {
               <ListView
                 enableEmptySections
                 dataSource={this.ds.cloneWithRows(
-                  this.props.trexStore.players.slice(),
+                  this.props.trexStore.players.slice()
                 )}
                 renderRow={(player, __, idx) => (
                   <TrexPlayer player={player} place={parseInt(idx, 10) + 1} />

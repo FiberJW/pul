@@ -1,15 +1,12 @@
 import React, { Component, PropTypes } from 'react';
-import {
-  View,
-  StyleSheet,
-} from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import t from 'tcomb-form-native';
 import newEventFormStylesheet from '../config/newEventFormStylesheet';
 import validator from 'validator';
 
 const Form = t.form.Form;
 
-const Website = t.refinement(t.String, (s) => validator.isURL(s.toLowerCase()));
+const Website = t.refinement(t.String, s => validator.isURL(s.toLowerCase()));
 
 const Url = t.struct({
   url: t.maybe(Website),
@@ -30,7 +27,7 @@ export default class GetEventUrl extends Component {
   static propTypes = {
     value: PropTypes.any,
     onChange: PropTypes.func,
-  }
+  };
 
   componentDidMount() {
     this.url.validate();
@@ -38,21 +35,23 @@ export default class GetEventUrl extends Component {
 
   isValid = () => {
     return this.url.validate().isValid();
-  }
+  };
 
   render() {
     return (
-      <View style={ styles.container }>
+      <View style={styles.container}>
         <Form
-          { ...this.props }
-          type={ Url }
-          ref={ r => { this.url = r; } }
-          value={ this.props.value }
-          onChange={ (url) => {
+          {...this.props}
+          type={Url}
+          ref={r => {
+            this.url = r;
+          }}
+          value={this.props.value}
+          onChange={url => {
             this.props.onChange(url);
             this.url.validate();
-          } }
-          options={ UrlOptions }
+          }}
+          options={UrlOptions}
         />
       </View>
     );

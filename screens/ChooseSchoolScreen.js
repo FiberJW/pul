@@ -76,7 +76,8 @@ export default class ChooseSchoolScreen extends Component {
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
-              }}>
+              }}
+            >
               <ActivityIndicator size="large" />
             </View>
           </When>
@@ -119,9 +120,10 @@ Our hotspots for pickups are:
 
 Thanks a lot for considering adding <SCHOOL NAME> to PÜL!
 
-<SENDER NAME>`,
+<SENDER NAME>`
                 );
-              }}>
+              }}
+            >
               <Text style={styles.notExist}>
                 School not listed?
               </Text>

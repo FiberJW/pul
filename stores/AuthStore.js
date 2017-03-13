@@ -18,7 +18,7 @@ export class AuthStore {
         .auth()
         .createUserWithEmailAndPassword(
           credentials.email,
-          credentials.password,
+          credentials.password
         );
 
       await user.updateProfile({ displayName: credentials.name });
@@ -125,7 +125,7 @@ export class AuthStore {
           global.firebaseApp.auth().currentUser.reload();
         }
       },
-      1000,
+      1000
     );
   };
 
@@ -177,7 +177,7 @@ export class AuthStore {
       () => {
         this.error = null;
       },
-      timeInSeconds * 1000,
+      timeInSeconds * 1000
     );
   };
 }

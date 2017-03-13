@@ -67,7 +67,7 @@ export default class MeetDriverScreen extends Component {
                     longitude: data.coords.longitude,
                   },
                 });
-              },
+              }
             );
             this.setState(() => {
               return {
@@ -112,7 +112,8 @@ export default class MeetDriverScreen extends Component {
               justifyContent: 'center',
               alignItems: 'center',
               flex: 1,
-            }}>
+            }}
+          >
             <ActivityIndicator size="large" />
           </View>
         </When>
@@ -134,7 +135,8 @@ export default class MeetDriverScreen extends Component {
               toolbarEnabled={false}
               loadingEnabled
               region={this.state.region}
-              onRegionChange={this.onRegionChange}>
+              onRegionChange={this.onRegionChange}
+            >
               <StatusBar hidden />
               <Components.MapView.Marker
                 title={this.state.pickupLocation.name}
@@ -152,7 +154,8 @@ export default class MeetDriverScreen extends Component {
                   }).catch(err => {
                     this.props.alertWithType('error', 'Error', err.toString());
                   });
-                }}>
+                }}
+              >
                 <ElevatedView style={styles.marker} elevation={6}>
                   <View style={styles.markerInner} />
                 </ElevatedView>
@@ -177,7 +180,8 @@ export default class MeetDriverScreen extends Component {
               onPress={() => this.map.animateToCoordinate({
                 latitude: this.state.pickupLocation.lat,
                 longitude: this.state.pickupLocation.lon,
-              })}>
+              })}
+            >
               <ElevatedView style={styles.infoBox} elevation={4}>
                 <Text style={styles.infoBoxText}>
                   Meet at the
@@ -202,7 +206,8 @@ export default class MeetDriverScreen extends Component {
                 <TouchableOpacity
                   onPress={() => {
                     phonecall(this.state.driverData.phoneNumber, true);
-                  }}>
+                  }}
+                >
                   <View style={styles.button}>
                     <Text style={styles.contact}>CONTACT</Text>
                   </View>

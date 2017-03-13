@@ -114,7 +114,7 @@ export default class SettingsScreen extends Component {
           this.props.alertWithType(
             'error',
             'Error',
-            'To stay in the loop, you need to enable push notifications.',
+            'To stay in the loop, you need to enable push notifications.'
           );
         }
       })
@@ -152,7 +152,7 @@ export default class SettingsScreen extends Component {
                   this.props.alertWithType(
                     'error',
                     'Error',
-                    'Please enter your full name.',
+                    'Please enter your full name.'
                   );
                   return;
                 }
@@ -174,7 +174,7 @@ export default class SettingsScreen extends Component {
                     this.props.alertWithType(
                       'error',
                       'Error',
-                      error.toString(),
+                      error.toString()
                     );
                   });
               }}
@@ -199,7 +199,7 @@ export default class SettingsScreen extends Component {
                   this.props.alertWithType(
                     'error',
                     'Error',
-                    'Please enter your 10-digit phone number.',
+                    'Please enter your 10-digit phone number.'
                   );
                   return;
                 }
@@ -214,7 +214,7 @@ export default class SettingsScreen extends Component {
                     this.props.alertWithType(
                       'error',
                       'Error',
-                      error.toString(),
+                      error.toString()
                     );
                   });
               }}
@@ -224,7 +224,8 @@ export default class SettingsScreen extends Component {
           <View style={styles.switchFieldContainer}>
             <TouchableOpacity
               onPress={() =>
-                this.togglePushNotifications(!this.state.notifications)}>
+                this.togglePushNotifications(!this.state.notifications)}
+            >
               <SettingsLabel>Push notifications</SettingsLabel>
             </TouchableOpacity>
             <Switch
@@ -241,10 +242,11 @@ export default class SettingsScreen extends Component {
                 null,
                 null,
                 `PÜL Feedback <${this.props.authStore.userId}>`,
-                null,
+                null
               );
             }}
-            style={styles.fieldContainer}>
+            style={styles.fieldContainer}
+          >
             <SettingsLabel>Send feedback</SettingsLabel>
           </TouchableOpacity>
           <TouchableOpacity
@@ -268,7 +270,7 @@ export default class SettingsScreen extends Component {
                             .getNavigator('master')
                             .immediatelyResetStack(
                               [Router.getRoute('onboarding')],
-                              0,
+                              0
                             );
                           this.props.eventStore.reset();
                           this.props.trexStore.reset();
@@ -278,15 +280,16 @@ export default class SettingsScreen extends Component {
                           this.props.alertWithType(
                             'error',
                             'Error',
-                            error.toString(),
+                            error.toString()
                           );
                         });
                     },
                   },
-                ],
+                ]
               );
             }}
-            style={styles.fieldContainer}>
+            style={styles.fieldContainer}
+          >
             <SettingsLabel>Log out</SettingsLabel>
           </TouchableOpacity>
         </View>

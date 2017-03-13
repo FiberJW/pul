@@ -54,7 +54,8 @@ export default class GetEventLocation extends Component {
               longitude: this.props.location.details.geometry.location.lng,
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421,
-            }}>
+            }}
+          >
             <Components.MapView.Marker
               coordinate={{
                 latitude: this.props.location.details.geometry.location.lat,
@@ -111,7 +112,8 @@ export default class GetEventLocation extends Component {
           <TouchableOpacity
             onPress={this.props.onSubmit}
             activeOpacity={0.7}
-            style={styles.submitButtonContainer}>
+            style={styles.submitButtonContainer}
+          >
             <ElevatedView style={styles.submitButton} elevation={4}>
               <Text style={styles.submitText}>
                 SUBMIT EVENT

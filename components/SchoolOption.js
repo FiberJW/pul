@@ -15,7 +15,8 @@ const SchoolOption = ({ school, intent, navigator }) => (
       {
         backgroundColor: school.primaryColor,
       },
-    ]}>
+    ]}
+  >
     <Image
       resizeMode="contain"
       source={{ uri: school.logoUrl }}
@@ -29,7 +30,8 @@ const SchoolOption = ({ school, intent, navigator }) => (
             ? 'white'
             : colors.black,
         },
-      ]}>{school.name}</Text>
+      ]}
+    >{school.name}</Text>
     <Icon
       name="arrow-forward"
       size={24}
