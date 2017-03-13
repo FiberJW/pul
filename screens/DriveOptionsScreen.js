@@ -21,6 +21,7 @@ import {
 } from '../utils/ExponentPushClient';
 import _ from 'lodash';
 import RadioOption from '../components/RadioOption';
+import WidgetLabel from '../components/styled/WidgetLabel';
 
 const Form = t.form.Form;
 
@@ -218,11 +219,7 @@ export default class DriveOptionsScreen extends Component {
         </When>
         <Otherwise>
           <ScrollView style={styles.container}>
-            <View style={styles.headerRow}>
-              <Text style={styles.header}>
-                PASSENGER LIMIT
-              </Text>
-            </View>
+            <WidgetLabel label="PASSENGER LIMIT" />
             <View>
               {this.state.numPassengerOptions.map(n => (
                 <RadioOption
@@ -236,11 +233,7 @@ export default class DriveOptionsScreen extends Component {
                 />
               ))}
             </View>
-            <View style={styles.headerRow}>
-              <Text style={styles.header}>
-                PICKUP TIME
-              </Text>
-            </View>
+            <WidgetLabel label="PICKUP TIME" />
             <Form
               {...this.props}
               type={Time}
@@ -275,16 +268,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.eggshell,
-  },
-  headerRow: {
-    flexDirection: 'row',
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-  },
-  header: {
-    fontFamily: 'open-sans-bold',
-    fontSize: 12,
-    color: colors.stardust,
   },
   confirmButton: {
     height: 64,

@@ -13,6 +13,7 @@ import { NavigationStyles } from '@expo/ex-navigation';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import TrexPlayer from '../components/TrexPlayer';
 import { observer, inject } from 'mobx-react/native';
+import WidgetLabel from '../components/styled/WidgetLabel';
 
 @connectDropdownAlert
 @inject('trexStore')
@@ -100,9 +101,7 @@ export default class TrexScreen extends Component {
           </When>
           <Otherwise>
             <View style={styles.leaderboard}>
-              <View style={styles.labelContainer}>
-                <Text style={styles.label}>LEADERBOARD</Text>
-              </View>
+              <WidgetLabel label="LEADERBOARD" />
               <ListView
                 enableEmptySections
                 dataSource={this.ds.cloneWithRows(
