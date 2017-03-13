@@ -38,7 +38,8 @@ export default class GetEventLocation extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {!!(!this.props.submitting && this.props.location) &&
+        {!this.props.submitting &&
+          this.props.location &&
           <Components.MapView
             style={StyleSheet.absoluteFillObject}
             scrollEnabled={false}
@@ -104,9 +105,9 @@ export default class GetEventLocation extends Component {
               rankby: 'distance',
             }}
           />}
-        {!!(this.props.keyboardHeight === 0 &&
+        {this.props.keyboardHeight === 0 &&
           !this.props.submitting &&
-          this.props.location) &&
+          this.props.location &&
           <TouchableOpacity
             onPress={this.props.onSubmit}
             activeOpacity={0.7}

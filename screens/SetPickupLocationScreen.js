@@ -97,7 +97,7 @@ export default class SetPickupLocationScreen extends Component {
           return { location: location.name };
         })}
         color={colors.blue}
-        selected={!!(this.state.location === location.name)}
+        selected={this.state.location === location.name}
         label={location.name}
       />
     );

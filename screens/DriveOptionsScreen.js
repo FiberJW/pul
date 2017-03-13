@@ -228,7 +228,7 @@ export default class DriveOptionsScreen extends Component {
                     return { passengerLimit: n + 1 };
                   })}
                   color={colors.purp}
-                  selected={!!(this.state.passengerLimit === n + 1)}
+                  selected={this.state.passengerLimit === n + 1}
                   label={`${n + 1}`}
                 />
               ))}

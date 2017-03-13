@@ -171,8 +171,8 @@ export default class Carpooler extends Component {
   );
 
   render() {
-    return !!(this.props.user.userUID !==
-      global.firebaseApp.auth().currentUser.uid) &&
+    return this.props.user.userUID !==
+      global.firebaseApp.auth().currentUser.uid &&
       <TouchableOpacity
         activeOpacity={1}
         onPress={() => this.setState(prevState => {
@@ -193,19 +193,20 @@ export default class Carpooler extends Component {
             style={[
               styles.indicator,
               (this.props.pickedUpUsers === this.props.passengers.length ||
-                !!(this.props.event.yourRide.rideStarted ||
+                (this.props.event.yourRide.rideStarted ||
                   this.props.user.isPickedUp)) && {
                 backgroundColor: colors.neonGreen,
               },
             ]}
           />
           <Collapsible duration={200} collapsed={this.state.isCollapsed}>
-            {!!(this.props.selfIsDriver && this.props.user.type === 'rider') &&
+            {this.props.selfIsDriver &&
+              this.props.user.type === 'rider' &&
               this.renderDriverPassengerContent()}
-            {!!(this.props.user.type === 'rider' && !this.props.selfIsDriver) &&
+            {this.props.user.type === 'rider' &&
+              !this.props.selfIsDriver &&
               this.renderPeerPassengerContent()}
-            {!!(this.props.user.type === 'driver') &&
-              this.renderDriverContent()}
+            {this.props.user.type === 'driver' && this.renderDriverContent()}
           </Collapsible>
         </ElevatedView>
       </TouchableOpacity>;

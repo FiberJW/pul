@@ -40,7 +40,7 @@ export default class Event extends Component {
   };
 
   componentWillMount() {
-    !!this.props.event.rides &&
+    this.props.event.rides &&
       this.props.event.rides.forEach(ride => {
         if (ride.driver === global.firebaseApp.auth().currentUser.uid) {
           this.setState(() => {
@@ -49,7 +49,7 @@ export default class Event extends Component {
             };
           });
         }
-        !!ride.passengers &&
+        ride.passengers &&
           ride.passengers.some(passenger => {
             if (
               passenger.userUID === global.firebaseApp.auth().currentUser.uid
@@ -261,19 +261,20 @@ export default class Event extends Component {
               </TouchableOpacity>
             </View>
             <Text style={styles.driversAvailable}>
-              {!!this.state.isRider && "You're receiving a ride."}
-              {!!this.state.isDriver && "You're giving a ride."}
-              {!!(!this.state.isRider &&
+              {this.state.isRider && "You're receiving a ride."}
+              {this.state.isDriver && "You're giving a ride."}
+              {!this.state.isRider &&
                 !this.state.isDriver &&
-                this.props.event.availableRides > 0) &&
+                this.props.event.availableRides > 0 &&
                 `${this.props.event.availableRides} driver${this.props.event.availableRides > 1 ? 's' : ''} available`.toUpperCase()}
-              {!!(!this.state.isRider &&
+              {!this.state.isRider &&
                 !this.state.isDriver &&
-                !this.props.event.availableRides) &&
+                !this.props.event.availableRides &&
                 'No drivers available'.toUpperCase()}
             </Text>
 
-            {!!(!this.state.isDriver && !this.state.isRider) &&
+            {!this.state.isDriver &&
+              !this.state.isRider &&
               <TouchableOpacity
                 onPress={() => {
                   createLyftDeepLink(this.props.event)
