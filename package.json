@@ -21,7 +21,7 @@
   "dependencies": {
     "@expo/ex-navigation": "^2.9.0",
     "@expo/react-native-action-sheet": "^0.3.0",
-    "@expo/sentry-utils": "*",
+    "@expo/sentry-utils": "^0.3.0",
     "@expo/vector-icons": "^4.0.0",
     "babel-preset-expo": "^1.0.0",
     "bad-words": "^1.4.2",

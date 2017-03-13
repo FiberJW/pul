@@ -39,7 +39,7 @@
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@expo/react-native-touchable-native-feedback-safe/-/react-native-touchable-native-feedback-safe-1.1.1.tgz#62c8bdbd6e17c807e143e7bff38a390728f00c19"
 
-"@expo/sentry-utils@*":
+"@expo/sentry-utils@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@expo/sentry-utils/-/sentry-utils-0.3.0.tgz#4fa5e8056758dc8388a7371966bfede4c48fa36b"
   dependencies:
