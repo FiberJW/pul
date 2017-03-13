@@ -24,9 +24,12 @@ import connectDropdownAlert from '../utils/connectDropdownAlert';
 import CardLabel from './styled/CardLabel';
 import CardHeader from './styled/CardHeader';
 import CardSublabel from './styled/CardSublabel';
+import { observer } from 'mobx-react/native';
+import { observable } from 'mobx';
 
 @withNavigation
 @connectDropdownAlert
+@observer
 export default class Event extends Component {
   static propTypes = {
     event: PropTypes.object.isRequired,
@@ -36,32 +39,22 @@ export default class Event extends Component {
     alertWithType: PropTypes.func.isRequired,
   };
 
-  state = {
-    isCollapsed: true,
-    isRider: false,
-    isDriver: false,
-  };
+  @observable isCollapsed = true;
+  @observable isRider = false;
+  @observable isDriver = false;
 
   componentWillMount() {
     this.props.event.rides &&
       this.props.event.rides.forEach(ride => {
         if (ride.driver === global.firebaseApp.auth().currentUser.uid) {
-          this.setState(() => {
-            return {
-              isDriver: true,
-            };
-          });
+          this.isDriver = true;
         }
         ride.passengers &&
           ride.passengers.some(passenger => {
             if (
               passenger.userUID === global.firebaseApp.auth().currentUser.uid
             ) {
-              this.setState(() => {
-                return {
-                  isRider: true,
-                };
-              });
+              this.isRider = true;
               return true;
             }
             return false;
@@ -119,11 +112,7 @@ export default class Event extends Component {
             );
           }
         }}
-        onPress={() => this.setState(prevState => {
-          return {
-            isCollapsed: !prevState.isCollapsed,
-          };
-        })}
+        onPress={() => this.isCollapsed = !this.isCollapsed}
       >
         <ElevatedView style={styles.cardContainer} elevation={2}>
           <CardHeader>
@@ -135,11 +124,7 @@ export default class Event extends Component {
             </CardSublabel>
           </CardHeader>
           <Text
-            onPress={() => this.setState(prevState => {
-              return {
-                isCollapsed: !prevState.isCollapsed,
-              };
-            })}
+            onPress={() => this.isCollapsed = !this.isCollapsed}
             onLongPress={() => {
               this.props.navigation
                 .getNavigator('master')
@@ -155,7 +140,7 @@ export default class Event extends Component {
               .add(this.props.event.time.minutes, 'minutes')
               .format('LLLL')}
           </Text>
-          <Collapsible duration={200} collapsed={this.state.isCollapsed}>
+          <Collapsible duration={200} collapsed={this.isCollapsed}>
             <If condition={this.props.event.description}>
               <Text style={styles.description}>
                 {filter.clean(this.props.event.description)}
@@ -164,11 +149,7 @@ export default class Event extends Component {
             <If condition={this.props.event.url}>
               <Text
                 style={styles.website}
-                onPress={() => this.setState(prevState => {
-                  return {
-                    isCollapsed: !prevState.isCollapsed,
-                  };
-                })}
+                onPress={() => this.isCollapsed = !this.isCollapsed}
                 onLongPress={() => {
                   let url;
                   if (
@@ -202,8 +183,8 @@ export default class Event extends Component {
               <TouchableOpacity
                 disabled={
                   !this.props.event.availableRides ||
-                    this.state.isRider ||
-                    this.state.isDriver
+                    this.isRider ||
+                    this.isDriver
                 }
                 onPress={() => {
                   if (global.firebaseApp.auth().currentUser.emailVerified) {
@@ -225,8 +206,8 @@ export default class Event extends Component {
                   styles.rideButton,
                   {
                     backgroundColor: !this.props.event.availableRides ||
-                      this.state.isRider ||
-                      this.state.isDriver
+                      this.isRider ||
+                      this.isDriver
                       ? colors.disabledBlue
                       : colors.blue,
                   },
@@ -237,7 +218,7 @@ export default class Event extends Component {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                disabled={this.state.isRider || this.state.isDriver}
+                disabled={this.isRider || this.isDriver}
                 onPress={() => {
                   if (global.firebaseApp.auth().currentUser.emailVerified) {
                     this.props.navigation.getNavigator('master').push(
@@ -257,7 +238,7 @@ export default class Event extends Component {
                 style={[
                   styles.driveButton,
                   {
-                    backgroundColor: this.state.isRider || this.state.isDriver
+                    backgroundColor: this.isRider || this.isDriver
                       ? colors.disabledPurp
                       : colors.purp,
                   },
@@ -269,20 +250,20 @@ export default class Event extends Component {
               </TouchableOpacity>
             </View>
             <Text style={styles.driversAvailable}>
-              {this.state.isRider && "You're receiving a ride."}
-              {this.state.isDriver && "You're giving a ride."}
-              {!this.state.isRider &&
-                !this.state.isDriver &&
+              {this.isRider && "You're receiving a ride."}
+              {this.isDriver && "You're giving a ride."}
+              {!this.isRider &&
+                !this.isDriver &&
                 this.props.event.availableRides > 0 &&
                 `${this.props.event.availableRides} driver${this.props.event.availableRides > 1 ? 's' : ''} available`.toUpperCase()}
-              {!this.state.isRider &&
-                !this.state.isDriver &&
+              {!this.isRider &&
+                !this.isDriver &&
                 !this.props.event.availableRides &&
                 'No drivers available'.toUpperCase()}
             </Text>
 
-            {!this.state.isDriver &&
-              !this.state.isRider &&
+            {!this.isDriver &&
+              !this.isRider &&
               <TouchableOpacity
                 onPress={() => {
                   createLyftDeepLink(this.props.event)
