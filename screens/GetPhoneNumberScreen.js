@@ -13,11 +13,14 @@ import { NavigationStyles } from '@expo/ex-navigation';
 import Router from 'Router';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import KeyboardAwareScrollView from '../components/KeyboardAwareScrollView';
+import { observer } from 'mobx-react/native';
+import { observable } from 'mobx';
 
 /**
  *  For getting a user's phone number in signup
  */
 @connectDropdownAlert
+@observer
 export default class GetPhoneNumberScreen extends Component {
   static route = {
     navigationBar: {
@@ -39,9 +42,7 @@ export default class GetPhoneNumberScreen extends Component {
     alertWithType: PropTypes.func.isRequired,
   };
 
-  state = {
-    phoneNumber: '',
-  };
+  @observable phoneNumber = '';
 
   pushToNextScreen = () => {
     Keyboard.dismiss();
@@ -49,8 +50,7 @@ export default class GetPhoneNumberScreen extends Component {
       () => {
         // to make sure the keyboard goes down before autofocus on the next screen
         if (
-          this.state.phoneNumber.trim().length < 10 ||
-          !/^\d+$/.test(this.state.phoneNumber)
+          this.phoneNumber.trim().length < 10 || !/^\d+$/.test(this.phoneNumber)
         ) {
           this.props.alertWithType(
             'error',
@@ -67,7 +67,7 @@ export default class GetPhoneNumberScreen extends Component {
             credentials: {
               email: this.props.credentials.email,
               name: this.props.credentials.name,
-              phoneNumber: this.state.phoneNumber.trim(),
+              phoneNumber: this.phoneNumber.trim(),
             },
           })
         );
@@ -88,12 +88,8 @@ export default class GetPhoneNumberScreen extends Component {
             keyboardType="phone-pad"
             maxLength={10}
             style={styles.fieldContents}
-            onChangeText={phoneNumber => this.setState(() => {
-              return {
-                phoneNumber: phoneNumber.trim(),
-              };
-            })}
-            value={this.state.phoneNumber}
+            onChangeText={phoneNumber => this.phoneNumber = phoneNumber.trim()}
+            value={this.phoneNumber}
             placeholder="1234567890"
             autoFocus
             blurOnSubmit
