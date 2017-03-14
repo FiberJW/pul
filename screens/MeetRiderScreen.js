@@ -13,8 +13,11 @@ import ElevatedView from 'react-native-elevated-view';
 import { maybeOpenURL } from 'react-native-app-link';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import { phonecall } from 'react-native-communications';
+import { observer } from 'mobx-react/native';
+import { observable } from 'mobx';
 
 @connectDropdownAlert
+@observer
 export default class MeetRiderScreen extends Component {
   static route = {
     navigationBar: {
@@ -33,33 +36,30 @@ export default class MeetRiderScreen extends Component {
     alertWithType: PropTypes.func.isRequired,
   };
 
-  state = {
-    loading: false,
-    region: null,
-    currentUserLocation: null,
-  };
+  @observable region = null;
+  @observable location = null;
 
   componentWillMount() {
-    Location.watchPositionAsync(
+    this.locationSub = Location.watchPositionAsync(
       {
         enableHighAccuracy: true,
         timeInterval: 1000,
         distanceInterval: 1,
       },
       data => {
-        this.setState({
-          location: {
-            latitude: data.coords.latitude,
-            longitude: data.coords.longitude,
-          },
-        });
+        this.location = {
+          latitude: data.coords.latitude,
+          longitude: data.coords.longitude,
+        };
       }
     );
   }
 
-  onRegionChange = region => {
-    this.setState({ region });
-  };
+  componentWillUnmount() {
+    this.locationSub.remove();
+  }
+
+  onRegionChange = region => this.region = region;
 
   render() {
     return (
@@ -79,7 +79,7 @@ export default class MeetRiderScreen extends Component {
           followsUserLocation
           toolbarEnabled={false}
           loadingEnabled
-          region={this.state.region}
+          region={this.region}
           onRegionChange={this.onRegionChange}
         >
           <StatusBar hidden />
@@ -105,7 +105,7 @@ export default class MeetRiderScreen extends Component {
               <View style={styles.markerInner} />
             </ElevatedView>
           </Components.MapView.Marker>
-          <If condition={this.state.location}>
+          <If condition={this.location}>
             <Components.MapView.Polyline
               strokeWidth={2}
               strokeColor={colors.black}
@@ -116,7 +116,7 @@ export default class MeetRiderScreen extends Component {
                   latitude: this.props.pickupLocation.lat,
                   longitude: this.props.pickupLocation.lon,
                 },
-                this.state.location,
+                this.location,
               ]}
             />
           </If>
