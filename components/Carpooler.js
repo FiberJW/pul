@@ -168,7 +168,9 @@ export default class Carpooler extends Component {
       <TouchableOpacity onPress={() => this.confirmAttendance()}>
         <View style={styles.bottomButton}>
           <Text style={styles.buttonText}>
-            CONFIRM ATTENDANCE
+            {this.props.user.isPickedUp
+              ? 'UNCONFIRM ATTENDANCE'
+              : 'CONFIRM ATTENDANCE'}
           </Text>
         </View>
       </TouchableOpacity>
