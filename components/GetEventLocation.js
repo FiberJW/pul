@@ -22,19 +22,7 @@ export default class GetEventLocation extends Component {
     onSubmit: PropTypes.func.isRequired,
     submitting: PropTypes.bool.isRequired,
   };
-  state = {
-    textInputFocused: false,
-  };
-  focusTextInput = () => this.setState(() => {
-    return {
-      textInputFocused: true,
-    };
-  });
-  blurTextInput = () => this.setState(() => {
-    return {
-      textInputFocused: false,
-    };
-  });
+
   render() {
     return (
       <View style={styles.container}>
@@ -69,11 +57,6 @@ export default class GetEventLocation extends Component {
             minLength={2}
             listViewDisplayed="auto" /* true/false/undefined*/
             fetchDetails
-            textInputProps={{
-              autoCorrect: false,
-              onFocus: this.focusTextInput,
-              onBlur: this.blurTextInput,
-            }}
             enablePoweredByContainer={!this.props.location}
             onPress={this.props.onLocationSelect}
             getDefaultValue={() => {
