@@ -19,7 +19,7 @@ import Icon from '../components/CrossPlatformIcon';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import KeyboardAwareScrollView from '../components/KeyboardAwareScrollView';
 import { observer, inject } from 'mobx-react/native';
-
+import { observable } from 'mobx';
 /**
  *  For getting a user's password in signup or login
  */
@@ -48,28 +48,22 @@ export default class GetPasswordScreen extends Component {
     alertWithType: PropTypes.func.isRequired,
   };
 
-  state = {
-    password: '',
-    loggingIn: false,
-    checkedPassword: false,
-    visible: false,
-  };
+  @observable password = '';
+  @observable loggingIn = false;
+  @observable checkedPassword = false;
+  @observable visible = false;
 
   pushToNextScreen = () => {
     Keyboard.dismiss();
     setTimeout(
       () => {
         // to make sure the keyboard goes down before autofocus on the next screen
-        if (this.state.loggingIn) {
+        if (this.loggingIn) {
           return;
         }
-        this.setState(() => {
-          return { loggingIn: true };
-        });
-        if (this.state.password.length < 6) {
-          this.setState(() => {
-            return { loggingIn: false };
-          });
+        this.loggingIn = true;
+        if (this.password.length < 6) {
+          this.loggingIn = false;
           this.props.alertWithType(
             'error',
             'Error',
@@ -78,25 +72,21 @@ export default class GetPasswordScreen extends Component {
           return;
         }
 
-        if (this.props.intent === 'signup' && !this.state.checkedPassword) {
+        if (this.props.intent === 'signup' && !this.checkedPassword) {
           this.props.alertWithType(
             'success',
             '',
             "Make sure you've created a memorable password!"
           );
-          this.setState(() => {
-            return {
-              checkedPassword: true,
-              loggingIn: false,
-            };
-          });
+          this.checkedPassword = true;
+          this.loggingIn = false;
           return;
         }
 
         if (this.props.intent === 'signup') {
           this.props.authStore
             .signup({
-              password: this.state.password,
+              password: this.password,
               school: this.props.school,
               ...this.props.credentials,
             })
@@ -117,16 +107,14 @@ export default class GetPasswordScreen extends Component {
               );
             })
             .catch(error => {
-              this.setState(() => {
-                return { loggingIn: false };
-              });
+              this.loggingIn = false;
               this.props.alertWithType('error', 'Error', error.toString());
             });
         } else {
           this.props.authStore
             .login({
               ...this.props.credentials,
-              password: this.state.password,
+              password: this.password,
             })
             .then(() => {
               try {
@@ -134,7 +122,7 @@ export default class GetPasswordScreen extends Component {
                   '@PUL:user',
                   JSON.stringify({
                     ...this.props.credentials,
-                    password: this.state.password,
+                    password: this.password,
                   })
                 );
               } catch (error) {
@@ -156,9 +144,7 @@ export default class GetPasswordScreen extends Component {
               );
             })
             .catch(error => {
-              this.setState(() => {
-                return { loggingIn: false };
-              });
+              this.loggingIn = false;
               this.props.alertWithType('error', 'Error', error.toString());
             });
         }
@@ -172,7 +158,7 @@ export default class GetPasswordScreen extends Component {
       <KeyboardAwareScrollView contentContainerStyle={styles.container}>
         <View />
         <Choose>
-          <When condition={this.state.loggingIn}>
+          <When condition={this.loggingIn}>
             <ActivityIndicator size="large" />
           </When>
           <Otherwise>
@@ -181,32 +167,24 @@ export default class GetPasswordScreen extends Component {
                 <TextInput
                   autoCorrect={false}
                   underlineColorAndroid="transparent"
-                  secureTextEntry={!this.state.visible}
+                  secureTextEntry={!this.visible}
                   autoFocus
                   style={styles.fieldContents}
-                  onChangeText={password => this.setState(() => {
-                    return {
-                      password: password.trim(),
-                    };
-                  })}
+                  onChangeText={password => this.password = password.trim()}
                   blurOnSubmit
                   returnKeyType="done"
                   onSubmitEditing={() => this.pushToNextScreen()}
-                  value={this.state.password}
+                  value={this.password}
                   placeholder="Password"
                 />
                 <TouchableOpacity
                   activeOpacity={1}
-                  onPress={() => this.setState(prevState => {
-                    return {
-                      visible: !prevState.visible,
-                    };
-                  })}
+                  onPress={() => this.visible = !this.visible}
                 >
                   <Icon
                     name="eye"
                     size={24}
-                    color={!this.state.visible ? colors.grey : colors.black}
+                    color={!this.visible ? colors.grey : colors.black}
                   />
                 </TouchableOpacity>
               </View>
@@ -241,7 +219,7 @@ export default class GetPasswordScreen extends Component {
           </Otherwise>
         </Choose>
         <Choose>
-          <When condition={this.state.loggingIn}>
+          <When condition={this.loggingIn}>
             <Text style={styles.statusText}>
               {this.props.intent === 'signup'
                 ? 'Signup in progress...'
