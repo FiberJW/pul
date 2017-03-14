@@ -12,11 +12,14 @@ import { NavigationStyles } from '@expo/ex-navigation';
 import Router from 'Router';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import KeyboardAwareScrollView from '../components/KeyboardAwareScrollView';
+import { observer } from 'mobx-react/native';
+import { observable } from 'mobx';
 
 /**
  *  For getting a user's name in signup
  */
 @connectDropdownAlert
+@observer
 export default class GetNameScreen extends Component {
   static route = {
     navigationBar: {
@@ -38,16 +41,14 @@ export default class GetNameScreen extends Component {
     alertWithType: PropTypes.func.isRequired,
   };
 
-  state = {
-    name: '',
-  };
+  @observable name = '';
 
   pushToNextScreen = () => {
     Keyboard.dismiss();
     setTimeout(
       () => {
         // to make sure the keyboard goes down before autofocus on the next screen
-        if (!this.state.name.trim().length) {
+        if (!this.name.trim().length) {
           this.props.alertWithType('error', 'Error', 'Name must be provided.');
           return;
         }
@@ -57,7 +58,7 @@ export default class GetNameScreen extends Component {
             intent: this.props.intent,
             credentials: {
               email: this.props.credentials.email,
-              name: this.state.name.trim(),
+              name: this.name.trim(),
             },
           })
         );
@@ -76,8 +77,8 @@ export default class GetNameScreen extends Component {
             autoCorrect={false}
             underlineColorAndroid="transparent"
             style={styles.fieldContents}
-            onChangeText={name => this.setState(() => ({ name }))}
-            value={this.state.name}
+            onChangeText={name => this.name = name}
+            value={this.name}
             placeholder="John Doe"
             autoFocus
             blurOnSubmit
