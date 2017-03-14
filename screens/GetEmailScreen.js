@@ -13,11 +13,14 @@ import Router from 'Router';
 import validator from 'validator';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import KeyboardAwareScrollView from '../components/KeyboardAwareScrollView';
+import { observer } from 'mobx-react/native';
+import { observable } from 'mobx';
 
 /**
  *  For getting a user's email in signup or login
  */
 @connectDropdownAlert
+@observer
 export default class GetEmailScreen extends Component {
   static route = {
     navigationBar: {
@@ -38,16 +41,14 @@ export default class GetEmailScreen extends Component {
     alertWithType: PropTypes.func.isRequired,
   };
 
-  state = {
-    emailUsername: '',
-  };
+  @observable emailUsername = '';
 
   pushToNextScreen = () => {
     Keyboard.dismiss();
     setTimeout(
       () => {
         // to make sure the keyboard goes down before autofocus on the next screen
-        if (!this.state.emailUsername.trim().length) {
+        if (!this.emailUsername.trim().length) {
           this.props.alertWithType(
             'error',
             'Error',
@@ -55,7 +56,7 @@ export default class GetEmailScreen extends Component {
           );
           return;
         }
-        if (validator.isEmail(this.state.emailUsername.trim())) {
+        if (validator.isEmail(this.emailUsername.trim())) {
           this.props.alertWithType(
             'error',
             'Error',
@@ -71,7 +72,7 @@ export default class GetEmailScreen extends Component {
             school: this.props.school,
             intent: this.props.intent,
             credentials: {
-              email: this.state.emailUsername.toLowerCase().trim() +
+              email: this.emailUsername.toLowerCase().trim() +
                 this.props.school.emailSuffix,
             },
           })
@@ -92,10 +93,9 @@ export default class GetEmailScreen extends Component {
               autoCorrect={false}
               underlineColorAndroid="transparent"
               style={styles.fieldContents}
-              onChangeText={emailUsername => this.setState(() => {
-                return { emailUsername: emailUsername.trim() };
-              })}
-              value={this.state.emailUsername}
+              onChangeText={emailUsername =>
+                this.emailUsername = emailUsername.trim()}
+              value={this.emailUsername}
               placeholder="Username"
               autoFocus
               blurOnSubmit
