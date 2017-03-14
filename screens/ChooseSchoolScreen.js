@@ -13,8 +13,11 @@ import { NavigationStyles } from '@expo/ex-navigation';
 import SchoolOption from '../components/SchoolOption';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import { email } from 'react-native-communications';
+import { observer } from 'mobx-react/native';
+import { observable } from 'mobx';
 
 @connectDropdownAlert
+@observer
 export default class ChooseSchoolScreen extends Component {
   static route = {
     navigationBar: {
@@ -37,10 +40,8 @@ export default class ChooseSchoolScreen extends Component {
     alertWithType: PropTypes.func.isRequired,
   };
 
-  state = {
-    loading: true,
-    schools: [],
-  };
+  @observable loading = true;
+  @observable schools = [];
 
   componentWillMount() {
     global.firebaseApp
@@ -48,15 +49,13 @@ export default class ChooseSchoolScreen extends Component {
       .ref('schools')
       .once('value')
       .then(snap => {
-        const schools = Object.keys(snap.val()).map(schoolUID => {
+        this.schools = Object.keys(snap.val()).map(schoolUID => {
           return {
             ...snap.val()[schoolUID],
             uid: schoolUID,
           };
         });
-        this.setState(() => {
-          return { loading: false, schools };
-        });
+        this.loading = false;
       })
       .catch(err => {
         this.props.alertWithType('error', 'Error', err.toString());
@@ -70,7 +69,7 @@ export default class ChooseSchoolScreen extends Component {
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
         <Choose>
-          <When condition={this.state.loading}>
+          <When condition={this.loading}>
             <View
               style={{
                 flex: 1,
@@ -84,7 +83,7 @@ export default class ChooseSchoolScreen extends Component {
           <Otherwise>
             <ListView
               enableEmptySections
-              dataSource={this.ds.cloneWithRows(this.state.schools)}
+              dataSource={this.ds.cloneWithRows(this.schools.slice())}
               renderRow={s => (
                 <SchoolOption intent={this.props.intent} school={s} />
               )}
@@ -127,7 +126,6 @@ Thanks a lot for considering adding <SCHOOL NAME> to PÜL!
               <Text style={styles.notExist}>
                 School not listed?
               </Text>
-
             </TouchableOpacity>
           </When>
         </Choose>
