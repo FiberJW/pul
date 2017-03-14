@@ -40,7 +40,7 @@ export default class MeetRiderScreen extends Component {
   @observable location;
 
   componentWillMount() {
-    this.locationSub = Location.watchPositionAsync(
+    Location.watchPositionAsync(
       {
         enableHighAccuracy: true,
         timeInterval: 1000,
@@ -52,7 +52,9 @@ export default class MeetRiderScreen extends Component {
           longitude: data.coords.longitude,
         };
       }
-    );
+    ).then(locationSub => {
+      this.locationSub = locationSub;
+    });
   }
 
   componentWillUnmount() {
