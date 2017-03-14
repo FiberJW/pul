@@ -3,10 +3,13 @@ import { StyleSheet } from 'react-native';
 import { Components } from 'expo';
 import colors from 'kolors';
 import { NavigationStyles } from '@expo/ex-navigation';
+import { observer } from 'mobx-react/native';
+import { observable } from 'mobx';
 
 /**
  *  Shows the location of an event
  */
+@observer
 export default class LocationScreen extends Component {
   static route = {
     navigationBar: {
@@ -28,13 +31,9 @@ export default class LocationScreen extends Component {
     event: PropTypes.object.isRequired,
   };
 
-  state = {
-    region: null,
-  };
+  @observable region = null;
 
-  onRegionChange = region => {
-    this.setState({ region });
-  };
+  onRegionChange = region => this.region = region;
 
   render() {
     return (
@@ -48,7 +47,7 @@ export default class LocationScreen extends Component {
         }}
         toolbarEnabled={false}
         loadingEnabled
-        region={this.state.region}
+        region={this.region}
         onRegionChange={this.onRegionChange}
       >
         <Components.MapView.Marker
