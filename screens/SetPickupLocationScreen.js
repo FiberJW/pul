@@ -18,6 +18,7 @@ import {
 } from '../utils/ExponentPushClient';
 import { inject, observer } from 'mobx-react/native';
 import RadioOption from '../components/RadioOption';
+import { observable } from 'mobx';
 
 /**
  *  For setting where you want to get picked up as a rider
@@ -50,12 +51,10 @@ export default class SetPickupLocationScreen extends Component {
     alertWithType: PropTypes.func.isRequired,
   };
 
-  state = {
-    location: '',
-    pickupLocations: [],
-    loading: true,
-    submitting: false,
-  };
+  @observable location = '';
+  @observable pickupLocations = [];
+  @observable loading = true;
+  @observable submitting = false;
 
   /**
    *  Called when component is scheduled to render
@@ -71,19 +70,11 @@ export default class SetPickupLocationScreen extends Component {
         const pickupLocations = Object.keys(pulSnap.val()).map(key => {
           return pulSnap.val()[key];
         });
-        this.setState(() => {
-          return {
-            pickupLocations,
-            loading: false,
-          };
-        });
+        this.pickupLocations = pickupLocations;
+        this.loading = false;
       })
       .catch(err => {
-        this.setState(() => {
-          return {
-            loading: false,
-          };
-        });
+        this.loading = false;
         this.props.alertWithType('error', 'Error', err.toString());
       });
   }
@@ -93,11 +84,9 @@ export default class SetPickupLocationScreen extends Component {
   renderOption = location => {
     return (
       <RadioOption
-        onPress={() => this.setState(() => {
-          return { location: location.name };
-        })}
+        onPress={() => this.location = location.name}
         color={colors.blue}
-        selected={this.state.location === location.name}
+        selected={this.location === location.name}
         label={location.name}
       />
     );
@@ -105,16 +94,14 @@ export default class SetPickupLocationScreen extends Component {
 
   requestRide = () => {
     // add submission check
-    if (this.state.submitting) {
+    if (this.submitting) {
       this.props.alertWithType('info', 'Info', 'Your request is in progress.');
       return;
     }
 
-    this.setState(() => {
-      return { submitting: true };
-    });
+    this.submitting = true;
 
-    if (this.state.location === '') {
+    if (this.location === '') {
       this.props.alertWithType('error', 'Error', 'Choose a pickup location.');
       return;
     }
@@ -125,11 +112,7 @@ export default class SetPickupLocationScreen extends Component {
         ride.passengers === undefined ||
         ride.passengers.length < ride.passengerLimit
       ) {
-        this.setState(() => {
-          return {
-            loading: true,
-          };
-        });
+        this.loading = true;
         global.firebaseApp
           .database()
           .ref('schools')
@@ -141,7 +124,7 @@ export default class SetPickupLocationScreen extends Component {
           .child('passengers')
           .push({
             userUID: global.firebaseApp.auth().currentUser.uid,
-            location: this.state.location,
+            location: this.location,
             isPickedUp: false,
           })
           .then(() => {
@@ -194,20 +177,12 @@ export default class SetPickupLocationScreen extends Component {
               'Success',
               'Thanks for requesting a ride! Make sure to say hello to your driver!'
             );
-            this.setState(() => {
-              return {
-                loading: false,
-              };
-            });
+            this.loading = false;
             this.props.refresh(false);
             this.props.navigator.pop();
           })
           .catch(err => {
-            this.setState(() => {
-              return {
-                loading: false,
-              };
-            });
+            this.loading = false;
             this.props.alertWithType('error', 'Error', err.toString());
           });
         return true;
@@ -220,7 +195,7 @@ export default class SetPickupLocationScreen extends Component {
     return (
       <View style={styles.container}>
         <Choose>
-          <When condition={this.state.loading}>
+          <When condition={this.loading}>
             <View
               style={{
                 justifyContent: 'center',
@@ -235,7 +210,7 @@ export default class SetPickupLocationScreen extends Component {
             <ListView
               enableEmptySections
               style={{ marginTop: 4 }}
-              dataSource={this.ds.cloneWithRows(this.state.pickupLocations)}
+              dataSource={this.ds.cloneWithRows(this.pickupLocations)}
               renderRow={location => this.renderOption(location)}
             />
           </Otherwise>
