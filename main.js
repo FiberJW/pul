@@ -10,6 +10,7 @@ import DropdownAlertProvider from './components/DropdownAlertProvider';
 import ExpoSentryClient from '@expo/sentry-utils';
 import connectDropdownAlert from './utils/connectDropdownAlert';
 import { inject, observer, Provider as MobXProvider } from 'mobx-react/native';
+import { observable } from 'mobx';
 import authStore from './stores/AuthStore';
 import eventStore from './stores/EventStore';
 import trexStore from './stores/TrexStore';
@@ -48,7 +49,7 @@ if (!__DEV__) {
   ExpoSentryClient.setupSentry(
     sentryURL,
     require('./exp.json').version,
-    require('./package.json').main,
+    require('./package.json').main
   );
 }
 
@@ -60,17 +61,13 @@ class App extends Component {
     authStore: PropTypes.object,
     alertWithType: PropTypes.func,
   };
-  state = {
-    loading: true,
-    loggedIn: false,
-  };
+
+  @observable loading = true;
 
   componentDidMount() {
     this.setup().catch(e => {
       Alert.alert(e.toString());
-      this.setState(() => {
-        return { loading: false, loggedIn: false };
-      });
+      this.loading = false;
     });
   }
 
@@ -97,16 +94,14 @@ class App extends Component {
       Alert.alert(
         null,
         "Something's on fire. Please press 'OK' to try again.",
-        [{ text: 'OK', onPress: this.startFirebase }],
+        [{ text: 'OK', onPress: this.startFirebase }]
       );
     }
     try {
       await this.signIn();
     } catch (error) {
       this.props.alertWithType('error', 'Error', error.toString());
-      this.setState(() => {
-        return { loading: false };
-      });
+      this.loading = false;
     }
   };
 
@@ -116,9 +111,7 @@ class App extends Component {
       userCredentials = JSON.parse(userCredentials);
       try {
         await this.props.authStore.login(userCredentials, true);
-        this.setState(() => {
-          return { loading: false };
-        });
+        this.loading = false;
       } catch (error) {
         if (error.code) {
           switch (error.code) {
@@ -126,34 +119,26 @@ class App extends Component {
               Alert.alert(
                 null,
                 "No Internet connection. Please press 'OK' when connected.",
-                [{ text: 'OK', onPress: this.signIn }],
+                [{ text: 'OK', onPress: this.signIn }]
               );
               break;
             case 'auth/user-not-found':
             case 'auth/invalid-email':
             case 'auth/user-disabled':
             case 'auth/wrong-password':
-              this.setState(() => {
-                return { loading: false };
-              });
+              this.loading = false;
               break;
             default:
               Alert.alert(null, 'Something is on fire.', [{ text: 'OK' }]);
-              this.setState(() => {
-                return { loading: false };
-              });
+              this.loading = false;
           }
         } else {
           this.props.alertWithType('error', 'Error', error.toString());
-          this.setState(() => {
-            return { loading: false };
-          });
+          this.loading = false;
         }
       }
     } else {
-      this.setState(() => {
-        return { loading: false };
-      });
+      this.loading = false;
     }
   };
 
@@ -165,7 +150,7 @@ class App extends Component {
 
     return (
       <Choose>
-        <When condition={this.state.loading}>
+        <When condition={this.loading}>
           <Components.AppLoading />
         </When>
         <Otherwise>
