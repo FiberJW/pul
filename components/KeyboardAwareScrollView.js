@@ -1,7 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { TextInput, ScrollView, LayoutAnimation } from 'react-native';
 import KeyboardEventListener from 'KeyboardEventListener';
+import { observer } from 'mobx-react/native';
+import { observable } from 'mobx';
 
+@observer
 export default class KeyboardAwareScrollView extends Component {
   static propTypes = {
     children: PropTypes.oneOfType([
@@ -20,9 +23,7 @@ export default class KeyboardAwareScrollView extends Component {
     contentContainerStyle: {},
   };
 
-  state = {
-    keyboardHeight: 0,
-  };
+  @observable keyboardHeight = 0;
 
   componentWillMount() {
     this._unsubscribe = KeyboardEventListener.subscribe(
@@ -41,7 +42,7 @@ export default class KeyboardAwareScrollView extends Component {
   };
 
   _isKeyboardOpen = () => {
-    return this.state.keyboardHeight > 0;
+    return this.keyboardHeight > 0;
   };
 
   _onKeyboardVisibilityChange = (
@@ -58,11 +59,7 @@ export default class KeyboardAwareScrollView extends Component {
       LayoutAnimation.configureNext(layoutAnimationConfig);
     }
 
-    this.setState(() => {
-      return {
-        keyboardHeight,
-      };
-    });
+    this.keyboardHeight = keyboardHeight;
   };
 
   render() {
@@ -74,8 +71,8 @@ export default class KeyboardAwareScrollView extends Component {
         keyboardShouldPersistTaps="always"
         contentContainerStyle={[
           this.props.contentContainerStyle,
-          this.state.keyboardHeight
-            ? { flex: 1, marginBottom: this.state.keyboardHeight }
+          this.keyboardHeight
+            ? { flex: 1, marginBottom: this.keyboardHeight }
             : { flex: 1 },
         ]}
       >
