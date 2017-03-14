@@ -15,8 +15,11 @@ import ElevatedView from 'react-native-elevated-view';
 import { maybeOpenURL } from 'react-native-app-link';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import { phonecall } from 'react-native-communications';
+import { observer } from 'mobx-react/native';
+import { observable } from 'mobx';
 
 @connectDropdownAlert
+@observer
 export default class MeetDriverScreen extends Component {
   static route = {
     navigationBar: {
@@ -35,13 +38,11 @@ export default class MeetDriverScreen extends Component {
     alertWithType: PropTypes.func.isRequired,
   };
 
-  state = {
-    pickupLocation: null,
-    loading: true,
-    region: null,
-    currentUserLocation: null,
-    driverData: null,
-  };
+  @observable pickupLocation;
+  @observable loading = true;
+  @observable region;
+  @observable location;
+  @observable driverData;
 
   componentWillMount() {
     global.firebaseApp
@@ -61,19 +62,15 @@ export default class MeetDriverScreen extends Component {
                 distanceInterval: 1,
               },
               data => {
-                this.setState({
-                  location: {
-                    latitude: data.coords.latitude,
-                    longitude: data.coords.longitude,
-                  },
-                });
+                this.location = {
+                  latitude: data.coords.latitude,
+                  longitude: data.coords.longitude,
+                };
               }
-            );
-            this.setState(() => {
-              return {
-                pickupLocation,
-              };
+            ).then(locationSub => {
+              this.locationSub = locationSub;
             });
+            this.pickupLocation = pickupLocation;
           }
         });
         global.firebaseApp
@@ -82,31 +79,26 @@ export default class MeetDriverScreen extends Component {
           .child(this.props.driver)
           .once('value')
           .then(driverSnap => {
-            const driverData = driverSnap.val();
-            this.setState({
-              driverData,
-              loading: false,
-            });
+            this.driverData = driverSnap.val();
+            this.loading = false;
           });
       })
       .catch(err => {
-        this.setState(() => {
-          return {
-            loading: false,
-          };
-        });
+        this.loading = false;
         this.props.alertWithType('error', 'Error', err.toString());
       });
   }
 
-  onRegionChange = region => {
-    this.setState({ region });
-  };
+  componentWillUnmount() {
+    this.locationSub.remove();
+  }
+
+  onRegionChange = region => this.region = region;
 
   render() {
     return (
       <Choose>
-        <When condition={this.state.loading}>
+        <When condition={this.loading}>
           <View
             style={{
               justifyContent: 'center',
@@ -125,8 +117,8 @@ export default class MeetDriverScreen extends Component {
               }}
               style={StyleSheet.absoluteFillObject}
               initialRegion={{
-                latitude: this.state.pickupLocation.lat,
-                longitude: this.state.pickupLocation.lon,
+                latitude: this.pickupLocation.lat,
+                longitude: this.pickupLocation.lon,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}
@@ -134,19 +126,19 @@ export default class MeetDriverScreen extends Component {
               followsUserLocation
               toolbarEnabled={false}
               loadingEnabled
-              region={this.state.region}
+              region={this.region}
               onRegionChange={this.onRegionChange}
             >
               <StatusBar hidden />
               <Components.MapView.Marker
-                title={this.state.pickupLocation.name}
+                title={this.pickupLocation.name}
                 coordinate={{
-                  latitude: this.state.pickupLocation.lat,
-                  longitude: this.state.pickupLocation.lon,
+                  latitude: this.pickupLocation.lat,
+                  longitude: this.pickupLocation.lon,
                 }}
                 onCalloutPress={() => {
-                  const wazeUrl = `waze://?ll=${this.state.pickupLocation.lat},` +
-                    `${this.state.pickupLocation.lon}&z=10&navigate=yes`;
+                  const wazeUrl = `waze://?ll=${this.pickupLocation.lat},` +
+                    `${this.pickupLocation.lon}&z=10&navigate=yes`;
                   maybeOpenURL(wazeUrl, {
                     appName: 'Waze',
                     appStoreId: 'id323229106',
@@ -160,7 +152,7 @@ export default class MeetDriverScreen extends Component {
                   <View style={styles.markerInner} />
                 </ElevatedView>
               </Components.MapView.Marker>
-              <If condition={this.state.location}>
+              <If condition={this.location}>
                 <Components.MapView.Polyline
                   strokeWidth={2}
                   strokeColor={colors.black}
@@ -168,25 +160,25 @@ export default class MeetDriverScreen extends Component {
                   lineDashPattern={[4, 8, 4, 8]}
                   coordinates={[
                     {
-                      latitude: this.state.pickupLocation.lat,
-                      longitude: this.state.pickupLocation.lon,
+                      latitude: this.pickupLocation.lat,
+                      longitude: this.pickupLocation.lon,
                     },
-                    this.state.location,
+                    this.location,
                   ]}
                 />
               </If>
             </Components.MapView>
             <TouchableOpacity
               onPress={() => this.map.animateToCoordinate({
-                latitude: this.state.pickupLocation.lat,
-                longitude: this.state.pickupLocation.lon,
+                latitude: this.pickupLocation.lat,
+                longitude: this.pickupLocation.lon,
               })}
             >
               <ElevatedView style={styles.infoBox} elevation={4}>
                 <Text style={styles.infoBoxText}>
                   Meet at the
                   {' '}
-                  {this.state.pickupLocation.name.toLowerCase().trim()}
+                  {this.pickupLocation.name.toLowerCase().trim()}
                   .
                 </Text>
               </ElevatedView>
@@ -194,7 +186,7 @@ export default class MeetDriverScreen extends Component {
             <View style={styles.actionContainer}>
               <View>
                 <Text style={styles.driverName}>
-                  {this.state.driverData.displayName.toUpperCase()}
+                  {this.driverData.displayName.toUpperCase()}
                 </Text>
               </View>
               <View style={styles.buttonRow}>
@@ -205,7 +197,7 @@ export default class MeetDriverScreen extends Component {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    phonecall(this.state.driverData.phoneNumber, true);
+                    phonecall(this.driverData.phoneNumber, true);
                   }}
                 >
                   <View style={styles.button}>
