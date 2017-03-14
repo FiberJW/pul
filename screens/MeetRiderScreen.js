@@ -36,8 +36,8 @@ export default class MeetRiderScreen extends Component {
     alertWithType: PropTypes.func.isRequired,
   };
 
-  @observable region = null;
-  @observable location = null;
+  @observable region;
+  @observable location;
 
   componentWillMount() {
     this.locationSub = Location.watchPositionAsync(
