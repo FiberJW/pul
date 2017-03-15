@@ -29,10 +29,14 @@ import {
   sendPushNotificationAsync,
 } from '../utils/ExponentPushClient';
 import _ from 'lodash';
+import { observable } from 'mobx';
+import { observer } from 'mobx-react/native';
+
 /**
  *  Allows user to create new events for school
  */
 @connectDropdownAlert
+@observer
 export default class NewEventScreen extends Component {
   static route = {
     navigationBar: {
@@ -58,17 +62,18 @@ export default class NewEventScreen extends Component {
     alertWithType: PropTypes.func.isRequired,
   };
 
-  state = {
-    name: null,
-    date: moment.utc().toDate(),
-    time: moment.utc().toDate().getTime(),
-    url: '',
-    submitting: false,
-    type: null,
-    description: null,
-    location: null,
-    keyboardHeight: 0,
-  };
+  @observable name;
+  @observable date = moment.utc().toDate();
+  @observable time = moment.utc().toDate().getTime();
+  @observable url = '';
+  @observable submitting = false;
+  @observable type;
+  @observable description;
+  @observable location;
+  @observable keyboardHeight = 0;
+  @observable swiperHeight = 0;
+  @observable swiperWidth = 0;
+  @observable references = {};
 
   componentWillMount() {
     this._unsubscribe = KeyboardEventListener.subscribe(
@@ -84,26 +89,26 @@ export default class NewEventScreen extends Component {
   }
 
   createEvent = () => {
-    const name = this.state.name !== null && this.state.name.name;
-    const type = this.state.type !== null && this.state.type.type;
-    const date = this.state.date.date
-      ? moment.utc(moment(this.state.date.date).startOf('day')).toJSON()
-      : moment.utc(moment(this.state.date).startOf('day')).toJSON();
+    const name = this.name !== undefined && this.name.name;
+    const type = this.type !== undefined && this.type.type;
+    const date = this.date.date
+      ? moment.utc(moment(this.date.date).startOf('day')).toJSON()
+      : moment.utc(moment(this.date).startOf('day')).toJSON();
     const time = {
-      hours: this.state.time.time
-        ? moment(this.state.time.time).hours()
-        : moment(this.state.time).hours(),
-      minutes: this.state.time.time
-        ? moment(this.state.time.time).minutes()
-        : moment(this.state.time).minutes(),
+      hours: this.time.time
+        ? moment(this.time.time).hours()
+        : moment(this.time).hours(),
+      minutes: this.time.time
+        ? moment(this.time.time).minutes()
+        : moment(this.time).minutes(),
     };
-    const url = this.state.url.url || this.state.url;
+    const url = this.url.url || this.url;
     const location = {
-      address: this.state.location.details.formatted_address,
-      geometry: this.state.location.details.geometry,
+      address: this.location.details.formatted_address,
+      geometry: this.location.details.geometry,
     };
-    const description = this.state.description !== null &&
-      this.state.description.description;
+    const description = this.description !== undefined &&
+      this.description.description;
     return {
       name: filter.clean(name.trim()),
       type,
@@ -120,17 +125,17 @@ export default class NewEventScreen extends Component {
   checkDataAndPush = () => {
     let propertiesAreValid = true;
 
-    const name = this.state.name !== null ? this.state.name.name : '';
-    const date = this.state.date.date
-      ? moment.utc(moment(this.state.date.date).startOf('day'))
-      : moment.utc(moment(this.state.date).startOf('day'));
+    const name = this.name !== undefined ? this.name.name : '';
+    const date = this.date.date
+      ? moment.utc(moment(this.date.date).startOf('day'))
+      : moment.utc(moment(this.date).startOf('day'));
     const time = {
-      hours: this.state.time.time
-        ? moment(this.state.time.time).hours()
-        : moment(this.state.time).hours(),
-      minutes: this.state.time.time
-        ? moment(this.state.time.time).minutes()
-        : moment(this.state.time).minutes(),
+      hours: this.time.time
+        ? moment(this.time.time).hours()
+        : moment(this.time).hours(),
+      minutes: this.time.time
+        ? moment(this.time.time).minutes()
+        : moment(this.time).minutes(),
     };
 
     if (name !== filter.clean(name)) {
@@ -155,7 +160,7 @@ export default class NewEventScreen extends Component {
       propertiesAreValid = false;
     }
     ['name', 'date', 'time', 'url', 'type', 'description'].forEach(elem => {
-      if (!this[elem].isValid()) {
+      if (!this.references[elem].isValid()) {
         this.props.alertWithType('error', 'Error', `Event ${elem} is invalid.`);
         propertiesAreValid = false;
       }
@@ -170,7 +175,7 @@ export default class NewEventScreen extends Component {
   };
 
   _isKeyboardOpen = () => {
-    return this.state.keyboardHeight > 0;
+    return this.keyboardHeight > 0;
   };
 
   _onKeyboardVisibilityChange = (
@@ -187,13 +192,11 @@ export default class NewEventScreen extends Component {
       LayoutAnimation.configureNext(layoutAnimationConfig);
     }
 
-    this.setState(() => {
-      return { keyboardHeight };
-    });
+    this.keyboardHeight = keyboardHeight;
   };
 
   submitEvent = event => {
-    if (this.state.submitting) {
+    if (this.submitting) {
       this.props.alertWithType(
         'info',
         'Info',
@@ -202,9 +205,7 @@ export default class NewEventScreen extends Component {
       return;
     }
 
-    this.setState(() => {
-      return { submitting: true };
-    });
+    this.submitting = true;
 
     global.firebaseApp
       .database()
@@ -256,9 +257,7 @@ export default class NewEventScreen extends Component {
           });
       })
       .catch(err => {
-        this.setState(() => {
-          return { submitting: false };
-        });
+        this.submitting = false;
         this.props.alertWithType('error', 'Error', err.toString());
       });
   };
@@ -268,36 +267,32 @@ export default class NewEventScreen extends Component {
       <View
         style={[
           styles.container,
-          this.state.keyboardHeight
-            ? { flex: 1, marginBottom: this.state.keyboardHeight }
+          this.keyboardHeight
+            ? { flex: 1, marginBottom: this.keyboardHeight }
             : { flex: 1 },
         ]}
         onLayout={e => {
           const { width, height } = e.nativeEvent.layout;
-          this.setState(() => {
-            return {
-              swiperHeight: height,
-              swiperWidth: width,
-            };
-          });
+          this.swiperHeight = height;
+          this.swiperWidth = width;
         }}
       >
         <StatusBar barStyle="dark-content" />
         <Choose>
-          <When condition={this.state.submitting}>
+          <When condition={this.submitting}>
             <ActivityIndicator size="large" />
           </When>
           <Otherwise>
             <Swiper
               ref={r => {
-                this.swiper = r;
+                this.references.swiper = r;
               }}
               showsPagination
               onScroll={this._blurFocusedTextInput}
               scrollEventThrottle={32}
               keyboardShouldPersistTaps="always"
               keyboardDismissMode={Platform.OS === 'ios' ? 'none' : 'on-drag'}
-              height={this.state.swiperHeight}
+              height={this.swiperHeight}
               contentContainerStyle={styles.swiperWrapper}
               showsButtons
               loop={false}
@@ -305,7 +300,7 @@ export default class NewEventScreen extends Component {
                 (
                   <Icon
                     onPress={() => {
-                      this.swiper.scrollBy(-1, false);
+                      this.references.swiper.scrollBy(-1, false);
                     }}
                     name="arrow-back"
                     color={colors.black}
@@ -317,7 +312,7 @@ export default class NewEventScreen extends Component {
                 (
                   <Icon
                     onPress={() => {
-                      this.swiper.scrollBy(1, false);
+                      this.references.swiper.scrollBy(1, false);
                     }}
                     name="arrow-forward"
                     color={colors.black}
@@ -328,66 +323,66 @@ export default class NewEventScreen extends Component {
             >
               <GetEventName
                 ref={r => {
-                  this.name = r;
+                  this.references.name = r;
                 }}
-                value={this.state.name}
+                value={this.name}
                 onChange={name => {
-                  this.setState(() => ({ name }));
+                  this.name = name;
                 }}
               />
               <GetEventType
                 ref={r => {
-                  this.type = r;
+                  this.references.type = r;
                 }}
-                value={this.state.type}
+                value={this.type}
                 onChange={type => {
-                  this.setState(() => ({ type }));
+                  this.type = type;
                 }}
               />
               <GetEventDate
                 ref={r => {
-                  this.date = r;
+                  this.references.date = r;
                 }}
-                value={this.state.date}
+                value={this.date}
                 onChange={date => {
-                  this.setState(() => ({ date }));
+                  this.date = date;
                 }}
               />
               <GetEventTime
                 ref={r => {
-                  this.time = r;
+                  this.references.time = r;
                 }}
-                value={this.state.time}
+                value={this.time}
                 onChange={time => {
-                  this.setState(() => ({ time }));
+                  this.time = time;
                 }}
               />
               <GetEventUrl
                 ref={r => {
-                  this.url = r;
+                  this.references.url = r;
                 }}
-                value={this.state.url}
+                value={this.url}
                 onChange={url => {
-                  this.setState(() => ({ url }));
+                  this.url = url;
                 }}
               />
               <GetEventDescription
                 ref={r => {
-                  this.description = r;
+                  this.references.description = r;
                 }}
-                value={this.state.description}
+                value={this.description}
                 onChange={description => {
-                  this.setState(() => ({ description }));
+                  this.description = description;
                 }}
               />
               <GetEventLocation
-                location={this.state.location}
+                location={this.location}
                 onLocationSelect={(data, details = null) => {
-                  this.setState(() => ({ location: { data, details } }));
+                  this.location = { data, details };
                 }}
-                submitting={this.state.submitting}
+                submitting={this.submitting}
                 onSubmit={this.checkDataAndPush}
-                keyboardHeight={this.state.keyboardHeight}
+                keyboardHeight={this.keyboardHeight}
               />
             </Swiper>
           </Otherwise>
