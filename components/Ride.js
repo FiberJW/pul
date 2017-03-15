@@ -16,6 +16,7 @@ import ElevatedView from 'react-native-elevated-view';
 import { maybeOpenURL } from 'react-native-app-link';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import { observer } from 'mobx-react/native';
+import { observable } from 'mobx';
 import { Notifications } from 'expo';
 import RideStatus from './styled/RideStatus';
 
@@ -33,12 +34,10 @@ export default class Ride extends Component {
     alertWithType: PropTypes.func.isRequired,
   };
 
-  state = {
-    passengers: [],
-    pickedUpUsers: 0,
-    selfIsDriver: this.props.event.yourRide.driver ===
-      global.firebaseApp.auth().currentUser.uid,
-  };
+  @observable passengers = [];
+  @observable pickedUpUsers = 0;
+  @observable selfIsDriver = this.props.event.yourRide.driver ===
+    global.firebaseApp.auth().currentUser.uid;
 
   componentWillMount() {
     const passengers = [];
@@ -72,20 +71,12 @@ export default class Ride extends Component {
                 if (pass.isPickedUp) {
                   pickedUpUsers++;
                 }
-                this.setState(() => {
-                  return {
-                    passengers,
-                    pickedUpUsers,
-                  };
-                });
+                this.passengers = passengers;
+                this.pickedUpUsers = pickedUpUsers;
               });
           });
         }
-        this.setState(() => {
-          return {
-            passengers,
-          };
-        });
+        this.passengers = passengers;
       })
       .catch(err => {
         this.props.alertWithType('error', 'Error', err.toString());
@@ -108,7 +99,7 @@ export default class Ride extends Component {
       },
       buttonIndex => {
         if (buttonIndex === destructiveButtonIndex) {
-          if (this.state.selfIsDriver) {
+          if (this.selfIsDriver) {
             Alert.alert(
               Platform.OS === 'ios' ? 'Leave Ride' : 'Leave ride',
               'Are you sure? Leaving this ride will strand your passengers. 😢',
@@ -233,16 +224,16 @@ export default class Ride extends Component {
         </View>
         <ListView
           enableEmptySections
-          dataSource={this.ds.cloneWithRows(this.state.passengers)}
+          dataSource={this.ds.cloneWithRows(this.passengers.slice())}
           renderRow={u => (
             <Carpooler
               event={this.props.event}
               refresh={this.props.refresh}
-              passengers={this.state.passengers}
-              pickedUpUsers={this.state.pickedUpUsers}
+              passengers={this.passengers.slice()}
+              pickedUpUsers={this.pickedUpUsers}
               refreshing={this.props.refreshing}
               user={u}
-              selfIsDriver={this.state.selfIsDriver}
+              selfIsDriver={this.selfIsDriver}
             />
           )}
         />
@@ -250,10 +241,10 @@ export default class Ride extends Component {
         <Choose>
           <When
             condition={
-              this.state.selfIsDriver &&
+              this.selfIsDriver &&
                 !this.props.event.yourRide.rideStarted &&
-                this.state.passengers.length > 1 &&
-                this.state.pickedUpUsers === this.state.passengers.length - 1
+                this.passengers.length > 1 &&
+                this.pickedUpUsers === this.passengers.length - 1
             }
           >
             <TouchableOpacity
@@ -314,7 +305,7 @@ export default class Ride extends Component {
           </When>
           <When
             condition={
-              this.state.selfIsDriver &&
+              this.selfIsDriver &&
                 this.props.event.yourRide.rideStarted &&
                 !this.props.event.yourRide.rideCompleted
             }
@@ -367,11 +358,7 @@ export default class Ride extends Component {
               </ElevatedView>
             </TouchableOpacity>
           </When>
-          <When
-            condition={
-              this.state.selfIsDriver && this.state.passengers.length === 1
-            }
-          >
+          <When condition={this.selfIsDriver && this.passengers.length === 1}>
             <RideStatus>
               NO PASSENGERS AVAILABLE
             </RideStatus>
