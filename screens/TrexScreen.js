@@ -13,6 +13,7 @@ import { NavigationStyles } from '@expo/ex-navigation';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import TrexPlayer from '../components/TrexPlayer';
 import { observer, inject } from 'mobx-react/native';
+import { observable } from 'mobx';
 import WidgetLabel from '../components/styled/WidgetLabel';
 
 @connectDropdownAlert
@@ -40,10 +41,8 @@ export default class TrexScreen extends Component {
     trexStore: PropTypes.object.isRequired,
   };
 
-  state = {
-    appState: AppState.currentState,
-    softBanned: false,
-  };
+  @observable appState = AppState.currentState;
+  @observable softBanned = false;
 
   componentDidMount() {
     this.props.trexStore.watchUsers();
@@ -69,13 +68,12 @@ export default class TrexScreen extends Component {
 
   _handleAppStateChange = nextAppState => {
     if (
-      this.state.appState.match(/inactive|background/) &&
-      nextAppState === 'active'
+      this.appState.match(/inactive|background/) && nextAppState === 'active'
     ) {
-      this.setState({ softBanned: true }); // to prevent guys hacking
-      setTimeout(() => this.setState({ softBanned: false }), 30000);
+      this.softBanned = true;
+      setTimeout(() => this.soft = false, 30000);
     }
-    this.setState({ appState: nextAppState });
+    this.appState = nextAppState;
   };
 
   render() {
@@ -87,7 +85,7 @@ export default class TrexScreen extends Component {
           scrollEnabled={false}
           javaScriptEnabled
           onMessage={e => {
-            if (!this.state.softBanned) {
+            if (!this.softBanned) {
               const highestScore = JSON.parse(e.nativeEvent.data).highestScore;
               this.props.trexStore.addNewHighScore(highestScore);
             }
