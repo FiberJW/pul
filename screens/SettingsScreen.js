@@ -16,6 +16,7 @@ import { Notifications, Permissions } from 'expo';
 import { NavigationStyles } from '@expo/ex-navigation';
 import Router from '../navigation/Router';
 import { observer, inject } from 'mobx-react/native';
+import { observable } from 'mobx';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import { email } from 'react-native-communications';
 import SettingsLabel from '../components/styled/SettingsLabel';
@@ -42,10 +43,8 @@ export default class SettingsScreen extends Component {
     authStore: PropTypes.object,
   };
 
-  state = {
-    user: {},
-    notifications: false,
-  };
+  @observable user = {};
+  @observable notifications = false;
 
   componentWillMount() {
     this.getUser();
@@ -61,12 +60,8 @@ export default class SettingsScreen extends Component {
       .child(global.firebaseApp.auth().currentUser.uid)
       .once('value')
       .then(userSnap => {
-        this.setState(() => {
-          return {
-            user: userSnap.val(),
-            notifications: userSnap.val().settings.notifications,
-          };
-        });
+        this.user = userSnap.val();
+        this.notifications = this.user.settings.notifications;
       })
       .catch(err => {
         this.props.alertWithType('error', 'Error', err.toString());
@@ -78,11 +73,7 @@ export default class SettingsScreen extends Component {
       .then(({ status }) => {
         if (status === 'granted') {
           Notifications.getExponentPushTokenAsync().then(token => {
-            this.setState(() => {
-              return {
-                notifications: value,
-              };
-            });
+            this.notifications = value;
             global.firebaseApp
               .database()
               .ref('users')
@@ -97,20 +88,12 @@ export default class SettingsScreen extends Component {
                 this.getUser();
               })
               .catch(error => {
-                this.setState(() => {
-                  return {
-                    notifications: !value,
-                  };
-                });
+                this.notifications = !value;
                 this.props.alertWithType('error', 'Error', error.toString());
               });
           });
         } else {
-          this.setState(() => {
-            return {
-              notifications: !value,
-            };
-          });
+          this.notifications = !value;
           this.props.alertWithType(
             'error',
             'Error',
@@ -119,11 +102,7 @@ export default class SettingsScreen extends Component {
         }
       })
       .catch(() => {
-        this.setState(() => {
-          return {
-            notifications: !value,
-          };
-        });
+        this.notifications = !value;
       });
   };
 
@@ -142,12 +121,10 @@ export default class SettingsScreen extends Component {
               autoCorrect={false}
               underlineColorAndroid="transparent"
               onChangeText={displayName => {
-                this.setState(prevState => ({
-                  user: {
-                    ...prevState.user,
-                    displayName,
-                  },
-                }));
+                this.user = {
+                  ...this.user,
+                  displayName,
+                };
                 if (displayName.trim().length < 4) {
                   this.props.alertWithType(
                     'error',
@@ -179,7 +156,7 @@ export default class SettingsScreen extends Component {
                   });
               }}
               onEndEditing={this.getUser}
-              value={this.state.user.displayName}
+              value={this.user.displayName}
             />
           </View>
           <View style={styles.fieldContainer}>
@@ -189,12 +166,10 @@ export default class SettingsScreen extends Component {
               onEndEditing={this.getUser}
               underlineColorAndroid="transparent"
               onChangeText={phoneNumber => {
-                this.setState(prevState => ({
-                  user: {
-                    ...prevState.user,
-                    phoneNumber,
-                  },
-                }));
+                this.user = {
+                  ...this.user,
+                  phoneNumber,
+                };
                 if (phoneNumber.trim().length !== 10) {
                   this.props.alertWithType(
                     'error',
@@ -218,19 +193,18 @@ export default class SettingsScreen extends Component {
                     );
                   });
               }}
-              value={this.state.user.phoneNumber}
+              value={this.user.phoneNumber}
             />
           </View>
           <View style={styles.switchFieldContainer}>
             <TouchableOpacity
-              onPress={() =>
-                this.togglePushNotifications(!this.state.notifications)}
+              onPress={() => this.togglePushNotifications(!this.notifications)}
             >
               <SettingsLabel>Push notifications</SettingsLabel>
             </TouchableOpacity>
             <Switch
               onValueChange={this.togglePushNotifications}
-              value={this.state.notifications}
+              value={this.notifications}
             />
           </View>
         </View>
