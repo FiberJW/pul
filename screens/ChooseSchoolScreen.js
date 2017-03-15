@@ -16,6 +16,7 @@ import { email } from 'react-native-communications';
 import { observer } from 'mobx-react/native';
 import { observable } from 'mobx';
 import _ from 'lodash';
+import Suggestion from '../components/styled/Suggestion';
 
 @connectDropdownAlert
 @observer
@@ -124,9 +125,9 @@ Thanks a lot for considering adding <SCHOOL NAME> to PÜL!
                 );
               }}
             >
-              <Text style={styles.notExist}>
+              <Suggestion>
                 School not listed?
-              </Text>
+              </Suggestion>
             </TouchableOpacity>
           </When>
         </Choose>
@@ -140,12 +141,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     justifyContent: 'space-between',
-  },
-  notExist: {
-    fontFamily: 'open-sans',
-    paddingBottom: 16,
-    fontSize: 16,
-    alignSelf: 'center',
-    color: colors.black,
   },
 });

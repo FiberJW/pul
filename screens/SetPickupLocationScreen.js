@@ -20,6 +20,8 @@ import { inject, observer } from 'mobx-react/native';
 import RadioOption from '../components/RadioOption';
 import { observable } from 'mobx';
 import _ from 'lodash';
+import Suggestion from '../components/styled/Suggestion';
+import { email } from 'react-native-communications';
 
 /**
  *  For setting where you want to get picked up as a rider
@@ -219,6 +221,29 @@ export default class SetPickupLocationScreen extends Component {
               REQUEST A RIDE
             </Text>
           </ElevatedView>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => email(
+            ['datwheat@gmail.com'],
+            null,
+            null,
+            'PÜL Pickup Location Request',
+            `Hey!
+
+You should consider adding <SPOT NAME> to PÜL!
+
+Its details are:
+  - Name: <SPOT NAME>
+  - Location: (<LAT>, <LON>)
+
+(How to find coordinates: https://support.google.com/maps/answer/18539)
+
+Thanks a lot for considering adding <SPOT NAME> to PÜL!
+
+${this.props.authStore.userData.displayName}; School ID: ${this.props.authStore.userData.school}`
+          )}
+        >
+          <Suggestion>Know a better spot?</Suggestion>
         </TouchableOpacity>
       </View>
     );
