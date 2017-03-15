@@ -19,6 +19,7 @@ import {
 import { inject, observer } from 'mobx-react/native';
 import RadioOption from '../components/RadioOption';
 import { observable } from 'mobx';
+import _ from 'lodash';
 
 /**
  *  For setting where you want to get picked up as a rider
@@ -66,11 +67,8 @@ export default class SetPickupLocationScreen extends Component {
       .child(this.props.event.schoolUID)
       .child('pickupLocations')
       .once('value')
-      .then(pulSnap => {
-        const pickupLocations = Object.keys(pulSnap.val()).map(key => {
-          return pulSnap.val()[key];
-        });
-        this.pickupLocations = pickupLocations;
+      .then(pickupLocationsSnap => {
+        this.pickupLocations = _.toArray(pickupLocationsSnap.val());
         this.loading = false;
       })
       .catch(err => {
@@ -80,17 +78,6 @@ export default class SetPickupLocationScreen extends Component {
   }
 
   ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-
-  renderOption = location => {
-    return (
-      <RadioOption
-        onPress={() => this.location = location.name}
-        color={colors.blue}
-        selected={this.location === location.name}
-        label={location.name}
-      />
-    );
-  };
 
   requestRide = () => {
     // add submission check
@@ -103,10 +90,11 @@ export default class SetPickupLocationScreen extends Component {
 
     if (this.location === '') {
       this.props.alertWithType('error', 'Error', 'Choose a pickup location.');
+      this.submitting = false;
       return;
     }
 
-    const shuffledRides = shuffle(this.props.event.rides);
+    const shuffledRides = shuffle(this.props.event.rides.slice());
     shuffledRides.some(ride => {
       if (
         ride.passengers === undefined ||
@@ -210,8 +198,18 @@ export default class SetPickupLocationScreen extends Component {
             <ListView
               enableEmptySections
               style={{ marginTop: 4 }}
-              dataSource={this.ds.cloneWithRows(this.pickupLocations)}
-              renderRow={location => this.renderOption(location)}
+              dataSource={this.ds.cloneWithRows(this.pickupLocations.slice())}
+              renderRow={location => (
+                <RadioOption
+                  onPress={() => {
+                    this.location = location.name;
+                    this.pickupLocations = this.pickupLocations.slice(); // to force rerender
+                  }}
+                  color={colors.blue}
+                  selected={this.location === location.name}
+                  label={location.name}
+                />
+              )}
             />
           </Otherwise>
         </Choose>

@@ -15,6 +15,7 @@ import connectDropdownAlert from '../utils/connectDropdownAlert';
 import { email } from 'react-native-communications';
 import { observer } from 'mobx-react/native';
 import { observable } from 'mobx';
+import _ from 'lodash';
 
 @connectDropdownAlert
 @observer
@@ -48,11 +49,11 @@ export default class ChooseSchoolScreen extends Component {
       .database()
       .ref('schools')
       .once('value')
-      .then(snap => {
-        this.schools = Object.keys(snap.val()).map(schoolUID => {
+      .then(schoolsSnap => {
+        this.schools = _.map(schoolsSnap.val(), (school, uid) => {
           return {
-            ...snap.val()[schoolUID],
-            uid: schoolUID,
+            ...school,
+            uid,
           };
         });
         this.loading = false;

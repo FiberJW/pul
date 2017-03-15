@@ -19,6 +19,7 @@ import CardHeader from './styled/CardHeader';
 import CardIndicator from './styled/CardIndicator';
 import { observer } from 'mobx-react/native';
 import { observable } from 'mobx';
+import _ from 'lodash';
 
 /**
 *  Renders a Carpooler
@@ -92,9 +93,9 @@ export default class Carpooler extends Component {
       .once('value')
       .then(locSnap => {
         let location;
-        Object.keys(locSnap.val()).forEach(key => {
-          if (locSnap.val()[key].name === this.props.user.location) {
-            location = locSnap.val()[key];
+        _.each(locSnap.val(), loc => {
+          if (loc.name === this.props.user.location) {
+            location = loc;
           }
         });
         const wazeUrl = `waze://?ll=${location.lat},${location.lon}&z=10&navigate=yes`;
