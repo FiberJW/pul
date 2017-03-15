@@ -22,6 +22,8 @@ import {
 import _ from 'lodash';
 import RadioOption from '../components/RadioOption';
 import WidgetLabel from '../components/styled/WidgetLabel';
+import { observable } from 'mobx';
+import { observer } from 'mobx-react/native';
 
 const Form = t.form.Form;
 
@@ -43,6 +45,7 @@ const TimeOptions = {
 };
 
 @connectDropdownAlert
+@observer
 export default class DriveOptionsScreen extends Component {
   static route = {
     navigationBar: {
@@ -67,23 +70,22 @@ export default class DriveOptionsScreen extends Component {
     alertWithType: PropTypes.func.isRequired,
   };
 
-  state = {
-    passengerLimit: 1,
-    numPassengerOptions: _.range(4),
-    submitting: false,
-    pickupTime: moment().toDate().getTime(),
-  };
+  @observable references = {};
+  @observable passengerLimit = 1;
+  @observable numPassengerOptions = _.range(4);
+  @observable submitting = false;
+  @observable pickupTime = moment().toDate().getTime();
 
   timeIsValid = () => {
     const date = moment(this.props.event.date).startOf('day');
     const pickupDate = moment(date);
-    const pickupHours = this.state.pickupTime.time
-      ? moment(this.state.pickupTime.time).hours()
-      : moment(this.state.pickupTime).hours();
+    const pickupHours = this.pickupTime.time
+      ? moment(this.pickupTime.time).hours()
+      : moment(this.pickupTime).hours();
 
-    const pickUpMinutes = this.state.pickupTime.time
-      ? moment(this.state.pickupTime.time).minutes()
-      : moment(this.state.pickupTime).minutes();
+    const pickUpMinutes = this.pickupTime.time
+      ? moment(this.pickupTime.time).minutes()
+      : moment(this.pickupTime).minutes();
 
     const pickupDatePlusHours = moment(pickupDate).add(pickupHours, 'hours');
     const completePickupMoment = moment(pickupDatePlusHours).add(
@@ -101,12 +103,12 @@ export default class DriveOptionsScreen extends Component {
 
   createRide = () => {
     const pickupTime = {
-      hours: this.state.pickupTime.time
-        ? moment(this.state.pickupTime.time).hours()
-        : moment(this.state.pickupTime).hours(),
-      minutes: this.state.pickupTime.time
-        ? moment(this.state.pickupTime.time).minutes()
-        : moment(this.state.pickupTime).minutes(),
+      hours: this.pickupTime.time
+        ? moment(this.pickupTime.time).hours()
+        : moment(this.pickupTime).hours(),
+      minutes: this.pickupTime.time
+        ? moment(this.pickupTime.time).minutes()
+        : moment(this.pickupTime).minutes(),
     };
 
     return {
@@ -115,7 +117,7 @@ export default class DriveOptionsScreen extends Component {
       pickupTime,
       rideStarted: false,
       rideCompleted: false,
-      passengerLimit: this.state.passengerLimit,
+      passengerLimit: this.passengerLimit,
       driver: global.firebaseApp.auth().currentUser.uid,
     };
   };
@@ -129,7 +131,7 @@ export default class DriveOptionsScreen extends Component {
       );
       return;
     }
-    if (this.state.submitting) {
+    if (this.submitting) {
       this.props.alertWithType(
         'info',
         'Info',
@@ -138,9 +140,7 @@ export default class DriveOptionsScreen extends Component {
       return;
     }
 
-    this.setState(() => {
-      return { submitting: true };
-    });
+    this.submitting = true;
 
     global.firebaseApp
       .database()
@@ -151,9 +151,9 @@ export default class DriveOptionsScreen extends Component {
       .child('rides')
       .push(this.createRide())
       .then(ride => {
-        const pickupTime = this.state.pickupTime.time
-          ? moment(this.state.pickupTime.time)
-          : moment(this.state.pickupTime);
+        const pickupTime = this.pickupTime.time
+          ? moment(this.pickupTime.time)
+          : moment(this.pickupTime);
 
         Notifications.scheduleLocalNotificationAsync(
           {
@@ -197,9 +197,7 @@ export default class DriveOptionsScreen extends Component {
         this.props.refresh(false);
       })
       .catch(err => {
-        this.setState(() => {
-          return { submitting: false };
-        });
+        this.submitting = false;
         this.props.alertWithType('error', 'Error', err.toString());
       });
   };
@@ -207,7 +205,7 @@ export default class DriveOptionsScreen extends Component {
   render() {
     return (
       <Choose>
-        <When condition={this.state.submiting}>
+        <When condition={this.submitting}>
           <View
             style={{
               justifyContent: 'center',
@@ -222,14 +220,12 @@ export default class DriveOptionsScreen extends Component {
           <ScrollView style={styles.container}>
             <WidgetLabel label="PASSENGER LIMIT" />
             <View>
-              {this.state.numPassengerOptions.map(n => (
+              {this.numPassengerOptions.map(n => (
                 <RadioOption
                   key={n}
-                  onPress={() => this.setState(() => {
-                    return { passengerLimit: n + 1 };
-                  })}
+                  onPress={() => this.passengerLimit = n + 1}
                   color={colors.purp}
-                  selected={this.state.passengerLimit === n + 1}
+                  selected={this.passengerLimit === n + 1}
                   label={`${n + 1}`}
                 />
               ))}
@@ -239,15 +235,11 @@ export default class DriveOptionsScreen extends Component {
               {...this.props}
               type={Time}
               ref={r => {
-                this.time = r;
+                this.references.time = r;
               }}
-              value={this.state.pickupTime}
+              value={this.pickupTime}
               onChange={pickupTime => {
-                this.setState(() => {
-                  return {
-                    pickupTime,
-                  };
-                });
+                this.pickupTime = pickupTime;
               }}
               options={TimeOptions}
             />
