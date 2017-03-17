@@ -148,7 +148,7 @@ export default class MeetDriverScreen extends Component {
                   });
                 }}
               >
-                <ElevatedView style={styles.marker} elevation={6}>
+                <ElevatedView style={styles.marker} elevation={5}>
                   <View style={styles.markerInner} />
                 </ElevatedView>
               </Components.MapView.Marker>

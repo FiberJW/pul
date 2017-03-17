@@ -103,7 +103,7 @@ export default class MeetRiderScreen extends Component {
               });
             }}
           >
-            <ElevatedView style={styles.marker} elevation={6}>
+            <ElevatedView style={styles.marker} elevation={5}>
               <View style={styles.markerInner} />
             </ElevatedView>
           </Components.MapView.Marker>
