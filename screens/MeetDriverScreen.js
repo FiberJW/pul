@@ -18,6 +18,7 @@ import { phonecall } from 'react-native-communications';
 import { observer } from 'mobx-react/native';
 import { observable } from 'mobx';
 import MapViewFloatingCard from '../components/MapViewFloatingCard';
+import MapViewConsole from '../components/MapViewConsole';
 
 @connectDropdownAlert
 @observer
@@ -178,29 +179,13 @@ export default class MeetDriverScreen extends Component {
                 longitude: this.pickupLocation.lon,
               })}
             />
-            <View style={styles.actionContainer}>
-              <View>
-                <Text style={styles.driverName}>
-                  {this.driverData.displayName.toUpperCase()}
-                </Text>
-              </View>
-              <View style={styles.buttonRow}>
-                <TouchableOpacity onPress={() => this.props.navigator.pop()}>
-                  <View style={[styles.button, styles.cancelButton]}>
-                    <Text style={styles.cancel}>CLOSE</Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    phonecall(this.driverData.phoneNumber, true);
-                  }}
-                >
-                  <View style={styles.button}>
-                    <Text style={styles.contact}>CONTACT</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            </View>
+            <MapViewConsole
+              name={this.driverData.displayName}
+              onContact={() => {
+                phonecall(this.driverData.phoneNumber, true);
+              }}
+              onClose={() => this.props.navigator.pop()}
+            />
           </View>
         </Otherwise>
       </Choose>
