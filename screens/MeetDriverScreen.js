@@ -17,6 +17,7 @@ import connectDropdownAlert from '../utils/connectDropdownAlert';
 import { phonecall } from 'react-native-communications';
 import { observer } from 'mobx-react/native';
 import { observable } from 'mobx';
+import MapViewFloatingCard from '../components/MapViewFloatingCard';
 
 @connectDropdownAlert
 @observer
@@ -168,21 +169,15 @@ export default class MeetDriverScreen extends Component {
                 />
               </If>
             </Components.MapView>
-            <TouchableOpacity
+            <MapViewFloatingCard
+              label={
+                `Meet at the ${this.pickupLocation.name.toLowerCase().trim()}.`
+              }
               onPress={() => this.map.animateToCoordinate({
                 latitude: this.pickupLocation.lat,
                 longitude: this.pickupLocation.lon,
               })}
-            >
-              <ElevatedView style={styles.infoBox} elevation={4}>
-                <Text style={styles.infoBoxText}>
-                  Meet at the
-                  {' '}
-                  {this.pickupLocation.name.toLowerCase().trim()}
-                  .
-                </Text>
-              </ElevatedView>
-            </TouchableOpacity>
+            />
             <View style={styles.actionContainer}>
               <View>
                 <Text style={styles.driverName}>

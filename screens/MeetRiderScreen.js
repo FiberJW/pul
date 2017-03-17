@@ -15,6 +15,7 @@ import connectDropdownAlert from '../utils/connectDropdownAlert';
 import { phonecall } from 'react-native-communications';
 import { observer } from 'mobx-react/native';
 import { observable } from 'mobx';
+import MapViewFloatingCard from '../components/MapViewFloatingCard';
 
 @connectDropdownAlert
 @observer
@@ -123,21 +124,17 @@ export default class MeetRiderScreen extends Component {
             />
           </If>
         </Components.MapView>
-        <TouchableOpacity
+        <MapViewFloatingCard
+          label={
+            `Pickup at the ${this.props.pickupLocation.name
+              .toLowerCase()
+              .trim()}.`
+          }
           onPress={() => this.map.animateToCoordinate({
             latitude: this.props.pickupLocation.lat,
             longitude: this.props.pickupLocation.lon,
           })}
-        >
-          <ElevatedView style={styles.infoBox} elevation={4}>
-            <Text style={styles.infoBoxText}>
-              Pickup at the
-              {' '}
-              {this.props.pickupLocation.name.toLowerCase().trim()}
-              .
-            </Text>
-          </ElevatedView>
-        </TouchableOpacity>
+        />
         <View style={styles.actionContainer}>
           <View>
             <Text style={styles.driverName}>
@@ -171,20 +168,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  infoBox: {
-    backgroundColor: colors.black,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    marginTop: 64,
-    borderRadius: 4,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  infoBoxText: {
-    fontFamily: 'open-sans',
-    fontSize: 16,
-    color: 'white',
   },
   marker: {
     height: 24,
