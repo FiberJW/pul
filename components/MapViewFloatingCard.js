@@ -1,15 +1,32 @@
 import React, { PropTypes } from 'react';
-import { Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
+import styled from 'styled-components/native';
 import ElevatedView from 'react-native-elevated-view';
 import colors from 'kolors';
 
+const MapViewFloatingCardText = styled.Text`
+  font-family: open-sans;
+  font-size: 16;
+  color: white;
+`;
+
+const MapViewFloatingCardContainer = styled(ElevatedView)`
+  background-color: ${colors.black};
+  padding-vertical: 8;
+  padding-horizontal: 16;
+  margin-top: 64;
+  border-radius: 4;
+  justify-content: center;
+  align-items: center;
+`;
+
 const MapViewFloatingCard = props => (
   <TouchableOpacity onPress={props.onPress}>
-    <ElevatedView style={styles.infoBox} elevation={4}>
-      <Text style={styles.infoBoxText}>
+    <MapViewFloatingCardContainer elevation={4}>
+      <MapViewFloatingCardText>
         {props.label}
-      </Text>
-    </ElevatedView>
+      </MapViewFloatingCardText>
+    </MapViewFloatingCardContainer>
   </TouchableOpacity>
 );
 
@@ -17,22 +34,5 @@ MapViewFloatingCard.propTypes = {
   onPress: PropTypes.func,
   label: PropTypes.string,
 };
-
-const styles = StyleSheet.create({
-  infoBox: {
-    backgroundColor: colors.black,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    marginTop: 64,
-    borderRadius: 4,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  infoBoxText: {
-    fontFamily: 'open-sans',
-    fontSize: 16,
-    color: 'white',
-  },
-});
 
 export default MapViewFloatingCard;
