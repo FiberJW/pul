@@ -168,42 +168,4 @@ const styles = StyleSheet.create({
     width: 8,
     borderRadius: 4,
   },
-  actionContainer: {
-    paddingVertical: 8,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  driverName: {
-    fontFamily: 'open-sans-bold',
-    color: colors.black,
-    fontSize: 14,
-    paddingBottom: 8,
-  },
-  buttonRow: {
-    paddingTop: 8,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.lightGrey,
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    flexDirection: 'row',
-  },
-  button: {
-    paddingHorizontal: 16,
-    alignItems: 'center',
-  },
-  cancelButton: {
-    borderRightWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.lightGrey,
-  },
-  cancel: {
-    fontFamily: 'open-sans-bold',
-    color: colors.hotPink,
-    fontSize: 14,
-  },
-  contact: {
-    fontFamily: 'open-sans-bold',
-    color: colors.blue,
-    fontSize: 14,
-  },
 });

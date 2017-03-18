@@ -199,20 +199,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  infoBox: {
-    backgroundColor: colors.black,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    marginTop: 64,
-    borderRadius: 4,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  infoBoxText: {
-    fontFamily: 'open-sans',
-    fontSize: 16,
-    color: 'white',
-  },
   marker: {
     height: 24,
     width: 24,
@@ -226,43 +212,5 @@ const styles = StyleSheet.create({
     height: 8,
     width: 8,
     borderRadius: 4,
-  },
-  actionContainer: {
-    paddingVertical: 8,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  driverName: {
-    fontFamily: 'open-sans-bold',
-    color: colors.black,
-    fontSize: 14,
-    paddingBottom: 8,
-  },
-  buttonRow: {
-    paddingTop: 8,
-    borderTopWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.lightGrey,
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    flexDirection: 'row',
-  },
-  button: {
-    paddingHorizontal: 16,
-    alignItems: 'center',
-  },
-  cancelButton: {
-    borderRightWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.lightGrey,
-  },
-  cancel: {
-    fontFamily: 'open-sans-bold',
-    color: colors.hotPink,
-    fontSize: 14,
-  },
-  contact: {
-    fontFamily: 'open-sans-bold',
-    color: colors.blue,
-    fontSize: 14,
   },
 });
