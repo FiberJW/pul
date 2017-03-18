@@ -19,6 +19,7 @@ import { observer } from 'mobx-react/native';
 import { observable } from 'mobx';
 import MapViewFloatingCard from '../components/MapViewFloatingCard';
 import MapViewConsole from '../components/MapViewConsole';
+import DestinationMarker from '../components/styled/DestinationMarker';
 
 @connectDropdownAlert
 @observer
@@ -150,9 +151,7 @@ export default class MeetDriverScreen extends Component {
                   });
                 }}
               >
-                <ElevatedView style={styles.marker} elevation={5}>
-                  <View style={styles.markerInner} />
-                </ElevatedView>
+                <DestinationMarker />
               </Components.MapView.Marker>
               <If condition={this.location}>
                 <Components.MapView.Polyline
@@ -198,19 +197,5 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-between',
-  },
-  marker: {
-    height: 24,
-    width: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: colors.black,
-    borderRadius: 12,
-  },
-  markerInner: {
-    backgroundColor: 'white',
-    height: 8,
-    width: 8,
-    borderRadius: 4,
   },
 });
