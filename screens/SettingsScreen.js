@@ -203,6 +203,7 @@ export default class SettingsScreen extends Component {
               <SettingsLabel>Push notifications</SettingsLabel>
             </TouchableOpacity>
             <Switch
+              onTintColor={colors.blue}
               onValueChange={this.togglePushNotifications}
               value={this.notifications}
             />
