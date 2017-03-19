@@ -14,7 +14,8 @@ install:
 before_script:
 - yarn global add exp
 script:
-- exp login -u $EXP_UNAME -p $EXP_PWORD
+- 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then yarn appr; fi'
+- exp login -u $EXP_USERNAME -p $EXP_PASSWORD
 - exp publish
 after_script:
 - exp logout
