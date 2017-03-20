@@ -1,4 +1,4 @@
-import Expo, { Font, Components, Permissions } from 'expo';
+import Expo, { Font, Permissions, AppLoading } from 'expo';
 import React, { Component, PropTypes } from 'react';
 import { AsyncStorage, Alert } from 'react-native';
 import { NavigationProvider, StackNavigation } from '@expo/ex-navigation';
@@ -151,7 +151,7 @@ class App extends Component {
     return (
       <Choose>
         <When condition={this.loading}>
-          <Components.AppLoading />
+          <AppLoading />
         </When>
         <Otherwise>
           <NavigationProvider router={Router}>

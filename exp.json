@@ -2,7 +2,7 @@
   "name": "PÜL",
   "description": "A carpooling app designed for students to help each other get more involved in their community.",
   "slug": "pul",
-  "sdkVersion": "14.0.0",
+  "sdkVersion": "15.0.0",
   "version": "0.1.2",
   "orientation": "portrait",
   "primaryColor": "#cccccc",
@@ -18,7 +18,11 @@
     "hideExponentText": true
   },
   "packagerOpts": {
-    "assetExts": ["ttf", "mp4", "jpg"]
+    "assetExts": [
+      "ttf",
+      "mp4",
+      "jpg"
+    ]
   },
   "ios": {
     "bundleIdentifier": "io.github.datwheat.pul",

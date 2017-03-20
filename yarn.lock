@@ -1623,6 +1623,10 @@ event-target-shim@^1.0.5:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/event-target-shim/-/event-target-shim-1.1.1.tgz#a86e5ee6bdaa16054475da797ccddf0c55698491"
 
+eventemitter3@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-2.0.2.tgz#20ce4891909ce9f35b088c94fab40e2c96f473ac"
+
 exec-sh@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/exec-sh/-/exec-sh-0.2.0.tgz#14f75de3f20d286ef933099b2ce50a90359cef10"
@@ -1645,15 +1649,17 @@ exit-hook@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/exit-hook/-/exit-hook-1.1.1.tgz#f05ca233b48c05d54fff07765df8507e95c02ff8"
 
-expo@^14.0.0:
-  version "14.0.2"
-  resolved "https://registry.yarnpkg.com/expo/-/expo-14.0.2.tgz#13857890a1b7819992da7bc380c829c3642c48d4"
+expo@^15.0.2:
+  version "15.0.2"
+  resolved "https://registry.yarnpkg.com/expo/-/expo-15.0.2.tgz#618026c51b127670cfde02e5a6b9e138f796ad41"
   dependencies:
+    "@expo/vector-icons" "^4.0.0"
     babel-preset-airbnb "^2.2.3"
     babel-preset-expo "1.0.0"
     fbemitter "^2.1.1"
     lottie-react-native "1.0.1"
     md5-file "^3.1.1"
+    react-native-fbads "https://github.com/callstack-io/react-native-fbads/tarball/v4.1.0"
     react-native-maps "https://github.com/exponent/react-native-maps/archive/v0.12.2-exp.1.tar.gz"
     react-native-svg "https://github.com/exponent/react-native-svg/archive/4.4.1.tar.gz"
     uuid-js "^0.7.5"
@@ -3095,6 +3101,12 @@ react-native-elevated-view@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/react-native-elevated-view/-/react-native-elevated-view-0.0.1.tgz#32faeeb8b61b3974303ddcd69b3be7f3f33c9592"
 
+"react-native-fbads@https://github.com/callstack-io/react-native-fbads/tarball/v4.1.0":
+  version "4.1.0"
+  resolved "https://github.com/callstack-io/react-native-fbads/tarball/v4.1.0#e836ed7f4502593d4a4757f27cdfa0ffef4dc729"
+  dependencies:
+    eventemitter3 "^2.0.2"
+
 react-native-google-places-autocomplete@^1.2.6:
   version "1.2.8"
   resolved "https://registry.yarnpkg.com/react-native-google-places-autocomplete/-/react-native-google-places-autocomplete-1.2.8.tgz#644a867936e2774d5273f566eed7eaa941b8ea02"
@@ -3133,9 +3145,9 @@ react-native-vector-icons@4.0.0:
     lodash "^4.0.0"
     yargs "^6.3.0"
 
-"react-native@https://github.com/exponent/react-native/archive/sdk-14.0.0.tar.gz":
-  version "0.41.2"
-  resolved "https://github.com/exponent/react-native/archive/sdk-14.0.0.tar.gz#ebca3a3a8f3fb3be9b3c34a5c3c1cc2b66c08009"
+"react-native@https://github.com/exponent/react-native/archive/sdk-15.0.0.tar.gz":
+  version "0.42.0"
+  resolved "https://github.com/exponent/react-native/archive/sdk-15.0.0.tar.gz#4a808c2a5bf29e9658e819bab9053701b2984e06"
   dependencies:
     absolute-path "^0.0.0"
     art "^0.10.0"
