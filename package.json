@@ -20,7 +20,7 @@
     ]
   },
   "dependencies": {
-    "@expo/ex-navigation": "^2.9.0",
+    "@expo/ex-navigation": "^2.9.4",
     "@expo/react-native-action-sheet": "^0.3.0",
     "@expo/sentry-utils": "git+https://github.com/exponent/sentry-utils.git",
     "@expo/vector-icons": "^4.0.0",
