@@ -7,7 +7,6 @@
   "orientation": "portrait",
   "primaryColor": "#cccccc",
   "icon": "http://i.imgur.com/FB7xWqw.png",
-  "androidHideExponentNotificationInShellApp": true,
   "notification": {
     "icon": "http://i.imgur.com/RAKQ1Aw.png",
     "color": "#000000"
