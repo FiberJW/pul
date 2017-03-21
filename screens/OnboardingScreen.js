@@ -8,7 +8,7 @@ import {
   StatusBar,
   Dimensions,
 } from 'react-native';
-import { Components } from 'expo';
+import { LinearGradient } from 'expo';
 import Router from '../navigation/Router';
 
 /**
@@ -21,10 +21,7 @@ export default class OnboardingScreen extends Component {
 
   render() {
     return (
-      <Components.LinearGradient
-        style={styles.container}
-        colors={['#D500F9', '#007AFF']}
-      >
+      <LinearGradient style={styles.container} colors={['#D500F9', '#007AFF']}>
         <StatusBar barStyle="light-content" />
         <View style={styles.innerContainer}>
           <Image
@@ -60,7 +57,7 @@ export default class OnboardingScreen extends Component {
             Have an account? Log in!
           </Text>
         </TouchableOpacity>
-      </Components.LinearGradient>
+      </LinearGradient>
     );
   }
 }

@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { StyleSheet } from 'react-native';
-import { Components } from 'expo';
+import { MapView } from 'expo';
 import colors from 'kolors';
 import { NavigationStyles } from '@expo/ex-navigation';
 import { observer } from 'mobx-react/native';
@@ -37,7 +37,7 @@ export default class LocationScreen extends Component {
 
   render() {
     return (
-      <Components.MapView
+      <MapView
         style={StyleSheet.absoluteFillObject}
         initialRegion={{
           latitude: this.props.event.location.geometry.location.lat,
@@ -50,7 +50,7 @@ export default class LocationScreen extends Component {
         region={this.region}
         onRegionChange={this.onRegionChange}
       >
-        <Components.MapView.Marker
+        <MapView.Marker
           title={this.props.event.name}
           description={this.props.event.location.address}
           coordinate={{
@@ -58,7 +58,7 @@ export default class LocationScreen extends Component {
             longitude: this.props.event.location.geometry.location.lng,
           }}
         />
-      </Components.MapView>
+      </MapView>
     );
   }
 }

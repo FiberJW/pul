@@ -6,7 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { Components } from 'expo';
+import { MapView } from 'expo';
 import {
   GooglePlacesAutocomplete,
 } from 'react-native-google-places-autocomplete';
@@ -28,7 +28,7 @@ export default class GetEventLocation extends Component {
       <View style={styles.container}>
         {!this.props.submitting &&
           this.props.location &&
-          <Components.MapView
+          <MapView
             style={StyleSheet.absoluteFillObject}
             scrollEnabled={false}
             initialRegion={{
@@ -44,13 +44,13 @@ export default class GetEventLocation extends Component {
               longitudeDelta: 0.0421,
             }}
           >
-            <Components.MapView.Marker
+            <MapView.Marker
               coordinate={{
                 latitude: this.props.location.details.geometry.location.lat,
                 longitude: this.props.location.details.geometry.location.lng,
               }}
             />
-          </Components.MapView>}
+          </MapView>}
         {!this.props.submitting &&
           <GooglePlacesAutocomplete
             placeholder="Event Location"

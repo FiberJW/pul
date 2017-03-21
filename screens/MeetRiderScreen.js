@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { NavigationStyles } from '@expo/ex-navigation';
 import colors from 'kolors';
-import { Components, Location } from 'expo';
+import { MapView, Location } from 'expo';
 import ElevatedView from 'react-native-elevated-view';
 import { maybeOpenURL } from 'react-native-app-link';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
@@ -69,7 +69,7 @@ export default class MeetRiderScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Components.MapView
+        <MapView
           ref={c => {
             this.map = c;
           }}
@@ -88,7 +88,7 @@ export default class MeetRiderScreen extends Component {
           onRegionChange={this.onRegionChange}
         >
           <StatusBar hidden />
-          <Components.MapView.Marker
+          <MapView.Marker
             title={this.props.pickupLocation.name}
             coordinate={{
               latitude: this.props.pickupLocation.lat,
@@ -107,9 +107,9 @@ export default class MeetRiderScreen extends Component {
             }}
           >
             <DestinationMarker />
-          </Components.MapView.Marker>
+          </MapView.Marker>
           <If condition={this.location}>
-            <Components.MapView.Polyline
+            <MapView.Polyline
               strokeWidth={2}
               strokeColor={colors.black}
               geodesic
@@ -123,7 +123,7 @@ export default class MeetRiderScreen extends Component {
               ]}
             />
           </If>
-        </Components.MapView>
+        </MapView>
         <MapViewFloatingCard
           label={
             `Pickup at the ${this.props.pickupLocation.name
