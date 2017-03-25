@@ -204,6 +204,11 @@ export default class SettingsScreen extends Component {
             </TouchableOpacity>
             <Switch
               onTintColor={colors.blue}
+              thumbTintColor={
+                Platform.OS === 'android' && this.notifications
+                  ? colors.blue
+                  : null
+              }
               onValueChange={this.togglePushNotifications}
               value={this.notifications}
             />
