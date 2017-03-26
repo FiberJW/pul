@@ -12,6 +12,7 @@ import Collapsible from 'react-native-collapsible';
 import ElevatedView from 'react-native-elevated-view';
 import Router from 'Router';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
+import createWazeDeepLink from '../utils/createWazeDeepLink';
 import { phonecall } from 'react-native-communications';
 import CardSublabel from './styled/CardSublabel';
 import CardLabel from './styled/CardLabel';
@@ -98,13 +99,12 @@ export default class Carpooler extends Component {
             location = loc;
           }
         });
-        const wazeUrl = `waze://?ll=${location.lat},${location.lon}&z=10&navigate=yes`;
 
         this.props.navigation.getNavigator('master').push(
           Router.getRoute('meetRider', {
             pickupLocation: location,
             rider: this.props.user,
-            wazeUrl,
+            wazeUrl: createWazeDeepLink(location.lat, location.lon),
           })
         );
       })

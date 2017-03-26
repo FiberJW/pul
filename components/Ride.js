@@ -15,6 +15,7 @@ import { withNavigation } from '@expo/ex-navigation';
 import ElevatedView from 'react-native-elevated-view';
 import { maybeOpenURL } from 'react-native-app-link';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
+import createWazeDeepLink from '../utils/createWazeDeepLink';
 import { observer } from 'mobx-react/native';
 import { observable } from 'mobx';
 import { Notifications } from 'expo';
@@ -190,8 +191,11 @@ export default class Ride extends Component {
           }
         }
         if (buttonIndex === navigateButtonIndex) {
-          const wazeUrl = `waze://?ll=${this.props.event.location.geometry.location.lat},` +
-            `${this.props.event.location.geometry.location.lng}&z=10&navigate=yes`;
+          const wazeUrl = createWazeDeepLink(
+            this.props.event.location.geometry.location.lat,
+            this.props.event.location.geometry.location.lng
+          );
+
           maybeOpenURL(wazeUrl, {
             appName: 'Waze',
             appStoreId: 'id323229106',
@@ -269,8 +273,11 @@ export default class Ride extends Component {
                             rideStarted: true,
                           },
                           () => {
-                            const wazeUrl = `waze://?ll=${this.props.event.location.geometry.location.lat},` +
-                              `${this.props.event.location.geometry.location.lng}&z=10&navigate=yes`;
+                            const wazeUrl = createWazeDeepLink(
+                              this.props.event.location.geometry.location.lat,
+                              this.props.event.location.geometry.location.lng
+                            );
+
                             maybeOpenURL(wazeUrl, {
                               appName: 'Waze',
                               appStoreId: 'id323229106',

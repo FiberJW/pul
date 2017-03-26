@@ -14,6 +14,7 @@ import { MapView, Location } from 'expo';
 import ElevatedView from 'react-native-elevated-view';
 import { maybeOpenURL } from 'react-native-app-link';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
+import createWazeDeepLink from '../utils/createWazeDeepLink';
 import { phonecall } from 'react-native-communications';
 import { observer } from 'mobx-react/native';
 import { observable } from 'mobx';
@@ -140,8 +141,11 @@ export default class MeetDriverScreen extends Component {
                   longitude: this.pickupLocation.lon,
                 }}
                 onCalloutPress={() => {
-                  const wazeUrl = `waze://?ll=${this.pickupLocation.lat},` +
-                    `${this.pickupLocation.lon}&z=10&navigate=yes`;
+                  const wazeUrl = createWazeDeepLink(
+                    this.pickupLocation.lat,
+                    this.pickupLocation.lon
+                  );
+
                   maybeOpenURL(wazeUrl, {
                     appName: 'Waze',
                     appStoreId: 'id323229106',
