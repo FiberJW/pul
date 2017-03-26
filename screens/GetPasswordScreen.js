@@ -20,9 +20,7 @@ import connectDropdownAlert from '../utils/connectDropdownAlert';
 import KeyboardAwareScrollView from '../components/KeyboardAwareScrollView';
 import { observer, inject } from 'mobx-react/native';
 import { observable } from 'mobx';
-/**
- *  For getting a user's password in signup or login
- */
+
 @connectDropdownAlert
 @inject('authStore')
 @observer

@@ -19,9 +19,6 @@ import Router from '../navigation/Router';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import { observer, inject } from 'mobx-react/native';
 
-/**
- *  Shows a list of all of your school's future events
- */
 @connectDropdownAlert
 @inject('eventStore')
 @observer

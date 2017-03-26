@@ -22,9 +22,6 @@ import { email } from 'react-native-communications';
 import SettingsLabel from '../components/styled/SettingsLabel';
 import SettingsTextInput from '../components/styled/SettingsTextInput';
 
-/**
- *  Allows the user to have some control over account data and app settings
- */
 @connectDropdownAlert
 @inject('authStore', 'eventStore', 'trexStore')
 @observer
@@ -50,9 +47,6 @@ export default class SettingsScreen extends Component {
     this.getUser();
   }
 
-  /**
-   *  getUser grabs user data from firebase
-   */
   getUser = () => {
     global.firebaseApp
       .database()

@@ -32,9 +32,6 @@ import _ from 'lodash';
 import { observable } from 'mobx';
 import { observer } from 'mobx-react/native';
 
-/**
- *  Allows user to create new events for school
- */
 @connectDropdownAlert
 @observer
 export default class NewEventScreen extends Component {

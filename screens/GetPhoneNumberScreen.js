@@ -16,9 +16,6 @@ import KeyboardAwareScrollView from '../components/KeyboardAwareScrollView';
 import { observer } from 'mobx-react/native';
 import { observable } from 'mobx';
 
-/**
- *  For getting a user's phone number in signup
- */
 @connectDropdownAlert
 @observer
 export default class GetPhoneNumberScreen extends Component {

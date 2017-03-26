@@ -16,9 +16,6 @@ import KeyboardAwareScrollView from '../components/KeyboardAwareScrollView';
 import { observer } from 'mobx-react/native';
 import { observable } from 'mobx';
 
-/**
- *  For getting a user's email in signup or login
- */
 @connectDropdownAlert
 @observer
 export default class GetEmailScreen extends Component {

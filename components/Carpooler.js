@@ -22,9 +22,6 @@ import { observer } from 'mobx-react/native';
 import { observable } from 'mobx';
 import _ from 'lodash';
 
-/**
-*  Renders a Carpooler
-*/
 @withNavigation
 @connectDropdownAlert
 @observer

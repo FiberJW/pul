@@ -15,9 +15,6 @@ import Ride from '../components/Ride';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import { observer, inject } from 'mobx-react/native';
 
-/**
- *  Shows upcoming rides to user
- */
 @connectDropdownAlert
 @inject('eventStore')
 @observer

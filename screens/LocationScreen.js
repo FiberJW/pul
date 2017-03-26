@@ -6,9 +6,6 @@ import { NavigationStyles } from '@expo/ex-navigation';
 import { observer } from 'mobx-react/native';
 import { observable } from 'mobx';
 
-/**
- *  Shows the location of an event
- */
 @observer
 export default class LocationScreen extends Component {
   static route = {

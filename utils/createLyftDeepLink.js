@@ -1,11 +1,6 @@
 import Expo from 'expo';
 import { lyftClientId } from '../config/keys';
 
-/**
- *  Takes an event and creates a deep link to the Lyft API based on location
- *  @param  {object} event [description]
- *  @return {Promise}       [description]
- */
 export default async event => {
   const {
     coords: { latitude, longitude },

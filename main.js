@@ -71,9 +71,6 @@ class App extends Component {
     });
   }
 
-  /**
-   *  Asks for permissions, loads fonts, and starts Firebase
-   */
   async setup() {
     await Permissions.askAsync(Permissions.LOCATION);
     await Font.loadAsync({

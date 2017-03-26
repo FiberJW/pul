@@ -23,9 +23,6 @@ import _ from 'lodash';
 import Suggestion from '../components/styled/Suggestion';
 import { email } from 'react-native-communications';
 
-/**
- *  For setting where you want to get picked up as a rider
- */
 @connectDropdownAlert
 @inject('authStore')
 @observer
@@ -59,9 +56,6 @@ export default class SetPickupLocationScreen extends Component {
   @observable loading = true;
   @observable submitting = false;
 
-  /**
-   *  Called when component is scheduled to render
-   */
   componentWillMount() {
     global.firebaseApp
       .database()
