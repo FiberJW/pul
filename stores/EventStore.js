@@ -139,35 +139,37 @@ export class EventStore {
   };
 
   @computed get rides() {
-    const yourEvents = this.events.filter(event => {
-      return event.rides &&
-        event.rides.some(ride => {
-          return ride.driver === global.firebaseApp.auth().currentUser.uid ||
-            ride.passengers.some(
-              passenger =>
-                passenger.userUID === global.firebaseApp.auth().currentUser.uid
-            );
-        });
-    });
+    return this.events
+      .filter(event => {
+        return event.rides &&
+          event.rides.some(ride => {
+            return ride.driver === global.firebaseApp.auth().currentUser.uid ||
+              ride.passengers.some(
+                passenger =>
+                  passenger.userUID ===
+                  global.firebaseApp.auth().currentUser.uid
+              );
+          });
+      })
+      .map(event => {
+        let yourRide;
+        if (event.rides) {
+          event.rides.forEach(ride => {
+            if (
+              ride.driver === global.firebaseApp.auth().currentUser.uid ||
+              ride.passengers.some(
+                passenger =>
+                  passenger.userUID ===
+                  global.firebaseApp.auth().currentUser.uid
+              )
+            ) {
+              yourRide = ride;
+            }
+          });
+        }
 
-    return yourEvents.map(event => {
-      let yourRide;
-      if (event.rides) {
-        event.rides.forEach(ride => {
-          if (
-            ride.driver === global.firebaseApp.auth().currentUser.uid ||
-            ride.passengers.some(
-              passenger =>
-                passenger.userUID === global.firebaseApp.auth().currentUser.uid
-            )
-          ) {
-            yourRide = ride;
-          }
-        });
-      }
-
-      return { ...event, yourRide };
-    });
+        return { ...event, yourRide };
+      });
   }
 
   @action hydrate = () => {
