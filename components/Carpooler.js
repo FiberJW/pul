@@ -18,17 +18,19 @@ import CardSublabel from './styled/CardSublabel';
 import CardLabel from './styled/CardLabel';
 import CardHeader from './styled/CardHeader';
 import CardIndicator from './styled/CardIndicator';
-import { observer } from 'mobx-react/native';
+import { observer, inject } from 'mobx-react/native';
 import { observable } from 'mobx';
 import _ from 'lodash';
 
 @withNavigation
 @connectDropdownAlert
+@inject('authStore')
 @observer
 export default class Carpooler extends Component {
   static propTypes = {
     user: PropTypes.object.isRequired,
     event: PropTypes.object.isRequired,
+    authStore: PropTypes.object.isRequired,
     pickedUpUsers: PropTypes.number,
     navigator: PropTypes.object.isRequired,
     navigation: PropTypes.object.isRequired,
@@ -70,7 +72,7 @@ export default class Carpooler extends Component {
   meetDriver = () => {
     let self;
     this.props.passengers.forEach(pass => {
-      if (pass.userUID === global.firebaseApp.auth().currentUser.uid) {
+      if (pass.userUID === this.props.authStore.userId) {
         self = pass;
       }
     });
@@ -176,8 +178,7 @@ export default class Carpooler extends Component {
   );
 
   render() {
-    return this.props.user.userUID !==
-      global.firebaseApp.auth().currentUser.uid &&
+    return this.props.user.userUID !== this.props.authStore.userId &&
       <TouchableOpacity
         activeOpacity={1}
         onPress={() => this.isCollapsed = !this.isCollapsed}

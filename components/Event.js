@@ -24,15 +24,17 @@ import connectDropdownAlert from '../utils/connectDropdownAlert';
 import CardLabel from './styled/CardLabel';
 import CardHeader from './styled/CardHeader';
 import CardSublabel from './styled/CardSublabel';
-import { observer } from 'mobx-react/native';
+import { observer, inject } from 'mobx-react/native';
 import { observable } from 'mobx';
 
 @withNavigation
 @connectDropdownAlert
+@inject('authStore')
 @observer
 export default class Event extends Component {
   static propTypes = {
     event: PropTypes.object.isRequired,
+    authStore: PropTypes.object.isRequired,
     navigator: PropTypes.object.isRequired,
     navigation: PropTypes.object.isRequired,
     refresh: PropTypes.func,
@@ -46,14 +48,12 @@ export default class Event extends Component {
   componentWillMount() {
     this.props.event.rides &&
       this.props.event.rides.forEach(ride => {
-        if (ride.driver === global.firebaseApp.auth().currentUser.uid) {
+        if (ride.driver === this.props.authStore.userId) {
           this.isDriver = true;
         }
         ride.passengers &&
           ride.passengers.some(passenger => {
-            if (
-              passenger.userUID === global.firebaseApp.auth().currentUser.uid
-            ) {
+            if (passenger.userUID === this.props.authStore.userId) {
               this.isRider = true;
               return true;
             }
@@ -67,10 +67,7 @@ export default class Event extends Component {
       <TouchableOpacity
         activeOpacity={0.8}
         onLongPress={() => {
-          if (
-            this.props.event.createdBy ===
-            global.firebaseApp.auth().currentUser.uid
-          ) {
+          if (this.props.event.createdBy === this.props.authStore.userId) {
             Vibration.vibrate([0, 25]);
             Alert.alert(
               Platform.OS === 'ios' ? 'Delete Event' : 'Delete event',
@@ -87,7 +84,7 @@ export default class Event extends Component {
                     global.firebaseApp
                       .database()
                       .ref('users')
-                      .child(global.firebaseApp.auth().currentUser.uid)
+                      .child(this.props.authStore.userId)
                       .once('value')
                       .then(userSnap => {
                         const school = userSnap.val().school;
@@ -187,7 +184,7 @@ export default class Event extends Component {
                     this.isDriver
                 }
                 onPress={() => {
-                  if (global.firebaseApp.auth().currentUser.emailVerified) {
+                  if (this.props.authStore.verified) {
                     this.props.navigation.getNavigator('master').push(
                       Router.getRoute('setPickupLocation', {
                         refresh: this.props.refresh,
@@ -220,7 +217,7 @@ export default class Event extends Component {
               <TouchableOpacity
                 disabled={this.isRider || this.isDriver}
                 onPress={() => {
-                  if (global.firebaseApp.auth().currentUser.emailVerified) {
+                  if (this.props.authStore.verified) {
                     this.props.navigation.getNavigator('master').push(
                       Router.getRoute('setDriveOptions', {
                         refresh: this.props.refresh,

@@ -23,7 +23,7 @@ import _ from 'lodash';
 import RadioOption from '../components/RadioOption';
 import WidgetLabel from '../components/styled/WidgetLabel';
 import { observable } from 'mobx';
-import { observer } from 'mobx-react/native';
+import { observer, inject } from 'mobx-react/native';
 
 const Form = t.form.Form;
 
@@ -45,6 +45,7 @@ const TimeOptions = {
 };
 
 @connectDropdownAlert
+@inject('authStore')
 @observer
 export default class DriveOptionsScreen extends Component {
   static route = {
@@ -66,6 +67,7 @@ export default class DriveOptionsScreen extends Component {
     navigator: PropTypes.object.isRequired,
     navigation: PropTypes.object.isRequired,
     event: PropTypes.object.isRequired,
+    authStore: PropTypes.object.isRequired,
     refresh: PropTypes.func,
     alertWithType: PropTypes.func.isRequired,
   };
@@ -118,7 +120,7 @@ export default class DriveOptionsScreen extends Component {
       rideStarted: false,
       rideCompleted: false,
       passengerLimit: this.passengerLimit,
-      driver: global.firebaseApp.auth().currentUser.uid,
+      driver: this.props.authStore.userId,
     };
   };
 

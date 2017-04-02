@@ -107,7 +107,7 @@ export default class SetPickupLocationScreen extends Component {
           .child(ride.uid)
           .child('passengers')
           .push({
-            userUID: global.firebaseApp.auth().currentUser.uid,
+            userUID: this.props.authStore.userId,
             location: this.location,
             isPickedUp: false,
           })

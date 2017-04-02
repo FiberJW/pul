@@ -16,7 +16,7 @@ import ElevatedView from 'react-native-elevated-view';
 import { maybeOpenURL } from 'react-native-app-link';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import createWazeDeepLink from '../utils/createWazeDeepLink';
-import { observer } from 'mobx-react/native';
+import { observer, inject } from 'mobx-react/native';
 import { observable } from 'mobx';
 import { Notifications } from 'expo';
 import RideStatus from './styled/RideStatus';
@@ -24,10 +24,12 @@ import RideStatus from './styled/RideStatus';
 @withNavigation
 @connectActionSheet
 @connectDropdownAlert
+@inject('authStore')
 @observer
 export default class Ride extends Component {
   static propTypes = {
     event: PropTypes.object.isRequired,
+    authStore: PropTypes.object.isRequired,
     navigator: PropTypes.object,
     showActionSheetWithOptions: PropTypes.func,
     refresh: PropTypes.func,
@@ -38,7 +40,7 @@ export default class Ride extends Component {
   @observable passengers = [];
   @observable pickedUpUsers = 0;
   @observable selfIsDriver = this.props.event.yourRide.driver ===
-    global.firebaseApp.auth().currentUser.uid;
+    this.props.authStore.userId;
 
   componentWillMount() {
     const passengers = [];
@@ -152,9 +154,7 @@ export default class Ride extends Component {
                     const passIndex = this.props.event.yourRide.passengers
                       .slice()
                       .findIndex(
-                        i =>
-                          i.userUID ===
-                          global.firebaseApp.auth().currentUser.uid
+                        i => i.userUID === this.props.authStore.userId
                       );
                     global.firebaseApp
                       .database()

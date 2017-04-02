@@ -20,7 +20,7 @@ import connectDropdownAlert from '../utils/connectDropdownAlert';
 import { observer, inject } from 'mobx-react/native';
 
 @connectDropdownAlert
-@inject('eventStore')
+@inject('eventStore', 'authStore')
 @observer
 export default class HomeScreen extends Component {
   static route = {
@@ -34,6 +34,7 @@ export default class HomeScreen extends Component {
     alertWithType: PropTypes.func.isRequired,
     navigation: PropTypes.object,
     eventStore: PropTypes.object,
+    authStore: PropTypes.object,
   };
 
   componentWillUpdate(nextProps) {
@@ -127,7 +128,7 @@ export default class HomeScreen extends Component {
           offsetX={16}
           offsetY={16}
           onPress={() => {
-            if (global.firebaseApp.auth().currentUser.emailVerified) {
+            if (this.props.authStore.verified) {
               this.props.navigation.getNavigator('master').push(
                 Router.getRoute('newEvent', {
                   refresh: this.props.eventStore.refresh,
@@ -143,7 +144,7 @@ export default class HomeScreen extends Component {
           }}
           onLongPress={() => {
             Vibration.vibrate([0, 25]);
-            if (global.firebaseApp.auth().currentUser.emailVerified) {
+            if (this.props.authStore.verified) {
               this.props.navigation
                 .getNavigator('master')
                 .push(Router.getRoute('trex'));

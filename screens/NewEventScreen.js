@@ -30,9 +30,10 @@ import {
 } from '../utils/ExponentPushClient';
 import _ from 'lodash';
 import { observable } from 'mobx';
-import { observer } from 'mobx-react/native';
+import { observer, inject } from 'mobx-react/native';
 
 @connectDropdownAlert
+@inject('authStore')
 @observer
 export default class NewEventScreen extends Component {
   static route = {
@@ -55,6 +56,7 @@ export default class NewEventScreen extends Component {
 
   static propTypes = {
     navigator: PropTypes.object.isRequired,
+    authStore: PropTypes.object.isRequired,
     refresh: PropTypes.func,
     alertWithType: PropTypes.func.isRequired,
   };
@@ -109,7 +111,7 @@ export default class NewEventScreen extends Component {
     return {
       name: filter.clean(name.trim()),
       type,
-      createdBy: global.firebaseApp.auth().currentUser.uid,
+      createdBy: this.props.authStore.userId,
       date,
       time,
       url: url.toLowerCase(),
@@ -207,7 +209,7 @@ export default class NewEventScreen extends Component {
     global.firebaseApp
       .database()
       .ref('users')
-      .child(global.firebaseApp.auth().currentUser.uid)
+      .child(this.props.authStore.userId)
       .once('value')
       .then(snap => {
         const schoolUID = snap.val().school;

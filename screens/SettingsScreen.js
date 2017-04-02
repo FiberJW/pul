@@ -51,7 +51,7 @@ export default class SettingsScreen extends Component {
     global.firebaseApp
       .database()
       .ref('users')
-      .child(global.firebaseApp.auth().currentUser.uid)
+      .child(this.props.authStore.userId)
       .once('value')
       .then(userSnap => {
         this.user = userSnap.val();
@@ -71,7 +71,7 @@ export default class SettingsScreen extends Component {
             global.firebaseApp
               .database()
               .ref('users')
-              .child(global.firebaseApp.auth().currentUser.uid)
+              .child(this.props.authStore.userId)
               .update({
                 pushToken: token,
                 settings: {
@@ -136,7 +136,7 @@ export default class SettingsScreen extends Component {
                     global.firebaseApp
                       .database()
                       .ref('users')
-                      .child(global.firebaseApp.auth().currentUser.uid)
+                      .child(this.props.authStore.userId)
                       .update({
                         displayName: displayName.trim(),
                       });
@@ -175,7 +175,7 @@ export default class SettingsScreen extends Component {
                 global.firebaseApp
                   .database()
                   .ref('users')
-                  .child(global.firebaseApp.auth().currentUser.uid)
+                  .child(this.props.authStore.userId)
                   .update({
                     phoneNumber: phoneNumber.trim(),
                   })
