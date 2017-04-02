@@ -2,14 +2,44 @@ import { observable, action } from 'mobx';
 import { AsyncStorage } from 'react-native';
 import Expo from 'expo';
 import _ from 'lodash';
+import { create, persist } from 'mobx-persist';
 
 export class AuthStore {
   authStates = ['unauthenticated', 'authenticated', 'attempting'];
-  @observable userData = {};
-  @observable state = this.authStates[0];
-  @observable verified = false;
-  @observable error = null;
-  @observable userId = null;
+
+  @persist('object')
+  @observable
+  userData = {};
+
+  @persist
+  @observable
+  state = this.authStates[0];
+
+  @persist
+  @observable
+  verified = false;
+
+  @persist
+  @observable
+  error = null;
+
+  @persist
+  @observable
+  userId = null;
+
+  constructor() {
+    this.hydrate();
+  }
+
+  @action hydrate = () => {
+    const pour = create({
+      storage: AsyncStorage,
+    });
+
+    Object.keys(this).forEach(key => {
+      pour(key, this);
+    });
+  };
 
   @action signup = async (credentials = {}) => {
     this.state = this.authStates[2];

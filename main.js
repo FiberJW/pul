@@ -14,6 +14,7 @@ import { observable } from 'mobx';
 import authStore from './stores/AuthStore';
 import eventStore from './stores/EventStore';
 import trexStore from './stores/TrexStore';
+import uiStore from './stores/UIStore';
 
 if (!__DEV__) {
   // this guards against console usage in production builds since
@@ -164,7 +165,7 @@ class App extends Component {
 }
 
 const Main = () => (
-  <MobXProvider {...{ authStore, eventStore, trexStore }}>
+  <MobXProvider {...{ authStore, eventStore, trexStore, uiStore }}>
     <DropdownAlertProvider>
       <ActionSheetProvider>
         <App />

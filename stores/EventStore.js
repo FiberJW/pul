@@ -1,13 +1,33 @@
 import { observable, action, computed } from 'mobx';
 import _ from 'lodash';
 import moment from 'moment';
+import { create, persist } from 'mobx-persist';
+import { AsyncStorage } from 'react-native';
 
 export class EventStore {
-  @observable loading = true;
-  @observable refreshing = false;
-  @observable error = null;
-  @observable school = null;
-  @observable events = [];
+  @persist
+  @observable
+  loading = true;
+
+  @persist
+  @observable
+  refreshing = false;
+
+  @persist
+  @observable
+  error = null;
+
+  @persist
+  @observable
+  schoolUID = null;
+
+  @persist('list')
+  @observable
+  events = [];
+
+  constructor() {
+    this.hydrate();
+  }
 
   @action processEvents = schoolUID => eventsSnapshot => {
     this.events = [];
@@ -52,7 +72,7 @@ export class EventStore {
           );
       })
       .slice(0, 100);
-    this.school = schoolUID;
+    this.schoolUID = schoolUID;
     this.loading = false;
     this.refreshing = false;
     this.error = null;
@@ -87,9 +107,9 @@ export class EventStore {
     global.firebaseApp
       .database()
       .ref('schools')
-      .child(this.school)
+      .child(this.schoolUID)
       .child('events')
-      .off('value', this.processEvents(this.school));
+      .off('value', this.processEvents(this.schoolUID));
   };
 
   @action refresh = (showRefreshControl = true) => {
@@ -114,7 +134,7 @@ export class EventStore {
     this.loading = true;
     this.refreshing = false;
     this.error = null;
-    this.school = null;
+    this.schoolUID = null;
     this.events = [];
   };
 
@@ -149,6 +169,16 @@ export class EventStore {
       return { ...event, yourRide };
     });
   }
+
+  @action hydrate = () => {
+    const pour = create({
+      storage: AsyncStorage,
+    });
+
+    Object.keys(this).forEach(key => {
+      pour(key, this);
+    });
+  };
 }
 
 export default new EventStore();

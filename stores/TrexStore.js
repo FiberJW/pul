@@ -1,11 +1,38 @@
 import { observable, action } from 'mobx';
 import _ from 'lodash';
+import { create, persist } from 'mobx-persist';
+import { AsyncStorage } from 'react-native';
 
 export class TrexStore {
-  @observable players = [];
-  @observable loading = true;
-  @observable school = null;
-  @observable error = null;
+  @persist('list')
+  @observable
+  players = [];
+
+  @persist
+  @observable
+  loading = true;
+
+  @persist
+  @observable
+  schoolUID = null;
+
+  @persist
+  @observable
+  error = null;
+
+  constructor() {
+    this.hydrate();
+  }
+
+  @action hydrate = () => {
+    const pour = create({
+      storage: AsyncStorage,
+    });
+
+    Object.keys(this).forEach(key => {
+      pour(key, this);
+    });
+  };
 
   @action setError = (error, timeInSeconds = 1) => {
     this.error = error;
@@ -40,12 +67,12 @@ export class TrexStore {
       .child(global.firebaseApp.auth().currentUser.uid)
       .once('value')
       .then(userSnap => {
-        this.school = userSnap.val().school;
+        this.schoolUID = userSnap.val().school;
 
         global.firebaseApp
           .database()
           .ref('users')
-          .on('value', this.updateLeaderboard(this.school));
+          .on('value', this.updateLeaderboard(this.schoolUID));
       })
       .catch(error => {
         this.setError(error);
@@ -56,7 +83,7 @@ export class TrexStore {
     global.firebaseApp
       .database()
       .ref('users')
-      .off('value', this.updateLeaderboard(this.school));
+      .off('value', this.updateLeaderboard(this.schoolUID));
   };
 
   @action addNewHighScore = highestScore => {
@@ -100,7 +127,7 @@ export class TrexStore {
     this.unWatchUsers();
     this.players = [];
     this.loading = true;
-    this.school = null;
+    this.schoolUID = null;
     this.error = null;
   };
 }

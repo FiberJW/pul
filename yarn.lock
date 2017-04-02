@@ -2655,6 +2655,12 @@ mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
+mobx-persist@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/mobx-persist/-/mobx-persist-0.3.1.tgz#1b94d8fc3955a5e7c09d477d52974ce67ab8ee63"
+  dependencies:
+    serializr "^1.1.8"
+
 mobx-react@^4.1.0:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/mobx-react/-/mobx-react-4.1.2.tgz#d5404ab7471eec4b1b469a561029aa31befe2357"
@@ -3523,6 +3529,10 @@ send@0.13.2:
     on-finished "~2.3.0"
     range-parser "~1.0.3"
     statuses "~1.2.1"
+
+serializr@^1.1.8:
+  version "1.1.11"
+  resolved "https://registry.yarnpkg.com/serializr/-/serializr-1.1.11.tgz#88434cd5fcb9f82079223443e131f0ce4296cf8a"
 
 serve-favicon@~2.3.0:
   version "2.3.2"
