@@ -37,6 +37,8 @@ export default class HomeScreen extends Component {
     authStore: PropTypes.object,
   };
 
+  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+
   componentWillUpdate(nextProps) {
     if (nextProps.eventStore.error) {
       nextProps.alertWithType(
@@ -46,8 +48,6 @@ export default class HomeScreen extends Component {
       );
     }
   }
-
-  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
   render() {
     return (

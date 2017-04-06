@@ -6,8 +6,9 @@ module.exports = {
     'prettier/flowtype',
     'prettier/react',
   ],
-  plugins: ['jsx-control-statements'],
+  plugins: ['jsx-control-statements', 'react', 'react-native'],
   rules: {
+    'react/prop-types': 1,
     'react/sort-comp': [
       1,
       {

@@ -74,19 +74,6 @@ export default class NewEventScreen extends Component {
   @observable swiperWidth = 0;
   @observable references = {};
 
-  componentWillMount() {
-    this._unsubscribe = KeyboardEventListener.subscribe(
-      this._onKeyboardVisibilityChange
-    );
-  }
-
-  componentWillUnmount() {
-    if (this._unsubscribe) {
-      this._unsubscribe();
-      this._unsubscribe = null;
-    }
-  }
-
   createEvent = () => {
     const name = this.name !== undefined && this.name.name;
     const type = this.type !== undefined && this.type.type;
@@ -115,7 +102,7 @@ export default class NewEventScreen extends Component {
       date,
       time,
       url: url.toLowerCase(),
-      createdInDev: __DEV__,
+      createdInDev: global.__DEV__,
       location,
       description: description && filter.clean(description.trim()),
     };
@@ -228,7 +215,7 @@ export default class NewEventScreen extends Component {
               .then(usersSnap => {
                 _.each(usersSnap.val(), user => {
                   if (
-                    !__DEV__ &&
+                    !global.__DEV__ &&
                     isExponentPushToken(user.pushToken) &&
                     user.school === schoolUID
                   ) {
@@ -260,6 +247,19 @@ export default class NewEventScreen extends Component {
         this.props.alertWithType('error', 'Error', err.toString());
       });
   };
+
+  componentWillMount() {
+    this._unsubscribe = KeyboardEventListener.subscribe(
+      this._onKeyboardVisibilityChange
+    );
+  }
+
+  componentWillUnmount() {
+    if (this._unsubscribe) {
+      this._unsubscribe();
+      this._unsubscribe = null;
+    }
+  }
 
   render() {
     return (

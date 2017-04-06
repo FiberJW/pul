@@ -6,7 +6,7 @@ export default styled.View`
   width: 24;
   background-color: transparent;
   border-radius: 12;
-  border-color: ${({ color }) => color ? color : colors.blue};
+  border-color: ${({ color }) => color || colors.blue};
   border-width: 1;
   justify-content: center;
   align-items: center;

@@ -29,13 +29,13 @@ export default class GetEventDate extends Component {
     onChange: PropTypes.func,
   };
 
-  componentDidMount() {
-    this.date.validate();
-  }
-
   isValid = () => {
     return this.date.validate().isValid();
   };
+
+  componentDidMount() {
+    this.date.validate();
+  }
 
   render() {
     return (

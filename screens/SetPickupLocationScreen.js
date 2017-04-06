@@ -56,23 +56,6 @@ export default class SetPickupLocationScreen extends Component {
   @observable loading = true;
   @observable submitting = false;
 
-  componentWillMount() {
-    global.firebaseApp
-      .database()
-      .ref('schools')
-      .child(this.props.event.schoolUID)
-      .child('pickupLocations')
-      .once('value')
-      .then(pickupLocationsSnap => {
-        this.pickupLocations = _.toArray(pickupLocationsSnap.val());
-        this.loading = false;
-      })
-      .catch(err => {
-        this.loading = false;
-        this.props.alertWithType('error', 'Error', err.toString());
-      });
-  }
-
   ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
   requestRide = () => {
@@ -120,7 +103,7 @@ export default class SetPickupLocationScreen extends Component {
               .then(userSnap => {
                 const user = userSnap.val();
 
-                if (!__DEV__ && isExponentPushToken(user.pushToken)) {
+                if (!global.__DEV__ && isExponentPushToken(user.pushToken)) {
                   sendPushNotificationAsync({
                     exponentPushToken: user.pushToken,
                     message: `${this.props.authStore.userData.displayName} has joined your ride to ${this.props.event.name}!`,
@@ -140,7 +123,9 @@ export default class SetPickupLocationScreen extends Component {
                   .then(userSnap => {
                     const user = userSnap.val();
 
-                    if (!__DEV__ && isExponentPushToken(user.pushToken)) {
+                    if (
+                      !global.__DEV__ && isExponentPushToken(user.pushToken)
+                    ) {
                       sendPushNotificationAsync({
                         exponentPushToken: user.pushToken,
                         message: `${this.props.authStore.userData.displayName} has joined your ride to ${this.props.event.name}!`,
@@ -174,6 +159,23 @@ export default class SetPickupLocationScreen extends Component {
       return false;
     });
   };
+
+  componentWillMount() {
+    global.firebaseApp
+      .database()
+      .ref('schools')
+      .child(this.props.event.schoolUID)
+      .child('pickupLocations')
+      .once('value')
+      .then(pickupLocationsSnap => {
+        this.pickupLocations = _.toArray(pickupLocationsSnap.val());
+        this.loading = false;
+      })
+      .catch(err => {
+        this.loading = false;
+        this.props.alertWithType('error', 'Error', err.toString());
+      });
+  }
 
   render() {
     return (

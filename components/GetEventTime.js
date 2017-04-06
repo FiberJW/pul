@@ -27,13 +27,13 @@ export default class GetEventTime extends Component {
     onChange: PropTypes.func,
   };
 
-  componentDidMount() {
-    this.time.validate();
-  }
-
   isValid = () => {
     return this.time.validate().isValid();
   };
+
+  componentDidMount() {
+    this.time.validate();
+  }
 
   render() {
     return (

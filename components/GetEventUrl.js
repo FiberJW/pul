@@ -29,13 +29,13 @@ export default class GetEventUrl extends Component {
     onChange: PropTypes.func,
   };
 
-  componentDidMount() {
-    this.url.validate();
-  }
-
   isValid = () => {
     return this.url.validate().isValid();
   };
+
+  componentDidMount() {
+    this.url.validate();
+  }
 
   render() {
     return (

@@ -19,7 +19,7 @@ const Inner = styled.View`
   border-radius: 4;
 `;
 
-export default props => (
+export default () => (
   <Outer elevation={5}>
     <Inner />
   </Outer>

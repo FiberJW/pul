@@ -5,7 +5,6 @@ import {
   ListView,
   View,
   ActivityIndicator,
-  Text,
   AppState,
 } from 'react-native';
 import colors from 'kolors';
@@ -44,6 +43,23 @@ export default class TrexScreen extends Component {
   @observable appState = AppState.currentState;
   @observable softBanned = false;
 
+  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+
+  _handleAppStateChange = nextAppState => {
+    if (
+      this.appState.match(/inactive|background/) && nextAppState === 'active'
+    ) {
+      this.softBanned = true;
+      setTimeout(
+        () => {
+          this.soft = false;
+        },
+        30000
+      );
+    }
+    this.appState = nextAppState;
+  };
+
   componentDidMount() {
     this.props.trexStore.watchUsers();
     AppState.addEventListener('change', this._handleAppStateChange);
@@ -63,18 +79,6 @@ export default class TrexScreen extends Component {
     this.props.trexStore.unWatchUsers();
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
-
-  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-
-  _handleAppStateChange = nextAppState => {
-    if (
-      this.appState.match(/inactive|background/) && nextAppState === 'active'
-    ) {
-      this.softBanned = true;
-      setTimeout(() => this.soft = false, 30000);
-    }
-    this.appState = nextAppState;
-  };
 
   render() {
     return (

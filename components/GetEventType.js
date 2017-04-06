@@ -43,13 +43,13 @@ export default class GetEventType extends Component {
     onChange: PropTypes.func,
   };
 
-  componentDidMount() {
-    this.type.validate();
-  }
-
   isValid = () => {
     return this.type.validate().isValid();
   };
+
+  componentDidMount() {
+    this.type.validate();
+  }
 
   render() {
     return (

@@ -30,7 +30,9 @@ export default class LocationScreen extends Component {
 
   @observable region = null;
 
-  onRegionChange = region => this.region = region;
+  onRegionChange = region => {
+    this.region = region;
+  };
 
   render() {
     return (

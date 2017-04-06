@@ -86,9 +86,12 @@ export class TrexStore {
       .off('value', this.updateLeaderboard(this.schoolUID));
   };
 
-  @action addNewHighScore = highestScore => {
+  @action addNewHighScore = score => {
+    let highestScore;
     if (highestScore > 10000) {
-      highestScore = -Math.abs(highestScore);
+      highestScore = -Math.abs(score);
+    } else {
+      highestScore = score;
     }
 
     global.firebaseApp

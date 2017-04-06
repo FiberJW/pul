@@ -5,7 +5,6 @@ import {
   ListView,
   StatusBar,
   TouchableOpacity,
-  Text,
   ActivityIndicator,
 } from 'react-native';
 import colors from 'kolors';
@@ -45,6 +44,8 @@ export default class ChooseSchoolScreen extends Component {
   @observable loading = true;
   @observable schools = [];
 
+  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+
   componentWillMount() {
     global.firebaseApp
       .database()
@@ -63,8 +64,6 @@ export default class ChooseSchoolScreen extends Component {
         this.props.alertWithType('error', 'Error', err.toString());
       });
   }
-
-  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
   render() {
     return (

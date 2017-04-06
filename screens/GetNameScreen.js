@@ -74,7 +74,9 @@ export default class GetNameScreen extends Component {
             autoCorrect={false}
             underlineColorAndroid="transparent"
             style={styles.fieldContents}
-            onChangeText={name => this.name = name}
+            onChangeText={name => {
+              this.name = name;
+            }}
             value={this.name}
             placeholder="John Doe"
             autoFocus

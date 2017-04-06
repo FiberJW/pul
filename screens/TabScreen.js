@@ -30,10 +30,6 @@ export default class TabScreen extends Component {
     eventStore: PropTypes.object,
   };
 
-  componentDidMount() {
-    this.props.eventStore.watchEvents();
-  }
-
   _renderLabel = ({ route }) => {
     switch (route.key) {
       case 'ride':
@@ -46,6 +42,10 @@ export default class TabScreen extends Component {
         return undefined;
     }
   };
+
+  componentDidMount() {
+    this.props.eventStore.watchEvents();
+  }
 
   render() {
     return (

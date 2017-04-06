@@ -7,7 +7,6 @@ import {
   AsyncStorage,
   StyleSheet,
   Switch,
-  TextInput,
   Platform,
   TouchableOpacity,
 } from 'react-native';
@@ -42,10 +41,6 @@ export default class SettingsScreen extends Component {
 
   @observable user = {};
   @observable notifications = false;
-
-  componentWillMount() {
-    this.getUser();
-  }
 
   getUser = () => {
     global.firebaseApp
@@ -99,6 +94,10 @@ export default class SettingsScreen extends Component {
         this.notifications = !value;
       });
   };
+
+  componentWillMount() {
+    this.getUser();
+  }
 
   render() {
     return (

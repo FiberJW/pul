@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import ElevatedView from 'react-native-elevated-view';
 import colors from 'kolors';

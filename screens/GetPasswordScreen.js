@@ -168,7 +168,9 @@ export default class GetPasswordScreen extends Component {
                   secureTextEntry={!this.visible}
                   autoFocus
                   style={styles.fieldContents}
-                  onChangeText={password => this.password = password.trim()}
+                  onChangeText={password => {
+                    this.password = password.trim();
+                  }}
                   blurOnSubmit
                   returnKeyType="done"
                   onSubmitEditing={() => this.pushToNextScreen()}
@@ -177,7 +179,9 @@ export default class GetPasswordScreen extends Component {
                 />
                 <TouchableOpacity
                   activeOpacity={1}
-                  onPress={() => this.visible = !this.visible}
+                  onPress={() => {
+                    this.visible = !this.visible;
+                  }}
                 >
                   <Icon
                     name="eye"

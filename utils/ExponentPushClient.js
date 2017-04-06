@@ -24,7 +24,7 @@ export function isExponentPushToken(token) {
  *
  */
 export async function sendPushNotificationAsync(opts) {
-  let exponentPushToken = opts.exponentPushToken;
+  const exponentPushToken = opts.exponentPushToken;
 
   if (!isExponentPushToken(exponentPushToken)) {
     throw new Error(
@@ -34,14 +34,14 @@ export async function sendPushNotificationAsync(opts) {
     );
   }
 
-  let message = opts.message || undefined;
+  const message = opts.message || undefined;
   const body = {
     ...opts.data,
     exponentPushToken,
     message,
   };
 
-  let response = await fetch(`${BASE_API_URL}/notify`, {
+  const response = await fetch(`${BASE_API_URL}/notify`, {
     method: 'POST',
     body: JSON.stringify(body),
     headers: new Headers({
@@ -55,8 +55,7 @@ export async function sendPushNotificationAsync(opts) {
 
   if (response.status === 200) {
     return undefined;
-  } else {
-    let json = await response.json();
-    throw new Error(`Error sending push notification: ${json.err}`);
   }
+  const json = await response.json();
+  throw new Error(`Error sending push notification: ${json.err}`);
 }

@@ -34,13 +34,14 @@ export default class GetEventName extends Component {
     onChange: PropTypes.func,
   };
 
+  isValid = () => {
+    return this.description.validate().isValid();
+  };
+
   componentDidMount() {
     this.description.validate();
   }
 
-  isValid = () => {
-    return this.description.validate().isValid();
-  };
   render() {
     return (
       <View style={styles.container}>

@@ -1,15 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import {
-  View,
-  StyleSheet,
-  StatusBar,
-  TouchableOpacity,
-  Text,
-} from 'react-native';
+import { View, StyleSheet, StatusBar } from 'react-native';
 import { NavigationStyles } from '@expo/ex-navigation';
 import colors from 'kolors';
 import { MapView, Location } from 'expo';
-import ElevatedView from 'react-native-elevated-view';
 import { maybeOpenURL } from 'react-native-app-link';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import createWazeDeepLink from '../utils/createWazeDeepLink';
@@ -43,6 +36,10 @@ export default class MeetRiderScreen extends Component {
   @observable region;
   @observable location;
 
+  onRegionChange = region => {
+    this.region = region;
+  };
+
   componentWillMount() {
     Location.watchPositionAsync(
       {
@@ -64,8 +61,6 @@ export default class MeetRiderScreen extends Component {
   componentWillUnmount() {
     this.locationSub.remove();
   }
-
-  onRegionChange = region => this.region = region;
 
   render() {
     return (

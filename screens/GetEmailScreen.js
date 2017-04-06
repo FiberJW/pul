@@ -90,8 +90,9 @@ export default class GetEmailScreen extends Component {
               autoCorrect={false}
               underlineColorAndroid="transparent"
               style={styles.fieldContents}
-              onChangeText={emailUsername =>
-                this.emailUsername = emailUsername.trim()}
+              onChangeText={emailUsername => {
+                this.emailUsername = emailUsername.trim();
+              }}
               value={this.emailUsername}
               placeholder="Username"
               autoFocus

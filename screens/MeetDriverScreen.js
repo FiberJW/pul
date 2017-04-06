@@ -1,17 +1,9 @@
 import React, { Component, PropTypes } from 'react';
-import {
-  View,
-  ActivityIndicator,
-  StyleSheet,
-  StatusBar,
-  TouchableOpacity,
-  Text,
-} from 'react-native';
+import { View, ActivityIndicator, StyleSheet, StatusBar } from 'react-native';
 import { NavigationStyles } from '@expo/ex-navigation';
 import _ from 'lodash';
 import colors from 'kolors';
 import { MapView, Location } from 'expo';
-import ElevatedView from 'react-native-elevated-view';
 import { maybeOpenURL } from 'react-native-app-link';
 import connectDropdownAlert from '../utils/connectDropdownAlert';
 import createWazeDeepLink from '../utils/createWazeDeepLink';
@@ -47,6 +39,10 @@ export default class MeetDriverScreen extends Component {
   @observable region;
   @observable location;
   @observable driverData;
+
+  onRegionChange = region => {
+    this.region = region;
+  };
 
   componentWillMount() {
     global.firebaseApp
@@ -96,8 +92,6 @@ export default class MeetDriverScreen extends Component {
   componentWillUnmount() {
     this.locationSub.remove();
   }
-
-  onRegionChange = region => this.region = region;
 
   render() {
     return (

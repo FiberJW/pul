@@ -176,7 +176,7 @@ export default class DriveOptionsScreen extends Component {
           .then(usersSnap => {
             _.each(usersSnap.val(), user => {
               if (
-                !__DEV__ &&
+                !global.__DEV__ &&
                 isExponentPushToken(user.pushToken) &&
                 user.school === this.props.event.schoolUID
               ) {
@@ -225,7 +225,9 @@ export default class DriveOptionsScreen extends Component {
               {this.numPassengerOptions.map(n => (
                 <RadioOption
                   key={n}
-                  onPress={() => this.passengerLimit = n + 1}
+                  onPress={() => {
+                    this.passengerLimit = n + 1;
+                  }}
                   color={colors.purp}
                   selected={this.passengerLimit === n + 1}
                   label={`${n + 1}`}

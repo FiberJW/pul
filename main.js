@@ -1,6 +1,6 @@
 import Expo, { Font, Permissions, AppLoading } from 'expo';
 import React, { Component, PropTypes } from 'react';
-import { AsyncStorage, Alert } from 'react-native';
+import { AsyncStorage, Alert, View } from 'react-native';
 import { NavigationProvider, StackNavigation } from '@expo/ex-navigation';
 import Router from './navigation/Router';
 import * as firebase from 'firebase';
@@ -16,7 +16,7 @@ import eventStore from './stores/EventStore';
 import trexStore from './stores/TrexStore';
 import uiStore from './stores/UIStore';
 
-if (!__DEV__) {
+if (!global.__DEV__) {
   // this guards against console usage in production builds since
   // babel transform of remove console won't work with react-native preset
   [
@@ -64,13 +64,6 @@ class App extends Component {
   };
 
   @observable loading = true;
-
-  componentDidMount() {
-    this.setup().catch(e => {
-      Alert.alert(e.toString());
-      this.loading = false;
-    });
-  }
 
   async setup() {
     await Permissions.askAsync(Permissions.LOCATION);
@@ -139,6 +132,13 @@ class App extends Component {
       this.loading = false;
     }
   };
+
+  componentDidMount() {
+    this.setup().catch(e => {
+      Alert.alert(e.toString());
+      this.loading = false;
+    });
+  }
 
   render() {
     const route = this.props.authStore.state ===

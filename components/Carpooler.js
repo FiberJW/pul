@@ -181,7 +181,9 @@ export default class Carpooler extends Component {
     return this.props.user.userUID !== this.props.authStore.userId &&
       <TouchableOpacity
         activeOpacity={1}
-        onPress={() => this.isCollapsed = !this.isCollapsed}
+        onPress={() => {
+          this.isCollapsed = !this.isCollapsed;
+        }}
       >
         <ElevatedView style={styles.cardContainer} elevation={2}>
           <CardHeader>

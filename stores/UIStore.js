@@ -1,5 +1,5 @@
-import { observable, action, computed } from 'mobx';
-import { create, persist } from 'mobx-persist';
+import { action } from 'mobx';
+import { create } from 'mobx-persist';
 import { AsyncStorage } from 'react-native';
 
 class UIStore {

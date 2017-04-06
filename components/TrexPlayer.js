@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
-import { View, Text, Dimensions, StyleSheet } from 'react-native';
-import colors from 'kolors';
+import { StyleSheet } from 'react-native';
 import ElevatedView from 'react-native-elevated-view';
 import CardSublabel from './styled/CardSublabel';
 import CardLabel from './styled/CardLabel';

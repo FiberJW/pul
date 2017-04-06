@@ -33,7 +33,9 @@ export default class DropdownAlertProvider extends Component {
           ref={ref => {
             this.dropdown = ref;
           }}
-          onClose={() => this.barStyle = 'default'}
+          onClose={() => {
+            this.barStyle = 'default';
+          }}
           endDelta={StatusBar.currentHeight}
         />
       </View>

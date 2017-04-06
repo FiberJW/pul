@@ -85,7 +85,9 @@ export default class GetPhoneNumberScreen extends Component {
             keyboardType="phone-pad"
             maxLength={10}
             style={styles.fieldContents}
-            onChangeText={phoneNumber => this.phoneNumber = phoneNumber.trim()}
+            onChangeText={phoneNumber => {
+              this.phoneNumber = phoneNumber.trim();
+            }}
             value={this.phoneNumber}
             placeholder="1234567890"
             autoFocus

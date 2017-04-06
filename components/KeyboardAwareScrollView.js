@@ -25,18 +25,6 @@ export default class KeyboardAwareScrollView extends Component {
 
   @observable keyboardHeight = 0;
 
-  componentWillMount() {
-    this._unsubscribe = KeyboardEventListener.subscribe(
-      this._onKeyboardVisibilityChange
-    );
-  }
-
-  componentWillUnmount() {
-    if (this._unsubscribe) {
-      this._unsubscribe();
-      this._unsubscribe = null;
-    }
-  }
   _blurFocusedTextInput = () => {
     TextInput.State.blurTextInput(TextInput.State.currentlyFocusedField());
   };
@@ -61,6 +49,18 @@ export default class KeyboardAwareScrollView extends Component {
 
     this.keyboardHeight = keyboardHeight;
   };
+  componentWillMount() {
+    this._unsubscribe = KeyboardEventListener.subscribe(
+      this._onKeyboardVisibilityChange
+    );
+  }
+
+  componentWillUnmount() {
+    if (this._unsubscribe) {
+      this._unsubscribe();
+      this._unsubscribe = null;
+    }
+  }
 
   render() {
     return (

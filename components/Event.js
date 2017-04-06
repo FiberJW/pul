@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import {
   View,
   Text,
-  Dimensions,
   StyleSheet,
   TouchableOpacity,
   Linking,
@@ -46,12 +45,12 @@ export default class Event extends Component {
   @observable isDriver = false;
 
   componentWillMount() {
-    this.props.event.rides &&
+    if (this.props.event.rides) {
       this.props.event.rides.forEach(ride => {
         if (ride.driver === this.props.authStore.userId) {
           this.isDriver = true;
         }
-        ride.passengers &&
+        if (ride.passengers) {
           ride.passengers.some(passenger => {
             if (passenger.userUID === this.props.authStore.userId) {
               this.isRider = true;
@@ -59,7 +58,9 @@ export default class Event extends Component {
             }
             return false;
           });
+        }
       });
+    }
   }
 
   render() {
@@ -109,7 +110,9 @@ export default class Event extends Component {
             );
           }
         }}
-        onPress={() => this.isCollapsed = !this.isCollapsed}
+        onPress={() => {
+          this.isCollapsed = !this.isCollapsed;
+        }}
       >
         <ElevatedView style={styles.cardContainer} elevation={2}>
           <CardHeader>
@@ -121,7 +124,9 @@ export default class Event extends Component {
             </CardSublabel>
           </CardHeader>
           <Text
-            onPress={() => this.isCollapsed = !this.isCollapsed}
+            onPress={() => {
+              this.isCollapsed = !this.isCollapsed;
+            }}
             onLongPress={() => {
               this.props.navigation
                 .getNavigator('master')
@@ -146,7 +151,9 @@ export default class Event extends Component {
             <If condition={this.props.event.url}>
               <Text
                 style={styles.website}
-                onPress={() => this.isCollapsed = !this.isCollapsed}
+                onPress={() => {
+                  this.isCollapsed = !this.isCollapsed;
+                }}
                 onLongPress={() => {
                   let url;
                   if (
