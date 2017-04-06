@@ -42,50 +42,6 @@ export default class Ride extends Component {
   @observable selfIsDriver = this.props.event.yourRide.driver ===
     this.props.authStore.userId;
 
-  componentWillMount() {
-    const passengers = [];
-    let pickedUpUsers = 0;
-    global.firebaseApp
-      .database()
-      .ref('users')
-      .child(this.props.event.yourRide.driver)
-      .once('value')
-      .then(userSnap => {
-        passengers.push({
-          userUID: this.props.event.yourRide.driver,
-          ...userSnap.val(),
-          type: 'driver',
-        });
-
-        // now get other users and push to arr
-        if (this.props.event.yourRide.passengers) {
-          this.props.event.yourRide.passengers.slice().forEach(pass => {
-            global.firebaseApp
-              .database()
-              .ref('users')
-              .child(pass.userUID)
-              .once('value')
-              .then(passSnap => {
-                passengers.push({
-                  ...pass,
-                  ...passSnap.val(),
-                  type: 'rider',
-                });
-                if (pass.isPickedUp) {
-                  pickedUpUsers++;
-                }
-                this.passengers = passengers;
-                this.pickedUpUsers = pickedUpUsers;
-              });
-          });
-        }
-        this.passengers = passengers;
-      })
-      .catch(err => {
-        this.props.alertWithType('error', 'Error', err.toString());
-      });
-  }
-
   ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
   _onOpenActionSheet = () => {
@@ -207,6 +163,50 @@ export default class Ride extends Component {
       }
     );
   };
+
+  componentWillMount() {
+    const passengers = [];
+    let pickedUpUsers = 0;
+    global.firebaseApp
+      .database()
+      .ref('users')
+      .child(this.props.event.yourRide.driver)
+      .once('value')
+      .then(userSnap => {
+        passengers.push({
+          userUID: this.props.event.yourRide.driver,
+          ...userSnap.val(),
+          type: 'driver',
+        });
+
+        // now get other users and push to arr
+        if (this.props.event.yourRide.passengers) {
+          this.props.event.yourRide.passengers.slice().forEach(pass => {
+            global.firebaseApp
+              .database()
+              .ref('users')
+              .child(pass.userUID)
+              .once('value')
+              .then(passSnap => {
+                passengers.push({
+                  ...pass,
+                  ...passSnap.val(),
+                  type: 'rider',
+                });
+                if (pass.isPickedUp) {
+                  pickedUpUsers++;
+                }
+                this.passengers = passengers;
+                this.pickedUpUsers = pickedUpUsers;
+              });
+          });
+        }
+        this.passengers = passengers;
+      })
+      .catch(err => {
+        this.props.alertWithType('error', 'Error', err.toString());
+      });
+  }
 
   render() {
     return (
