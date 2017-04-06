@@ -7,3 +7,4 @@ config/keys.js
 .release/
 .vscode/
 jsconfig.json
+.eslintcache

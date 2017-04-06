@@ -1,6 +1,6 @@
 import Expo, { Font, Permissions, AppLoading } from 'expo';
 import React, { Component, PropTypes } from 'react';
-import { AsyncStorage, Alert, View } from 'react-native';
+import { AsyncStorage, Alert } from 'react-native';
 import { NavigationProvider, StackNavigation } from '@expo/ex-navigation';
 import Router from './navigation/Router';
 import * as firebase from 'firebase';
