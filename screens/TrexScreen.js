@@ -52,7 +52,7 @@ export default class TrexScreen extends Component {
       this.softBanned = true;
       setTimeout(
         () => {
-          this.soft = false;
+          this.softBanned = false;
         },
         30000
       );
