@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { View, ActivityIndicator, StyleSheet, StatusBar } from 'react-native';
 import { NavigationStyles } from '@expo/ex-navigation';
-import _ from 'lodash';
 import colors from 'kolors';
 import { MapView, Location } from 'expo';
 import { maybeOpenURL } from 'react-native-app-link';
@@ -16,7 +15,7 @@ import DestinationMarker from '../components/styled/DestinationMarker';
 
 @connectDropdownAlert
 @observer
-export default class MeetDriverScreen extends Component {
+export default class PickupScreen extends Component {
   static route = {
     navigationBar: {
       visible: false,
@@ -29,63 +28,42 @@ export default class MeetDriverScreen extends Component {
   static propTypes = {
     navigator: PropTypes.object.isRequired,
     navigation: PropTypes.object.isRequired,
-    self: PropTypes.object.isRequired,
-    driver: PropTypes.string.isRequired,
+    self: PropTypes.object,
+    pickupLocation: PropTypes.object.isRequired,
+    driver: PropTypes.object,
+    rider: PropTypes.object,
     alertWithType: PropTypes.func.isRequired,
   };
 
-  @observable pickupLocation;
   @observable loading = true;
   @observable region;
   @observable location;
-  @observable driverData;
 
   onRegionChange = region => {
     this.region = region;
   };
 
   componentWillMount() {
-    global.firebaseApp
-      .database()
-      .ref('schools')
-      .child(this.props.self.school)
-      .child('pickupLocations')
-      .once('value')
-      .then(pickupLocationsSnap => {
-        const pickupLocations = pickupLocationsSnap.val();
-        _.each(pickupLocations, pickupLocation => {
-          if (pickupLocation.name === this.props.self.location) {
-            Location.watchPositionAsync(
-              {
-                enableHighAccuracy: true,
-                timeInterval: 1000,
-                distanceInterval: 1,
-              },
-              data => {
-                this.location = {
-                  latitude: data.coords.latitude,
-                  longitude: data.coords.longitude,
-                };
-              }
-            ).then(locationSub => {
-              this.locationSub = locationSub;
-            });
-            this.pickupLocation = pickupLocation;
-          }
-        });
-        global.firebaseApp
-          .database()
-          .ref('users')
-          .child(this.props.driver)
-          .once('value')
-          .then(driverSnap => {
-            this.driverData = driverSnap.val();
-            this.loading = false;
-          });
+    Location.watchPositionAsync(
+      {
+        enableHighAccuracy: true,
+        timeInterval: 1000,
+        distanceInterval: 1,
+      },
+      data => {
+        this.location = {
+          latitude: data.coords.latitude,
+          longitude: data.coords.longitude,
+        };
+      }
+    )
+      .then(locationSub => {
+        this.locationSub = locationSub;
+        this.loading = false;
       })
       .catch(err => {
-        this.loading = false;
         this.props.alertWithType('error', 'Error', err.toString());
+        this.loading = false;
       });
   }
 
@@ -115,8 +93,8 @@ export default class MeetDriverScreen extends Component {
               }}
               style={StyleSheet.absoluteFillObject}
               initialRegion={{
-                latitude: this.pickupLocation.lat,
-                longitude: this.pickupLocation.lon,
+                latitude: this.props.pickupLocation.lat,
+                longitude: this.props.pickupLocation.lon,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}
@@ -129,15 +107,15 @@ export default class MeetDriverScreen extends Component {
             >
               <StatusBar hidden />
               <MapView.Marker
-                title={this.pickupLocation.name}
+                title={this.props.pickupLocation.name}
                 coordinate={{
-                  latitude: this.pickupLocation.lat,
-                  longitude: this.pickupLocation.lon,
+                  latitude: this.props.pickupLocation.lat,
+                  longitude: this.props.pickupLocation.lon,
                 }}
                 onCalloutPress={() => {
                   const wazeUrl = createWazeDeepLink(
-                    this.pickupLocation.lat,
-                    this.pickupLocation.lon
+                    this.props.pickupLocation.lat,
+                    this.props.pickupLocation.lon
                   );
 
                   maybeOpenURL(wazeUrl, {
@@ -159,8 +137,8 @@ export default class MeetDriverScreen extends Component {
                   lineDashPattern={[4, 8, 4, 8]}
                   coordinates={[
                     {
-                      latitude: this.pickupLocation.lat,
-                      longitude: this.pickupLocation.lon,
+                      latitude: this.props.pickupLocation.lat,
+                      longitude: this.props.pickupLocation.lon,
                     },
                     this.location,
                   ]}
@@ -169,17 +147,28 @@ export default class MeetDriverScreen extends Component {
             </MapView>
             <MapViewFloatingCard
               label={
-                `Meet at the ${this.pickupLocation.name.toLowerCase().trim()}.`
+                `Meet at the ${this.props.pickupLocation.name
+                  .toLowerCase()
+                  .trim()}.`
               }
               onPress={() => this.map.animateToCoordinate({
-                latitude: this.pickupLocation.lat,
-                longitude: this.pickupLocation.lon,
+                latitude: this.props.pickupLocation.lat,
+                longitude: this.props.pickupLocation.lon,
               })}
             />
             <MapViewConsole
-              name={this.driverData.displayName}
+              name={
+                this.props.driver
+                  ? this.props.driver.displayName
+                  : this.props.rider.displayName
+              }
               onContact={() => {
-                phonecall(this.driverData.phoneNumber, true);
+                phonecall(
+                  this.props.driver
+                    ? this.props.driver.phoneNumber
+                    : this.props.rider.phoneNumber,
+                  true
+                );
               }}
               onClose={() => this.props.navigator.pop()}
             />

@@ -17,8 +17,7 @@ import GetNameScreen from '../screens/GetNameScreen';
 import GetPhoneNumberScreen from '../screens/GetPhoneNumberScreen';
 import GetPasswordScreen from '../screens/GetPasswordScreen';
 import LocationScreen from '../screens/LocationScreen';
-import MeetDriverScreen from '../screens/MeetDriverScreen';
-import MeetRiderScreen from '../screens/MeetRiderScreen';
+import PickupScreen from '../screens/PickupScreen';
 import TrexScreen from '../screens/TrexScreen';
 
 export default createRouter(
@@ -37,8 +36,7 @@ export default createRouter(
     location: () => LocationScreen,
     getPhoneNumber: () => GetPhoneNumberScreen,
     getPassword: () => GetPasswordScreen,
-    meetDriver: () => MeetDriverScreen,
-    meetRider: () => MeetRiderScreen,
+    pickup: () => PickupScreen,
     trex: () => TrexScreen,
   }),
   { ignoreSerializableWarnings: true }

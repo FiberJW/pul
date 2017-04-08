@@ -71,17 +71,46 @@ export default class Carpooler extends Component {
 
   meetDriver = () => {
     let self;
+    let pickupLocation;
+    let driver;
     this.props.passengers.forEach(pass => {
       if (pass.userUID === this.props.authStore.userId) {
         self = pass;
       }
     });
-    this.props.navigation.getNavigator('master').push(
-      Router.getRoute('meetDriver', {
-        self,
-        driver: this.props.event.yourRide.driver,
+
+    global.firebaseApp
+      .database()
+      .ref('schools')
+      .child(self.school)
+      .child('pickupLocations')
+      .once('value')
+      .then(pickupLocationsSnap => {
+        const pickupLocations = pickupLocationsSnap.val();
+        _.each(pickupLocations, location => {
+          if (location.name === self.location) {
+            pickupLocation = location;
+          }
+        });
+        global.firebaseApp
+          .database()
+          .ref('users')
+          .child(this.props.event.yourRide.driver)
+          .once('value')
+          .then(driverSnap => {
+            driver = driverSnap.val();
+            this.props.navigation.getNavigator('master').push(
+              Router.getRoute('pickup', {
+                self,
+                driver,
+                pickupLocation,
+              })
+            );
+          });
       })
-    );
+      .catch(err => {
+        this.props.alertWithType('error', 'Error', err.toString());
+      });
   };
 
   pickup = () => {
@@ -100,7 +129,7 @@ export default class Carpooler extends Component {
         });
 
         this.props.navigation.getNavigator('master').push(
-          Router.getRoute('meetRider', {
+          Router.getRoute('pickup', {
             pickupLocation: location,
             rider: this.props.user,
             wazeUrl: createWazeDeepLink(location.lat, location.lon),
