@@ -19,29 +19,7 @@ import uiStore from './stores/UIStore';
 if (!global.__DEV__) {
   // this guards against console usage in production builds since
   // babel transform of remove console won't work with react-native preset
-  [
-    'assert',
-    'clear',
-    'count',
-    'debug',
-    'dir',
-    'dirxml',
-    'error',
-    'exception',
-    'group',
-    'groupCollapsed',
-    'groupEnd',
-    'info',
-    'log',
-    'profile',
-    'profileEnd',
-    'table',
-    'time',
-    'timeEnd',
-    'timeStamp',
-    'trace',
-    'warn',
-  ].forEach(methodName => {
+  Object.keys(console).forEach(methodName => {
     console[methodName] = () => {
       /* noop */
     };
