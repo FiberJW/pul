@@ -1,20 +1,20 @@
-import Expo, { Font, Permissions, AppLoading } from 'expo';
-import React, { Component, PropTypes } from 'react';
-import { AsyncStorage, Alert } from 'react-native';
-import { NavigationProvider, StackNavigation } from '@expo/ex-navigation';
-import Router from './navigation/Router';
-import * as firebase from 'firebase';
-import { firebaseConfig, sentryURL } from './config/keys';
-import { ActionSheetProvider } from '@expo/react-native-action-sheet';
-import DropdownAlertProvider from './components/DropdownAlertProvider';
-import ExpoSentryClient from '@expo/sentry-utils';
-import connectDropdownAlert from './utils/connectDropdownAlert';
-import { inject, observer, Provider as MobXProvider } from 'mobx-react/native';
-import { observable } from 'mobx';
-import authStore from './stores/AuthStore';
-import eventStore from './stores/EventStore';
-import trexStore from './stores/TrexStore';
-import uiStore from './stores/UIStore';
+import Expo, { Font, Permissions, AppLoading } from "expo";
+import React, { Component, PropTypes } from "react";
+import { AsyncStorage, Alert } from "react-native";
+import { NavigationProvider, StackNavigation } from "@expo/ex-navigation";
+import Router from "./navigation/Router";
+import * as firebase from "firebase";
+import { firebaseConfig, sentryURL } from "./config/keys";
+import { ActionSheetProvider } from "@expo/react-native-action-sheet";
+import DropdownAlertProvider from "./components/DropdownAlertProvider";
+import ExpoSentryClient from "@expo/sentry-utils";
+import connectDropdownAlert from "./utils/connectDropdownAlert";
+import { inject, observer, Provider as MobXProvider } from "mobx-react/native";
+import { observable } from "mobx";
+import authStore from "./stores/AuthStore";
+import eventStore from "./stores/EventStore";
+import trexStore from "./stores/TrexStore";
+import uiStore from "./stores/UIStore";
 
 if (!global.__DEV__) {
   // this guards against console usage in production builds since
@@ -27,18 +27,18 @@ if (!global.__DEV__) {
 
   ExpoSentryClient.setupSentry(
     sentryURL,
-    require('./exp.json').version,
-    require('./package.json').main
+    require("./exp.json").version,
+    require("./package.json").main
   );
 }
 
 @connectDropdownAlert
-@inject('authStore')
+@inject("authStore")
 @observer
 class App extends Component {
   static propTypes = {
     authStore: PropTypes.object,
-    alertWithType: PropTypes.func,
+    alertWithType: PropTypes.func
   };
 
   @observable loading = true;
@@ -46,10 +46,10 @@ class App extends Component {
   async setup() {
     await Permissions.askAsync(Permissions.LOCATION);
     await Font.loadAsync({
-      'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
-      'open-sans-light': require('./assets/fonts/OpenSans-Light.ttf'),
-      'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
-      'open-sans-semibold': require('./assets/fonts/OpenSans-Semibold.ttf'),
+      "open-sans-bold": require("./assets/fonts/OpenSans-Bold.ttf"),
+      "open-sans-light": require("./assets/fonts/OpenSans-Light.ttf"),
+      "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
+      "open-sans-semibold": require("./assets/fonts/OpenSans-Semibold.ttf")
     });
     await this.startFirebase();
   }
@@ -61,19 +61,19 @@ class App extends Component {
       Alert.alert(
         null,
         "Something's on fire. Please press 'OK' to try again.",
-        [{ text: 'OK', onPress: this.startFirebase }]
+        [{ text: "OK", onPress: this.startFirebase }]
       );
     }
     try {
       await this.signIn();
     } catch (error) {
-      this.props.alertWithType('error', 'Error', error.toString());
+      this.props.alertWithType("error", "Error", error.toString());
       this.loading = false;
     }
   };
 
   signIn = async () => {
-    let userCredentials = await AsyncStorage.getItem('@PUL:user');
+    let userCredentials = await AsyncStorage.getItem("@PUL:user");
     if (userCredentials !== null) {
       userCredentials = JSON.parse(userCredentials);
       try {
@@ -82,25 +82,25 @@ class App extends Component {
       } catch (error) {
         if (error.code) {
           switch (error.code) {
-            case 'auth/network-request-failed':
+            case "auth/network-request-failed":
               Alert.alert(
                 null,
                 "No Internet connection. Please press 'OK' when connected.",
-                [{ text: 'OK', onPress: this.signIn }]
+                [{ text: "OK", onPress: this.signIn }]
               );
               break;
-            case 'auth/user-not-found':
-            case 'auth/invalid-email':
-            case 'auth/user-disabled':
-            case 'auth/wrong-password':
+            case "auth/user-not-found":
+            case "auth/invalid-email":
+            case "auth/user-disabled":
+            case "auth/wrong-password":
               this.loading = false;
               break;
             default:
-              Alert.alert(null, 'Something is on fire.', [{ text: 'OK' }]);
+              Alert.alert(null, "Something is on fire.", [{ text: "OK" }]);
               this.loading = false;
           }
         } else {
-          this.props.alertWithType('error', 'Error', error.toString());
+          this.props.alertWithType("error", "Error", error.toString());
           this.loading = false;
         }
       }
@@ -119,8 +119,8 @@ class App extends Component {
   render() {
     const route = this.props.authStore.state ===
       this.props.authStore.authStates[1]
-      ? 'tabs'
-      : 'onboarding';
+      ? "tabs"
+      : "onboarding";
 
     return (
       <Choose>
