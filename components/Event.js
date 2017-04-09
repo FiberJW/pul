@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from "react";
 import {
   View,
   Text,
@@ -8,27 +8,27 @@ import {
   Image,
   Vibration,
   Platform,
-  Alert,
-} from 'react-native';
-import Router from '../navigation/Router';
-import { withNavigation } from '@expo/ex-navigation';
-import colors from 'kolors';
-import Collapsible from 'react-native-collapsible';
-import moment from 'moment';
-import ElevatedView from 'react-native-elevated-view';
-import createLyftDeepLink from '../utils/createLyftDeepLink';
-import filter from '../utils/filter';
-import { maybeOpenURL } from 'react-native-app-link';
-import connectDropdownAlert from '../utils/connectDropdownAlert';
-import CardLabel from './styled/CardLabel';
-import CardHeader from './styled/CardHeader';
-import CardSublabel from './styled/CardSublabel';
-import { observer, inject } from 'mobx-react/native';
-import { observable } from 'mobx';
+  Alert
+} from "react-native";
+import Router from "../navigation/Router";
+import { withNavigation } from "@expo/ex-navigation";
+import colors from "kolors";
+import Collapsible from "react-native-collapsible";
+import moment from "moment";
+import ElevatedView from "react-native-elevated-view";
+import createLyftDeepLink from "../utils/createLyftDeepLink";
+import filter from "../utils/filter";
+import { maybeOpenURL } from "react-native-app-link";
+import connectDropdownAlert from "../utils/connectDropdownAlert";
+import CardLabel from "./styled/CardLabel";
+import CardHeader from "./styled/CardHeader";
+import CardSublabel from "./styled/CardSublabel";
+import { observer, inject } from "mobx-react/native";
+import { observable } from "mobx";
 
 @withNavigation
 @connectDropdownAlert
-@inject('authStore')
+@inject("authStore")
 @observer
 export default class Event extends Component {
   static propTypes = {
@@ -37,7 +37,7 @@ export default class Event extends Component {
     navigator: PropTypes.object.isRequired,
     navigation: PropTypes.object.isRequired,
     refresh: PropTypes.func,
-    alertWithType: PropTypes.func.isRequired,
+    alertWithType: PropTypes.func.isRequired
   };
 
   @observable isCollapsed = true;
@@ -71,41 +71,41 @@ export default class Event extends Component {
           if (this.props.event.createdBy === this.props.authStore.userId) {
             Vibration.vibrate([0, 25]);
             Alert.alert(
-              Platform.OS === 'ios' ? 'Delete Event' : 'Delete event',
-              'Are you sure that you want to delete this event?',
+              Platform.OS === "ios" ? "Delete Event" : "Delete event",
+              "Are you sure that you want to delete this event?",
               [
                 {
-                  text: 'Cancel',
+                  text: "Cancel",
                   onPress: () => {},
-                  style: 'cancel',
+                  style: "cancel"
                 },
                 {
-                  text: 'OK',
+                  text: "OK",
                   onPress: () => {
                     global.firebaseApp
                       .database()
-                      .ref('users')
+                      .ref("users")
                       .child(this.props.authStore.userId)
-                      .once('value')
+                      .once("value")
                       .then(userSnap => {
                         const school = userSnap.val().school;
                         global.firebaseApp
                           .database()
-                          .ref('schools')
+                          .ref("schools")
                           .child(school)
-                          .child('events')
+                          .child("events")
                           .child(this.props.event.uid)
                           .remove();
                       })
                       .catch(error => {
                         this.props.alertWithType(
-                          'error',
-                          'Error',
+                          "error",
+                          "Error",
                           error.toString()
                         );
                       });
-                  },
-                },
+                  }
+                }
               ]
             );
           }
@@ -129,8 +129,8 @@ export default class Event extends Component {
             }}
             onLongPress={() => {
               this.props.navigation
-                .getNavigator('master')
-                .push(Router.getRoute('location', { event: this.props.event }));
+                .getNavigator("master")
+                .push(Router.getRoute("location", { event: this.props.event }));
             }}
             style={styles.location}
           >
@@ -138,9 +138,9 @@ export default class Event extends Component {
           </Text>
           <Text style={styles.time}>
             {moment(this.props.event.date)
-              .add(this.props.event.time.hours, 'hours')
-              .add(this.props.event.time.minutes, 'minutes')
-              .format('LLLL')}
+              .add(this.props.event.time.hours, "hours")
+              .add(this.props.event.time.minutes, "minutes")
+              .format("LLLL")}
           </Text>
           <Collapsible duration={200} collapsed={this.isCollapsed}>
             <If condition={this.props.event.description}>
@@ -157,8 +157,8 @@ export default class Event extends Component {
                 onLongPress={() => {
                   let url;
                   if (
-                    this.props.event.url.includes('http') ||
-                    this.props.event.url.includes('https')
+                    this.props.event.url.includes("http") ||
+                    this.props.event.url.includes("https")
                   ) {
                     url = this.props.event.url;
                   } else {
@@ -173,8 +173,8 @@ export default class Event extends Component {
                     })
                     .catch(err => {
                       this.props.alertWithType(
-                        'error',
-                        'Error',
+                        "error",
+                        "Error",
                         err.toString()
                       );
                     });
@@ -192,17 +192,17 @@ export default class Event extends Component {
                 }
                 onPress={() => {
                   if (this.props.authStore.verified) {
-                    this.props.navigation.getNavigator('master').push(
-                      Router.getRoute('setPickupLocation', {
+                    this.props.navigation.getNavigator("master").push(
+                      Router.getRoute("setPickupLocation", {
                         refresh: this.props.refresh,
-                        event: this.props.event,
+                        event: this.props.event
                       })
                     );
                   } else {
                     this.props.alertWithType(
-                      'error',
-                      'Error',
-                      'You must verify your email before continuing. No creepers allowed!'
+                      "error",
+                      "Error",
+                      "You must verify your email before continuing. No creepers allowed!"
                     );
                   }
                 }}
@@ -213,8 +213,8 @@ export default class Event extends Component {
                       this.isRider ||
                       this.isDriver
                       ? colors.disabledBlue
-                      : colors.blue,
-                  },
+                      : colors.blue
+                  }
                 ]}
               >
                 <Text style={styles.rideButtonText}>
@@ -225,17 +225,17 @@ export default class Event extends Component {
                 disabled={this.isRider || this.isDriver}
                 onPress={() => {
                   if (this.props.authStore.verified) {
-                    this.props.navigation.getNavigator('master').push(
-                      Router.getRoute('setDriveOptions', {
+                    this.props.navigation.getNavigator("master").push(
+                      Router.getRoute("setDriveOptions", {
                         refresh: this.props.refresh,
-                        event: this.props.event,
+                        event: this.props.event
                       })
                     );
                   } else {
                     this.props.alertWithType(
-                      'error',
-                      'Error',
-                      'You must verify your email before continuing. No creepers allowed!'
+                      "error",
+                      "Error",
+                      "You must verify your email before continuing. No creepers allowed!"
                     );
                   }
                 }}
@@ -244,8 +244,8 @@ export default class Event extends Component {
                   {
                     backgroundColor: this.isRider || this.isDriver
                       ? colors.disabledPurp
-                      : colors.purp,
-                  },
+                      : colors.purp
+                  }
                 ]}
               >
                 <Text style={styles.driveButtonText}>
@@ -259,11 +259,11 @@ export default class Event extends Component {
               {!this.isRider &&
                 !this.isDriver &&
                 this.props.event.availableRides > 0 &&
-                `${this.props.event.availableRides} driver${this.props.event.availableRides > 1 ? 's' : ''} available`.toUpperCase()}
+                `${this.props.event.availableRides} driver${this.props.event.availableRides > 1 ? "s" : ""} available`.toUpperCase()}
               {!this.isRider &&
                 !this.isDriver &&
                 !this.props.event.availableRides &&
-                'No drivers available'.toUpperCase()}
+                "No drivers available".toUpperCase()}
             </Text>
 
             {!this.isDriver &&
@@ -273,21 +273,21 @@ export default class Event extends Component {
                   createLyftDeepLink(this.props.event)
                     .then(url => {
                       maybeOpenURL(url, {
-                        appName: 'Lyft',
-                        appStoreId: 'id529379082',
-                        playStoreId: 'me.lyft.android',
+                        appName: "Lyft",
+                        appStoreId: "id529379082",
+                        playStoreId: "me.lyft.android"
                       }).catch(err => {
                         this.props.alertWithType(
-                          'error',
-                          'Error',
+                          "error",
+                          "Error",
                           err.toString()
                         );
                       });
                     })
                     .catch(err => {
                       this.props.alertWithType(
-                        'error',
-                        'Error',
+                        "error",
+                        "Error",
                         err.toString()
                       );
                     });
@@ -297,7 +297,7 @@ export default class Event extends Component {
                 <Image
                   resizeMode="contain"
                   style={styles.lyftIcon}
-                  source={require('pul/assets/images/lyft_logo_white.png')}
+                  source={require("pul/assets/images/lyft_logo_white.png")}
                 />
                 <Text style={styles.lyftButtonText}>
                   RIDE WITH LYFT
@@ -319,91 +319,91 @@ const styles = StyleSheet.create({
     // borderRadius: 4,
     marginVertical: 4,
     marginHorizontal: 8,
-    backgroundColor: 'white',
+    backgroundColor: "white"
   },
   location: {
     paddingTop: 8,
-    fontFamily: 'open-sans-semibold',
+    fontFamily: "open-sans-semibold",
     fontSize: 12,
-    color: colors.blue,
+    color: colors.blue
   },
   time: {
-    fontFamily: 'open-sans-semibold',
+    fontFamily: "open-sans-semibold",
     fontSize: 12,
     color: colors.black,
-    paddingBottom: 4,
+    paddingBottom: 4
   },
   description: {
     paddingTop: 4,
-    fontFamily: 'open-sans',
+    fontFamily: "open-sans",
     fontSize: 14,
-    color: colors.black,
+    color: colors.black
   },
   website: {
     paddingTop: 8,
-    fontFamily: 'open-sans-light',
+    fontFamily: "open-sans-light",
     fontSize: 12,
-    color: colors.blue,
+    color: colors.blue
   },
   buttons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingVertical: 8,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 8
   },
   rideButton: {
     borderRadius: 4,
-    alignItems: 'center',
+    alignItems: "center",
     height: 40,
     backgroundColor: colors.blue,
     flex: 1,
     marginRight: 16,
-    justifyContent: 'center',
+    justifyContent: "center"
   },
   rideButtonText: {
     fontSize: 18,
-    fontFamily: 'open-sans-bold',
-    color: 'white',
+    fontFamily: "open-sans-bold",
+    color: "white"
   },
   driversAvailable: {
     color: colors.black,
     fontSize: 12,
-    alignSelf: 'center',
-    fontFamily: 'open-sans',
-    textAlign: 'center',
+    alignSelf: "center",
+    fontFamily: "open-sans",
+    textAlign: "center"
   },
   driveButton: {
     borderRadius: 4,
     flex: 1,
     marginLeft: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: 8,
     height: 40,
-    backgroundColor: colors.purp,
+    backgroundColor: colors.purp
   },
   driveButtonText: {
-    color: 'white',
+    color: "white",
     fontSize: 18,
-    fontFamily: 'open-sans-bold',
+    fontFamily: "open-sans-bold"
   },
   lyftButton: {
     borderRadius: 4,
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     padding: 8,
     marginVertical: 8,
-    backgroundColor: '#FF06B8',
+    backgroundColor: "#FF06B8"
   },
   lyftButtonText: {
-    color: 'white',
+    color: "white",
     fontSize: 18,
     marginLeft: -30,
-    fontFamily: 'open-sans-bold',
+    fontFamily: "open-sans-bold"
   },
   lyftIcon: {
     height: 21,
-    width: 30,
-  },
+    width: 30
+  }
 });

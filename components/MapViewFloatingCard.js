@@ -1,8 +1,8 @@
-import React, { PropTypes } from 'react';
-import { TouchableOpacity } from 'react-native';
-import styled from 'styled-components/native';
-import ElevatedView from 'react-native-elevated-view';
-import colors from 'kolors';
+import React, { PropTypes } from "react";
+import { TouchableOpacity } from "react-native";
+import styled from "styled-components/native";
+import ElevatedView from "react-native-elevated-view";
+import colors from "kolors";
 
 const MapViewFloatingCardText = styled.Text`
   font-family: open-sans;
@@ -32,7 +32,7 @@ const MapViewFloatingCard = props => (
 
 MapViewFloatingCard.propTypes = {
   onPress: PropTypes.func,
-  label: PropTypes.string,
+  label: PropTypes.string
 };
 
 export default MapViewFloatingCard;

@@ -1,13 +1,13 @@
 export const firebaseConfig = {
-  apiKey: '',
-  authDomain: '',
-  databaseURL: '',
-  storageBucket: '',
-  messagingSenderId: '',
+  apiKey: "",
+  authDomain: "",
+  databaseURL: "",
+  storageBucket: "",
+  messagingSenderId: ""
 };
 
-export const lyftClientId = '';
+export const lyftClientId = "";
 
-export const googleApiKey = '';
+export const googleApiKey = "";
 
-export const sentryURL = '';
+export const sentryURL = "";

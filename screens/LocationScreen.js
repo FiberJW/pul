@@ -1,31 +1,31 @@
-import React, { Component, PropTypes } from 'react';
-import { StyleSheet } from 'react-native';
-import { MapView } from 'expo';
-import colors from 'kolors';
-import { NavigationStyles } from '@expo/ex-navigation';
-import { observer } from 'mobx-react/native';
-import { observable } from 'mobx';
+import React, { Component, PropTypes } from "react";
+import { StyleSheet } from "react-native";
+import { MapView } from "expo";
+import colors from "kolors";
+import { NavigationStyles } from "@expo/ex-navigation";
+import { observer } from "mobx-react/native";
+import { observable } from "mobx";
 
 @observer
 export default class LocationScreen extends Component {
   static route = {
     navigationBar: {
       visible: true,
-      title: 'EVENT LOCATION',
-      borderBottomColor: 'transparent',
+      title: "EVENT LOCATION",
+      borderBottomColor: "transparent",
       tintColor: colors.black,
       titleStyle: {
-        fontFamily: 'open-sans-bold',
+        fontFamily: "open-sans-bold"
       },
-      backgroundColor: 'white',
+      backgroundColor: "white"
     },
     styles: {
-      ...NavigationStyles.SlideHorizontal,
-    },
+      ...NavigationStyles.SlideHorizontal
+    }
   };
 
   static propTypes = {
-    event: PropTypes.object.isRequired,
+    event: PropTypes.object.isRequired
   };
 
   @observable region = null;
@@ -42,7 +42,7 @@ export default class LocationScreen extends Component {
           latitude: this.props.event.location.geometry.location.lat,
           longitude: this.props.event.location.geometry.location.lng,
           latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          longitudeDelta: 0.0421
         }}
         toolbarEnabled={false}
         loadingEnabled
@@ -54,7 +54,7 @@ export default class LocationScreen extends Component {
           description={this.props.event.location.address}
           coordinate={{
             latitude: this.props.event.location.geometry.location.lat,
-            longitude: this.props.event.location.geometry.location.lng,
+            longitude: this.props.event.location.geometry.location.lng
           }}
         />
       </MapView>

@@ -1,8 +1,8 @@
-import { observable, action, computed } from 'mobx';
-import _ from 'lodash';
-import moment from 'moment';
-import { create, persist } from 'mobx-persist';
-import { AsyncStorage } from 'react-native';
+import { observable, action, computed } from "mobx";
+import _ from "lodash";
+import moment from "moment";
+import { create, persist } from "mobx-persist";
+import { AsyncStorage } from "react-native";
 
 export class EventStore {
   @persist
@@ -21,7 +21,7 @@ export class EventStore {
   @observable
   schoolUID = null;
 
-  @persist('list')
+  @persist("list")
   @observable
   events = [];
 
@@ -57,18 +57,18 @@ export class EventStore {
     this.events = rawEvents
       .filter(event => {
         return moment(event.date)
-          .add(event.time.hours, 'hours')
-          .add(event.time.minutes, 'minutes')
-          .isAfter(moment().startOf('day'));
+          .add(event.time.hours, "hours")
+          .add(event.time.minutes, "minutes")
+          .isAfter(moment().startOf("day"));
       })
       .sort((leftEvent, rightEvent) => {
         return moment(leftEvent.date)
-          .add(leftEvent.time.hours, 'hours')
-          .add(leftEvent.time.minutes, 'minutes')
+          .add(leftEvent.time.hours, "hours")
+          .add(leftEvent.time.minutes, "minutes")
           .diff(
             moment(rightEvent.date)
-              .add(rightEvent.time.hours, 'hours')
-              .add(rightEvent.time.minutes, 'minutes')
+              .add(rightEvent.time.hours, "hours")
+              .add(rightEvent.time.minutes, "minutes")
           );
       })
       .slice(0, 100);
@@ -85,17 +85,17 @@ export class EventStore {
 
     global.firebaseApp
       .database()
-      .ref('users')
+      .ref("users")
       .child(global.firebaseApp.auth().currentUser.uid)
-      .once('value')
+      .once("value")
       .then(userSnap => {
         const schoolUID = userSnap.val().school;
         global.firebaseApp
           .database()
-          .ref('schools')
+          .ref("schools")
           .child(schoolUID)
-          .child('events')
-          .on('value', this.processEvents(schoolUID));
+          .child("events")
+          .on("value", this.processEvents(schoolUID));
         this.error = null;
       })
       .catch(error => {
@@ -106,10 +106,10 @@ export class EventStore {
   @action unWatchEvents = () => {
     global.firebaseApp
       .database()
-      .ref('schools')
+      .ref("schools")
       .child(this.schoolUID)
-      .child('events')
-      .off('value', this.processEvents(this.schoolUID));
+      .child("events")
+      .off("value", this.processEvents(this.schoolUID));
   };
 
   @action refresh = (showRefreshControl = true) => {
@@ -174,7 +174,7 @@ export class EventStore {
 
   @action hydrate = () => {
     const pour = create({
-      storage: AsyncStorage,
+      storage: AsyncStorage
     });
 
     Object.keys(this).forEach(key => {

@@ -1,7 +1,7 @@
-import React from 'react';
-import styled from 'styled-components/native';
-import colors from 'kolors';
-import ElevatedView from 'react-native-elevated-view';
+import React from "react";
+import styled from "styled-components/native";
+import colors from "kolors";
+import ElevatedView from "react-native-elevated-view";
 
 const Outer = styled(ElevatedView)`
   height: 24;

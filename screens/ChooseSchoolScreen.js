@@ -1,21 +1,21 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from "react";
 import {
   View,
   StyleSheet,
   ListView,
   StatusBar,
   TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
-import colors from 'kolors';
-import { NavigationStyles } from '@expo/ex-navigation';
-import SchoolOption from '../components/SchoolOption';
-import connectDropdownAlert from '../utils/connectDropdownAlert';
-import { email } from 'react-native-communications';
-import { observer } from 'mobx-react/native';
-import { observable } from 'mobx';
-import _ from 'lodash';
-import Suggestion from '../components/styled/Suggestion';
+  ActivityIndicator
+} from "react-native";
+import colors from "kolors";
+import { NavigationStyles } from "@expo/ex-navigation";
+import SchoolOption from "../components/SchoolOption";
+import connectDropdownAlert from "../utils/connectDropdownAlert";
+import { email } from "react-native-communications";
+import { observer } from "mobx-react/native";
+import { observable } from "mobx";
+import _ from "lodash";
+import Suggestion from "../components/styled/Suggestion";
 
 @connectDropdownAlert
 @observer
@@ -23,22 +23,22 @@ export default class ChooseSchoolScreen extends Component {
   static route = {
     navigationBar: {
       visible: true,
-      title: 'CHOOSE YOUR SCHOOL',
+      title: "CHOOSE YOUR SCHOOL",
       tintColor: colors.black,
       titleStyle: {
-        fontFamily: 'open-sans-bold',
+        fontFamily: "open-sans-bold"
       },
-      backgroundColor: 'white',
+      backgroundColor: "white"
     },
     styles: {
-      ...NavigationStyles.SlideHorizontal,
-    },
+      ...NavigationStyles.SlideHorizontal
+    }
   };
 
   static propTypes = {
     navigator: PropTypes.object,
     intent: PropTypes.string.isRequired,
-    alertWithType: PropTypes.func.isRequired,
+    alertWithType: PropTypes.func.isRequired
   };
 
   @observable loading = true;
@@ -49,19 +49,19 @@ export default class ChooseSchoolScreen extends Component {
   componentWillMount() {
     global.firebaseApp
       .database()
-      .ref('schools')
-      .once('value')
+      .ref("schools")
+      .once("value")
       .then(schoolsSnap => {
         this.schools = _.map(schoolsSnap.val(), (school, uid) => {
           return {
             ...school,
-            uid,
+            uid
           };
         });
         this.loading = false;
       })
       .catch(err => {
-        this.props.alertWithType('error', 'Error', err.toString());
+        this.props.alertWithType("error", "Error", err.toString());
       });
   }
 
@@ -74,8 +74,8 @@ export default class ChooseSchoolScreen extends Component {
             <View
               style={{
                 flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
+                justifyContent: "center",
+                alignItems: "center"
               }}
             >
               <ActivityIndicator size="large" />
@@ -92,14 +92,14 @@ export default class ChooseSchoolScreen extends Component {
           </Otherwise>
         </Choose>
         <Choose>
-          <When condition={this.props.intent === 'signup'}>
+          <When condition={this.props.intent === "signup"}>
             <TouchableOpacity
               onPress={() => {
                 email(
-                  ['datwheat@gmail.com'],
+                  ["datwheat@gmail.com"],
                   null,
                   null,
-                  'PÜL School Request',
+                  "PÜL School Request",
                   `Hey!
 
 You should consider adding <SCHOOL NAME> to PÜL!
@@ -138,7 +138,7 @@ Thanks a lot for considering adding <SCHOOL NAME> to PÜL!
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
-    justifyContent: 'space-between',
-  },
+    backgroundColor: "white",
+    justifyContent: "space-between"
+  }
 });

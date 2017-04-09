@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from "react";
 import {
   StatusBar,
   View,
@@ -6,65 +6,65 @@ import {
   LayoutAnimation,
   Platform,
   TextInput,
-  ActivityIndicator,
-} from 'react-native';
-import { NavigationStyles } from '@expo/ex-navigation';
-import colors from 'kolors';
-import KeyboardEventListener from 'KeyboardEventListener';
-import Swiper from 'react-native-swiper';
-import Icon from '../components/CrossPlatformIcon';
-import GetEventName from '../components/GetEventName';
-import GetEventType from '../components/GetEventType';
-import GetEventDate from '../components/GetEventDate';
-import GetEventTime from '../components/GetEventTime';
-import GetEventUrl from '../components/GetEventUrl';
-import GetEventDescription from '../components/GetEventDescription';
-import GetEventLocation from '../components/GetEventLocation';
-import CancelButton from '../components/NavBarCancelButton';
-import moment from 'moment';
-import filter from '../utils/filter';
-import connectDropdownAlert from '../utils/connectDropdownAlert';
+  ActivityIndicator
+} from "react-native";
+import { NavigationStyles } from "@expo/ex-navigation";
+import colors from "kolors";
+import KeyboardEventListener from "KeyboardEventListener";
+import Swiper from "react-native-swiper";
+import Icon from "../components/CrossPlatformIcon";
+import GetEventName from "../components/GetEventName";
+import GetEventType from "../components/GetEventType";
+import GetEventDate from "../components/GetEventDate";
+import GetEventTime from "../components/GetEventTime";
+import GetEventUrl from "../components/GetEventUrl";
+import GetEventDescription from "../components/GetEventDescription";
+import GetEventLocation from "../components/GetEventLocation";
+import CancelButton from "../components/NavBarCancelButton";
+import moment from "moment";
+import filter from "../utils/filter";
+import connectDropdownAlert from "../utils/connectDropdownAlert";
 import {
   isExponentPushToken,
-  sendPushNotificationAsync,
-} from '../utils/ExponentPushClient';
-import _ from 'lodash';
-import { observable } from 'mobx';
-import { observer, inject } from 'mobx-react/native';
+  sendPushNotificationAsync
+} from "../utils/ExponentPushClient";
+import _ from "lodash";
+import { observable } from "mobx";
+import { observer, inject } from "mobx-react/native";
 
 @connectDropdownAlert
-@inject('authStore')
+@inject("authStore")
 @observer
 export default class NewEventScreen extends Component {
   static route = {
     navigationBar: {
       visible: true,
-      title: 'NEW EVENT',
+      title: "NEW EVENT",
       tintColor: colors.black,
       renderLeft: () => null,
       renderRight: () => <CancelButton />,
-      borderBottomColor: 'transparent',
+      borderBottomColor: "transparent",
       titleStyle: {
-        fontFamily: 'open-sans-bold',
+        fontFamily: "open-sans-bold"
       },
-      backgroundColor: 'white',
+      backgroundColor: "white"
     },
     styles: {
-      ...NavigationStyles.SlideHorizontal,
-    },
+      ...NavigationStyles.SlideHorizontal
+    }
   };
 
   static propTypes = {
     navigator: PropTypes.object.isRequired,
     authStore: PropTypes.object.isRequired,
     refresh: PropTypes.func,
-    alertWithType: PropTypes.func.isRequired,
+    alertWithType: PropTypes.func.isRequired
   };
 
   @observable name;
   @observable date = moment.utc().toDate();
   @observable time = moment.utc().toDate().getTime();
-  @observable url = '';
+  @observable url = "";
   @observable submitting = false;
   @observable type;
   @observable description;
@@ -78,20 +78,20 @@ export default class NewEventScreen extends Component {
     const name = this.name !== undefined && this.name.name;
     const type = this.type !== undefined && this.type.type;
     const date = this.date.date
-      ? moment.utc(moment(this.date.date).startOf('day')).toJSON()
-      : moment.utc(moment(this.date).startOf('day')).toJSON();
+      ? moment.utc(moment(this.date.date).startOf("day")).toJSON()
+      : moment.utc(moment(this.date).startOf("day")).toJSON();
     const time = {
       hours: this.time.time
         ? moment(this.time.time).hours()
         : moment(this.time).hours(),
       minutes: this.time.time
         ? moment(this.time.time).minutes()
-        : moment(this.time).minutes(),
+        : moment(this.time).minutes()
     };
     const url = this.url.url || this.url;
     const location = {
       address: this.location.details.formatted_address,
-      geometry: this.location.details.geometry,
+      geometry: this.location.details.geometry
     };
     const description = this.description !== undefined &&
       this.description.description;
@@ -104,50 +104,50 @@ export default class NewEventScreen extends Component {
       url: url.toLowerCase(),
       createdInDev: global.__DEV__,
       location,
-      description: description && filter.clean(description.trim()),
+      description: description && filter.clean(description.trim())
     };
   };
 
   checkDataAndPush = () => {
     let propertiesAreValid = true;
 
-    const name = this.name !== undefined ? this.name.name : '';
+    const name = this.name !== undefined ? this.name.name : "";
     const date = this.date.date
-      ? moment.utc(moment(this.date.date).startOf('day'))
-      : moment.utc(moment(this.date).startOf('day'));
+      ? moment.utc(moment(this.date.date).startOf("day"))
+      : moment.utc(moment(this.date).startOf("day"));
     const time = {
       hours: this.time.time
         ? moment(this.time.time).hours()
         : moment(this.time).hours(),
       minutes: this.time.time
         ? moment(this.time.time).minutes()
-        : moment(this.time).minutes(),
+        : moment(this.time).minutes()
     };
 
     if (name !== filter.clean(name)) {
       this.props.alertWithType(
-        'error',
-        'Error',
-        'Please mind your choice of words.'
+        "error",
+        "Error",
+        "Please mind your choice of words."
       );
       propertiesAreValid = false;
     }
     if (
       !date
-        .add(time.hours, 'hours')
-        .add(time.minutes, 'minutes')
-        .isAfter(moment().add(3, 'hours'))
+        .add(time.hours, "hours")
+        .add(time.minutes, "minutes")
+        .isAfter(moment().add(3, "hours"))
     ) {
       this.props.alertWithType(
-        'error',
-        'Error',
-        'Event should be scheduled at least three hours in advance.'
+        "error",
+        "Error",
+        "Event should be scheduled at least three hours in advance."
       );
       propertiesAreValid = false;
     }
-    ['name', 'date', 'time', 'url', 'type', 'description'].forEach(elem => {
+    ["name", "date", "time", "url", "type", "description"].forEach(elem => {
       if (!this.references[elem].isValid()) {
-        this.props.alertWithType('error', 'Error', `Event ${elem} is invalid.`);
+        this.props.alertWithType("error", "Error", `Event ${elem} is invalid.`);
         propertiesAreValid = false;
       }
     });
@@ -167,7 +167,7 @@ export default class NewEventScreen extends Component {
   _onKeyboardVisibilityChange = (
     {
       keyboardHeight,
-      layoutAnimationConfig,
+      layoutAnimationConfig
     }: { keyboardHeight: number, layoutAnimationConfig: ?Object }
   ) => {
     if (keyboardHeight === 0) {
@@ -184,9 +184,9 @@ export default class NewEventScreen extends Component {
   submitEvent = event => {
     if (this.submitting) {
       this.props.alertWithType(
-        'info',
-        'Info',
-        'Your submission is in progress.'
+        "info",
+        "Info",
+        "Your submission is in progress."
       );
       return;
     }
@@ -195,23 +195,23 @@ export default class NewEventScreen extends Component {
 
     global.firebaseApp
       .database()
-      .ref('users')
+      .ref("users")
       .child(this.props.authStore.userId)
-      .once('value')
+      .once("value")
       .then(snap => {
         const schoolUID = snap.val().school;
         global.firebaseApp
           .database()
-          .ref('schools')
+          .ref("schools")
           .child(schoolUID)
-          .child('events')
+          .child("events")
           .push(event)
           .then(() => {
             // send pushes to peers
             global.firebaseApp
               .database()
-              .ref('users')
-              .once('value')
+              .ref("users")
+              .once("value")
               .then(usersSnap => {
                 _.each(usersSnap.val(), user => {
                   if (
@@ -221,11 +221,11 @@ export default class NewEventScreen extends Component {
                   ) {
                     sendPushNotificationAsync({
                       exponentPushToken: user.pushToken,
-                      message: `There's a new ${event.type.toLowerCase()} event at your school!`,
+                      message: `There's a new ${event.type.toLowerCase()} event at your school!`
                     }).catch(err => {
                       this.props.alertWithType(
-                        'error',
-                        'Error',
+                        "error",
+                        "Error",
                         err.toString()
                       );
                     });
@@ -233,9 +233,9 @@ export default class NewEventScreen extends Component {
                 });
 
                 this.props.alertWithType(
-                  'success',
-                  'Success',
-                  'Your event was submitted successfully!'
+                  "success",
+                  "Success",
+                  "Your event was submitted successfully!"
                 );
                 this.props.refresh();
                 this.props.navigator.pop();
@@ -244,7 +244,7 @@ export default class NewEventScreen extends Component {
       })
       .catch(err => {
         this.submitting = false;
-        this.props.alertWithType('error', 'Error', err.toString());
+        this.props.alertWithType("error", "Error", err.toString());
       });
   };
 
@@ -268,7 +268,7 @@ export default class NewEventScreen extends Component {
           styles.container,
           this.keyboardHeight
             ? { flex: 1, marginBottom: this.keyboardHeight }
-            : { flex: 1 },
+            : { flex: 1 }
         ]}
         onLayout={e => {
           const { width, height } = e.nativeEvent.layout;
@@ -290,7 +290,7 @@ export default class NewEventScreen extends Component {
               onScroll={this._blurFocusedTextInput}
               scrollEventThrottle={32}
               keyboardShouldPersistTaps="always"
-              keyboardDismissMode={Platform.OS === 'ios' ? 'none' : 'on-drag'}
+              keyboardDismissMode={Platform.OS === "ios" ? "none" : "on-drag"}
               height={this.swiperHeight}
               contentContainerStyle={styles.swiperWrapper}
               showsButtons
@@ -394,18 +394,18 @@ export default class NewEventScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center"
   },
   swiperWrapper: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center"
   },
   slide: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+    justifyContent: "center",
+    alignItems: "center"
+  }
 });

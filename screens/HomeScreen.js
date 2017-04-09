@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from "react";
 import {
   View,
   ListView,
@@ -8,25 +8,25 @@ import {
   Image,
   Vibration,
   Text,
-  RefreshControl,
-} from 'react-native';
-import Event from '../components/Event';
-import ActionButton from 'react-native-action-button';
-import colors from 'kolors';
-import Icon from '../components/CrossPlatformIcon';
-import { NavigationStyles } from '@expo/ex-navigation';
-import Router from '../navigation/Router';
-import connectDropdownAlert from '../utils/connectDropdownAlert';
-import { observer, inject } from 'mobx-react/native';
+  RefreshControl
+} from "react-native";
+import Event from "../components/Event";
+import ActionButton from "react-native-action-button";
+import colors from "kolors";
+import Icon from "../components/CrossPlatformIcon";
+import { NavigationStyles } from "@expo/ex-navigation";
+import Router from "../navigation/Router";
+import connectDropdownAlert from "../utils/connectDropdownAlert";
+import { observer, inject } from "mobx-react/native";
 
 @connectDropdownAlert
-@inject('eventStore', 'authStore')
+@inject("eventStore", "authStore")
 @observer
 export default class HomeScreen extends Component {
   static route = {
     styles: {
-      ...NavigationStyles.Fade,
-    },
+      ...NavigationStyles.Fade
+    }
   };
 
   static propTypes = {
@@ -34,7 +34,7 @@ export default class HomeScreen extends Component {
     alertWithType: PropTypes.func.isRequired,
     navigation: PropTypes.object,
     eventStore: PropTypes.object,
-    authStore: PropTypes.object,
+    authStore: PropTypes.object
   };
 
   ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
@@ -42,8 +42,8 @@ export default class HomeScreen extends Component {
   componentWillUpdate(nextProps) {
     if (nextProps.eventStore.error) {
       nextProps.alertWithType(
-        'error',
-        'Error',
+        "error",
+        "Error",
         nextProps.eventStore.error.toString()
       );
     }
@@ -57,9 +57,9 @@ export default class HomeScreen extends Component {
           <When condition={this.props.eventStore.loading}>
             <View
               style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                flex: 1
               }}
             >
               <ActivityIndicator size="large" />
@@ -96,8 +96,8 @@ export default class HomeScreen extends Component {
             <View
               style={{
                 flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
+                justifyContent: "center",
+                alignItems: "center"
               }}
             >
               <Image
@@ -105,18 +105,18 @@ export default class HomeScreen extends Component {
                 style={{
                   width: 150,
                   height: 150,
-                  opacity: 0.3,
+                  opacity: 0.3
                 }}
-                source={require('pul/assets/images/PokerFace.png')}
+                source={require("pul/assets/images/PokerFace.png")}
               />
               <Text
                 style={{
                   marginTop: 16,
-                  fontFamily: 'open-sans',
+                  fontFamily: "open-sans",
                   fontSize: 18,
                   paddingHorizontal: 8,
-                  color: '#AEAEAF',
-                  textAlign: 'center',
+                  color: "#AEAEAF",
+                  textAlign: "center"
                 }}
               >
                 No events? Your school must be pretty lame.
@@ -129,16 +129,16 @@ export default class HomeScreen extends Component {
           offsetY={16}
           onPress={() => {
             if (this.props.authStore.verified) {
-              this.props.navigation.getNavigator('master').push(
-                Router.getRoute('newEvent', {
-                  refresh: this.props.eventStore.refresh,
+              this.props.navigation.getNavigator("master").push(
+                Router.getRoute("newEvent", {
+                  refresh: this.props.eventStore.refresh
                 })
               );
             } else {
               this.props.alertWithType(
-                'error',
-                'Error',
-                'You must verify your email before continuing. No creepers allowed!'
+                "error",
+                "Error",
+                "You must verify your email before continuing. No creepers allowed!"
               );
             }
           }}
@@ -146,13 +146,13 @@ export default class HomeScreen extends Component {
             Vibration.vibrate([0, 25]);
             if (this.props.authStore.verified) {
               this.props.navigation
-                .getNavigator('master')
-                .push(Router.getRoute('trex'));
+                .getNavigator("master")
+                .push(Router.getRoute("trex"));
             } else {
               this.props.alertWithType(
-                'error',
-                'Error',
-                'You must verify your email before continuing. No creepers allowed!'
+                "error",
+                "Error",
+                "You must verify your email before continuing. No creepers allowed!"
               );
             }
           }}
@@ -167,6 +167,6 @@ export default class HomeScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.eggshell,
-  },
+    backgroundColor: colors.eggshell
+  }
 });

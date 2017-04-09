@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from "react";
 import {
   View,
   StyleSheet,
@@ -7,28 +7,28 @@ import {
   Text,
   Image,
   RefreshControl,
-  ActivityIndicator,
-} from 'react-native';
-import colors from 'kolors';
-import { NavigationStyles } from '@expo/ex-navigation';
-import Ride from '../components/Ride';
-import connectDropdownAlert from '../utils/connectDropdownAlert';
-import { observer, inject } from 'mobx-react/native';
+  ActivityIndicator
+} from "react-native";
+import colors from "kolors";
+import { NavigationStyles } from "@expo/ex-navigation";
+import Ride from "../components/Ride";
+import connectDropdownAlert from "../utils/connectDropdownAlert";
+import { observer, inject } from "mobx-react/native";
 
 @connectDropdownAlert
-@inject('eventStore')
+@inject("eventStore")
 @observer
 export default class UpcomingRideScreen extends Component {
   static route = {
     styles: {
-      ...NavigationStyles.Fade,
-    },
+      ...NavigationStyles.Fade
+    }
   };
   static propTypes = {
     navigator: PropTypes.object,
     navigation: PropTypes.object,
     eventStore: PropTypes.object,
-    alertWithType: PropTypes.func.isRequired,
+    alertWithType: PropTypes.func.isRequired
   };
 
   ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
@@ -36,8 +36,8 @@ export default class UpcomingRideScreen extends Component {
   componentWillUpdate(nextProps) {
     if (nextProps.eventStore.error) {
       nextProps.alertWithType(
-        'error',
-        'Error',
+        "error",
+        "Error",
         nextProps.eventStore.error.toString()
       );
     }
@@ -51,9 +51,9 @@ export default class UpcomingRideScreen extends Component {
           <When condition={this.props.eventStore.loading}>
             <View
               style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                flex: 1
               }}
             >
               <ActivityIndicator size="large" />
@@ -93,8 +93,8 @@ export default class UpcomingRideScreen extends Component {
             <View
               style={{
                 flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
+                justifyContent: "center",
+                alignItems: "center"
               }}
             >
               <Image
@@ -102,18 +102,18 @@ export default class UpcomingRideScreen extends Component {
                 style={{
                   width: 150,
                   height: 150,
-                  opacity: 0.3,
+                  opacity: 0.3
                 }}
-                source={require('pul/assets/images/forever_alone.png')}
+                source={require("pul/assets/images/forever_alone.png")}
               />
               <Text
                 style={{
                   marginTop: 16,
-                  fontFamily: 'open-sans',
+                  fontFamily: "open-sans",
                   fontSize: 18,
                   paddingHorizontal: 8,
-                  color: '#AEAEAF',
-                  textAlign: 'center',
+                  color: "#AEAEAF",
+                  textAlign: "center"
                 }}
               >
                 No need to feel alone. Check out your school's events and make it out to one!
@@ -129,6 +129,6 @@ export default class UpcomingRideScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.eggshell,
-  },
+    backgroundColor: colors.eggshell
+  }
 });

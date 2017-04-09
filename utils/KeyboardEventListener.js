@@ -3,8 +3,8 @@
  * @flow
  */
 
-import type EmitterSubscription from 'EmitterSubscription';
-import { LayoutAnimation, Keyboard, Platform } from 'react-native';
+import type EmitterSubscription from "EmitterSubscription";
+import { LayoutAnimation, Keyboard, Platform } from "react-native";
 
 /**
  *  Listens to Keyboard Events
@@ -33,18 +33,18 @@ export default class KeyboardEventListener {
   constructor(callback: () => void) {
     this._callback = callback;
 
-    if (Platform.OS === 'ios') {
+    if (Platform.OS === "ios") {
       this._keyboardDidChangeSubscription = Keyboard.addListener(
-        'keyboardWillChangeFrame',
+        "keyboardWillChangeFrame",
         this._onKeyboardChange
       );
     } else {
       this._keyboardDidShowSubscription = Keyboard.addListener(
-        'keyboardDidShow',
+        "keyboardDidShow",
         this._onKeyboardChange
       );
       this._keyboardDidHideSubscription = Keyboard.addListener(
-        'keyboardDidHide',
+        "keyboardDidHide",
         this._onKeyboardChange
       );
     }
@@ -72,11 +72,11 @@ export default class KeyboardEventListener {
 
     let keyboardHeight;
     if (
-      Platform.OS === 'ios' && endCoordinates.screenY > startCoordinates.screenY
+      Platform.OS === "ios" && endCoordinates.screenY > startCoordinates.screenY
     ) {
       keyboardHeight = 0;
     } else if (
-      Platform.OS === 'ios' &&
+      Platform.OS === "ios" &&
       endCoordinates.screenY === startCoordinates.screenY
     ) {
       // Just return -- not sure where this event comes from and seems unnecessary
@@ -91,8 +91,8 @@ export default class KeyboardEventListener {
         duration,
         update: {
           duration,
-          type: LayoutAnimation.Types[easing] || 'keyboard',
-        },
+          type: LayoutAnimation.Types[easing] || "keyboard"
+        }
       };
     }
 

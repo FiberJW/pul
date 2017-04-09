@@ -1,8 +1,8 @@
-import React, { PropTypes } from 'react';
-import RadioIndicator from './styled/RadioIndicator';
-import RadioOptionLabel from './styled/RadioOptionLabel';
-import RadioInnerContainer from './styled/RadioInnerContainer';
-import RadioOuterContainer from './styled/RadioOuterContainer';
+import React, { PropTypes } from "react";
+import RadioIndicator from "./styled/RadioIndicator";
+import RadioOptionLabel from "./styled/RadioOptionLabel";
+import RadioInnerContainer from "./styled/RadioInnerContainer";
+import RadioOuterContainer from "./styled/RadioOuterContainer";
 
 const RadioOption = ({ label, color, onPress, selected }) => (
   <RadioOuterContainer onPress={onPress}>
@@ -17,7 +17,7 @@ RadioOption.propTypes = {
   label: PropTypes.string.isRequired,
   color: PropTypes.string.isRequired,
   onPress: PropTypes.func.isRequired,
-  selected: PropTypes.bool.isRequired,
+  selected: PropTypes.bool.isRequired
 };
 
 export default RadioOption;

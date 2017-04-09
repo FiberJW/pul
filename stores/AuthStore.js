@@ -1,13 +1,13 @@
-import { observable, action } from 'mobx';
-import { AsyncStorage } from 'react-native';
-import Expo from 'expo';
-import _ from 'lodash';
-import { create, persist } from 'mobx-persist';
+import { observable, action } from "mobx";
+import { AsyncStorage } from "react-native";
+import Expo from "expo";
+import _ from "lodash";
+import { create, persist } from "mobx-persist";
 
 export class AuthStore {
-  authStates = ['unauthenticated', 'authenticated', 'attempting'];
+  authStates = ["unauthenticated", "authenticated", "attempting"];
 
-  @persist('object')
+  @persist("object")
   @observable
   userData = {};
 
@@ -33,7 +33,7 @@ export class AuthStore {
 
   @action hydrate = () => {
     const pour = create({
-      storage: AsyncStorage,
+      storage: AsyncStorage
     });
 
     Object.keys(this).forEach(key => {
@@ -62,18 +62,18 @@ export class AuthStore {
         pushToken: null,
         deviceId: Expo.Constants.deviceId,
         settings: {
-          notifications: false,
+          notifications: false
         },
         displayName: credentials.name,
-        email: credentials.email,
+        email: credentials.email
       };
 
       await global.firebaseApp
         .database()
-        .ref('users')
+        .ref("users")
         .child(user.uid)
         .set(userData);
-      AsyncStorage.setItem('@PUL:user', JSON.stringify(credentials));
+      AsyncStorage.setItem("@PUL:user", JSON.stringify(credentials));
 
       this.watchEmailVerification();
 
@@ -100,18 +100,18 @@ export class AuthStore {
 
       const userSnap = await global.firebaseApp
         .database()
-        .ref('users')
+        .ref("users")
         .child(user.uid)
-        .once('value');
+        .once("value");
 
       if (auto) {
         if (!userSnap.val().deviceId) {
           await global.firebaseApp
             .database()
-            .ref('users')
+            .ref("users")
             .child(user.uid)
             .update({
-              deviceId: Expo.Constants.deviceId,
+              deviceId: Expo.Constants.deviceId
             });
         } else if (userSnap.val().deviceId !== Expo.Constants.deviceId) {
           // if this is not the same device as last time, sign out
@@ -122,14 +122,14 @@ export class AuthStore {
       } else {
         await global.firebaseApp
           .database()
-          .ref('users')
+          .ref("users")
           .child(user.uid)
           .update({
             deviceId: Expo.Constants.deviceId,
             pushToken: null,
             settings: {
-              notifications: false,
-            },
+              notifications: false
+            }
           });
       }
 
@@ -160,11 +160,11 @@ export class AuthStore {
   };
 
   @action logout = async () => {
-    await global.firebaseApp.database().ref('users').child(this.userId).update({
+    await global.firebaseApp.database().ref("users").child(this.userId).update({
       pushToken: null,
       settings: {
-        notifications: false,
-      },
+        notifications: false
+      }
     });
 
     this.unWatchUserData();
@@ -179,17 +179,17 @@ export class AuthStore {
   @action watchUserData = () => {
     global.firebaseApp
       .database()
-      .ref('users')
+      .ref("users")
       .child(this.userId)
-      .on('value', this.mergeUserData);
+      .on("value", this.mergeUserData);
   };
 
   @action unWatchUserData = () => {
     global.firebaseApp
       .database()
-      .ref('users')
+      .ref("users")
       .child(this.userId)
-      .off('value', this.mergeUserData);
+      .off("value", this.mergeUserData);
   };
 
   sendPasswordResetEmail = email => {
@@ -201,7 +201,7 @@ export class AuthStore {
     _.merge(this.userData, newUserData);
   };
 
-  @action setError = (error = new Error(''), timeInSeconds = 1) => {
+  @action setError = (error = new Error(""), timeInSeconds = 1) => {
     this.error = error;
     setTimeout(
       () => {

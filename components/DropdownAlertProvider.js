@@ -1,26 +1,26 @@
-import React, { PropTypes, Component } from 'react';
-import { View, StyleSheet, StatusBar } from 'react-native';
-import DropdownAlert from 'react-native-dropdownalert';
-import { observer } from 'mobx-react/native';
-import { observable } from 'mobx';
+import React, { PropTypes, Component } from "react";
+import { View, StyleSheet, StatusBar } from "react-native";
+import DropdownAlert from "react-native-dropdownalert";
+import { observer } from "mobx-react/native";
+import { observable } from "mobx";
 
 @observer
 export default class DropdownAlertProvider extends Component {
   static propTypes = {
-    children: React.PropTypes.any,
+    children: React.PropTypes.any
   };
 
   static childContextTypes = {
     alertWithType: PropTypes.func,
-    alert: PropTypes.func,
+    alert: PropTypes.func
   };
 
-  @observable barStyle = 'default';
+  @observable barStyle = "default";
 
   getChildContext() {
     return {
       alert: (...args) => this.dropdown.alert(...args),
-      alertWithType: (...args) => this.dropdown.alertWithType(...args),
+      alertWithType: (...args) => this.dropdown.alertWithType(...args)
     };
   }
 
@@ -34,7 +34,7 @@ export default class DropdownAlertProvider extends Component {
             this.dropdown = ref;
           }}
           onClose={() => {
-            this.barStyle = 'default';
+            this.barStyle = "default";
           }}
           endDelta={StatusBar.currentHeight}
         />
@@ -45,6 +45,6 @@ export default class DropdownAlertProvider extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
+    flex: 1
+  }
 });

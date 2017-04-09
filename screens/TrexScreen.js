@@ -1,43 +1,43 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from "react";
 import {
   WebView,
   StyleSheet,
   ListView,
   View,
   ActivityIndicator,
-  AppState,
-} from 'react-native';
-import colors from 'kolors';
-import { NavigationStyles } from '@expo/ex-navigation';
-import connectDropdownAlert from '../utils/connectDropdownAlert';
-import TrexPlayer from '../components/TrexPlayer';
-import { observer, inject } from 'mobx-react/native';
-import { observable } from 'mobx';
-import WidgetLabel from '../components/styled/WidgetLabel';
+  AppState
+} from "react-native";
+import colors from "kolors";
+import { NavigationStyles } from "@expo/ex-navigation";
+import connectDropdownAlert from "../utils/connectDropdownAlert";
+import TrexPlayer from "../components/TrexPlayer";
+import { observer, inject } from "mobx-react/native";
+import { observable } from "mobx";
+import WidgetLabel from "../components/styled/WidgetLabel";
 
 @connectDropdownAlert
-@inject('trexStore')
+@inject("trexStore")
 @observer
 export default class TrexScreen extends Component {
   static route = {
     navigationBar: {
       visible: true,
-      title: 'T-REX GAME',
-      borderBottomColor: 'transparent',
+      title: "T-REX GAME",
+      borderBottomColor: "transparent",
       tintColor: colors.black,
       titleStyle: {
-        fontFamily: 'open-sans-bold',
+        fontFamily: "open-sans-bold"
       },
-      backgroundColor: 'white',
+      backgroundColor: "white"
     },
     styles: {
-      ...NavigationStyles.SlideHorizontal,
-    },
+      ...NavigationStyles.SlideHorizontal
+    }
   };
 
   static propTypes = {
     alertWithType: PropTypes.func.isRequired,
-    trexStore: PropTypes.object.isRequired,
+    trexStore: PropTypes.object.isRequired
   };
 
   @observable appState = AppState.currentState;
@@ -47,7 +47,7 @@ export default class TrexScreen extends Component {
 
   _handleAppStateChange = nextAppState => {
     if (
-      this.appState.match(/inactive|background/) && nextAppState === 'active'
+      this.appState.match(/inactive|background/) && nextAppState === "active"
     ) {
       this.softBanned = true;
       setTimeout(
@@ -62,14 +62,14 @@ export default class TrexScreen extends Component {
 
   componentDidMount() {
     this.props.trexStore.watchUsers();
-    AppState.addEventListener('change', this._handleAppStateChange);
+    AppState.addEventListener("change", this._handleAppStateChange);
   }
 
   componentWillUpdate(nextProps) {
     if (nextProps.trexStore.error) {
       nextProps.alertWithType(
-        'error',
-        'Error',
+        "error",
+        "Error",
         nextProps.trexStore.error.toString()
       );
     }
@@ -77,7 +77,7 @@ export default class TrexScreen extends Component {
 
   componentWillUnmount() {
     this.props.trexStore.unWatchUsers();
-    AppState.removeEventListener('change', this._handleAppStateChange);
+    AppState.removeEventListener("change", this._handleAppStateChange);
   }
 
   render() {
@@ -85,7 +85,7 @@ export default class TrexScreen extends Component {
       <View style={styles.container}>
         <WebView
           style={styles.webview}
-          source={require('../assets/html/x3dcn50pq1.html')}
+          source={require("../assets/html/x3dcn50pq1.html")}
           scrollEnabled={false}
           javaScriptEnabled
           onMessage={e => {
@@ -125,28 +125,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.eggshell,
-    justifyContent: 'space-between',
+    justifyContent: "space-between"
   },
   activityContainer: {
     flex: 1,
     backgroundColor: colors.eggshell,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center"
   },
   webview: {
-    flex: 1,
+    flex: 1
   },
   leaderboard: {
     borderTopColor: colors.disabledGrey,
     borderTopWidth: StyleSheet.hairlineWidth,
-    flex: 1,
+    flex: 1
   },
   labelContainer: {
-    padding: 8,
+    padding: 8
   },
   label: {
-    fontFamily: 'open-sans-semibold',
+    fontFamily: "open-sans-semibold",
     fontSize: 12,
-    color: 'rgba(128, 128, 128, 0.7)',
-  },
+    color: "rgba(128, 128, 128, 0.7)"
+  }
 });

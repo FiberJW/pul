@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from "react";
 import {
   View,
   ScrollView,
@@ -8,27 +8,27 @@ import {
   StyleSheet,
   Switch,
   Platform,
-  TouchableOpacity,
-} from 'react-native';
-import colors from 'kolors';
-import { Notifications, Permissions } from 'expo';
-import { NavigationStyles } from '@expo/ex-navigation';
-import Router from '../navigation/Router';
-import { observer, inject } from 'mobx-react/native';
-import { observable } from 'mobx';
-import connectDropdownAlert from '../utils/connectDropdownAlert';
-import { email } from 'react-native-communications';
-import SettingsLabel from '../components/styled/SettingsLabel';
-import SettingsTextInput from '../components/styled/SettingsTextInput';
+  TouchableOpacity
+} from "react-native";
+import colors from "kolors";
+import { Notifications, Permissions } from "expo";
+import { NavigationStyles } from "@expo/ex-navigation";
+import Router from "../navigation/Router";
+import { observer, inject } from "mobx-react/native";
+import { observable } from "mobx";
+import connectDropdownAlert from "../utils/connectDropdownAlert";
+import { email } from "react-native-communications";
+import SettingsLabel from "../components/styled/SettingsLabel";
+import SettingsTextInput from "../components/styled/SettingsTextInput";
 
 @connectDropdownAlert
-@inject('authStore', 'eventStore', 'trexStore')
+@inject("authStore", "eventStore", "trexStore")
 @observer
 export default class SettingsScreen extends Component {
   static route = {
     styles: {
-      ...NavigationStyles.Fade,
-    },
+      ...NavigationStyles.Fade
+    }
   };
   static propTypes = {
     navigator: PropTypes.object,
@@ -36,7 +36,7 @@ export default class SettingsScreen extends Component {
     alertWithType: PropTypes.func.isRequired,
     eventStore: PropTypes.object,
     trexStore: PropTypes.object,
-    authStore: PropTypes.object,
+    authStore: PropTypes.object
   };
 
   @observable user = {};
@@ -45,48 +45,48 @@ export default class SettingsScreen extends Component {
   getUser = () => {
     global.firebaseApp
       .database()
-      .ref('users')
+      .ref("users")
       .child(this.props.authStore.userId)
-      .once('value')
+      .once("value")
       .then(userSnap => {
         this.user = userSnap.val();
         this.notifications = this.user.settings.notifications;
       })
       .catch(err => {
-        this.props.alertWithType('error', 'Error', err.toString());
+        this.props.alertWithType("error", "Error", err.toString());
       });
   };
 
   togglePushNotifications = value => {
     Permissions.askAsync(Permissions.REMOTE_NOTIFICATIONS)
       .then(({ status }) => {
-        if (status === 'granted') {
+        if (status === "granted") {
           Notifications.getExponentPushTokenAsync().then(token => {
             this.notifications = value;
             global.firebaseApp
               .database()
-              .ref('users')
+              .ref("users")
               .child(this.props.authStore.userId)
               .update({
                 pushToken: token,
                 settings: {
-                  notifications: value,
-                },
+                  notifications: value
+                }
               })
               .then(() => {
                 this.getUser();
               })
               .catch(error => {
                 this.notifications = !value;
-                this.props.alertWithType('error', 'Error', error.toString());
+                this.props.alertWithType("error", "Error", error.toString());
               });
           });
         } else {
           this.notifications = !value;
           this.props.alertWithType(
-            'error',
-            'Error',
-            'To stay in the loop, you need to enable push notifications.'
+            "error",
+            "Error",
+            "To stay in the loop, you need to enable push notifications."
           );
         }
       })
@@ -116,34 +116,34 @@ export default class SettingsScreen extends Component {
               onChangeText={displayName => {
                 this.user = {
                   ...this.user,
-                  displayName,
+                  displayName
                 };
                 if (displayName.trim().length < 4) {
                   this.props.alertWithType(
-                    'error',
-                    'Error',
-                    'Please enter your full name.'
+                    "error",
+                    "Error",
+                    "Please enter your full name."
                   );
                   return;
                 }
                 global.firebaseApp
                   .auth()
                   .currentUser.updateProfile({
-                    displayName: displayName.trim(),
+                    displayName: displayName.trim()
                   })
                   .then(() => {
                     global.firebaseApp
                       .database()
-                      .ref('users')
+                      .ref("users")
                       .child(this.props.authStore.userId)
                       .update({
-                        displayName: displayName.trim(),
+                        displayName: displayName.trim()
                       });
                   })
                   .catch(error => {
                     this.props.alertWithType(
-                      'error',
-                      'Error',
+                      "error",
+                      "Error",
                       error.toString()
                     );
                   });
@@ -161,27 +161,27 @@ export default class SettingsScreen extends Component {
               onChangeText={phoneNumber => {
                 this.user = {
                   ...this.user,
-                  phoneNumber,
+                  phoneNumber
                 };
                 if (phoneNumber.trim().length !== 10) {
                   this.props.alertWithType(
-                    'error',
-                    'Error',
-                    'Please enter your 10-digit phone number.'
+                    "error",
+                    "Error",
+                    "Please enter your 10-digit phone number."
                   );
                   return;
                 }
                 global.firebaseApp
                   .database()
-                  .ref('users')
+                  .ref("users")
                   .child(this.props.authStore.userId)
                   .update({
-                    phoneNumber: phoneNumber.trim(),
+                    phoneNumber: phoneNumber.trim()
                   })
                   .catch(error => {
                     this.props.alertWithType(
-                      'error',
-                      'Error',
+                      "error",
+                      "Error",
                       error.toString()
                     );
                   });
@@ -198,7 +198,7 @@ export default class SettingsScreen extends Component {
             <Switch
               onTintColor={colors.blue}
               thumbTintColor={
-                Platform.OS === 'android' && this.notifications
+                Platform.OS === "android" && this.notifications
                   ? colors.blue
                   : null
               }
@@ -211,7 +211,7 @@ export default class SettingsScreen extends Component {
           <TouchableOpacity
             onPress={() => {
               email(
-                ['datwheat@gmail.com'],
+                ["datwheat@gmail.com"],
                 null,
                 null,
                 `PÜL Feedback <${this.props.authStore.userId}>`,
@@ -225,24 +225,24 @@ export default class SettingsScreen extends Component {
           <TouchableOpacity
             onPress={() => {
               Alert.alert(
-                Platform.OS === 'ios' ? 'Log Out' : 'Log out',
-                'Are you sure? Logging out will remove all PÜL data from this device.',
+                Platform.OS === "ios" ? "Log Out" : "Log out",
+                "Are you sure? Logging out will remove all PÜL data from this device.",
                 [
                   {
-                    text: 'Cancel',
+                    text: "Cancel",
                     onPress: () => {},
-                    style: 'cancel',
+                    style: "cancel"
                   },
                   {
-                    text: 'OK',
+                    text: "OK",
                     onPress: () => {
                       this.props.authStore
                         .logout()
                         .then(() => {
                           this.props.navigation
-                            .getNavigator('master')
+                            .getNavigator("master")
                             .immediatelyResetStack(
-                              [Router.getRoute('onboarding')],
+                              [Router.getRoute("onboarding")],
                               0
                             );
                           this.props.eventStore.reset();
@@ -251,13 +251,13 @@ export default class SettingsScreen extends Component {
                         })
                         .catch(error => {
                           this.props.alertWithType(
-                            'error',
-                            'Error',
+                            "error",
+                            "Error",
                             error.toString()
                           );
                         });
-                    },
-                  },
+                    }
+                  }
                 ]
               );
             }}
@@ -276,30 +276,30 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.eggshell,
     paddingHorizontal: 16,
-    justifyContent: 'space-between',
-    paddingVertical: 16,
+    justifyContent: "space-between",
+    paddingVertical: 16
   },
   sectionHeaderContainer: {
-    paddingBottom: 16,
+    paddingBottom: 16
   },
   sectionHeaderText: {
-    fontFamily: 'open-sans-bold',
+    fontFamily: "open-sans-bold",
     fontSize: 16,
-    color: colors.blue,
+    color: colors.blue
   },
   sectionHeaderUnderline: {
     marginTop: 8,
     height: 2,
     borderRadius: 4,
-    backgroundColor: colors.blue,
+    backgroundColor: colors.blue
   },
   fieldContainer: {
-    paddingBottom: 16,
+    paddingBottom: 16
   },
   switchFieldContainer: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 16,
-  },
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 16
+  }
 });

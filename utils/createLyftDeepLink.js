@@ -1,11 +1,11 @@
-import Expo from 'expo';
-import { lyftClientId } from '../config/keys';
+import Expo from "expo";
+import { lyftClientId } from "../config/keys";
 
 export default async event => {
   const {
-    coords: { latitude, longitude },
+    coords: { latitude, longitude }
   } = await Expo.Location.getCurrentPositionAsync({
-    enableHighAccuracy: false,
+    enableHighAccuracy: false
   });
   const dropoffLat = event.location.geometry.location.lat;
   const dropoffLng = event.location.geometry.location.lng;

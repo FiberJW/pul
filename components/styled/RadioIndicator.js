@@ -1,6 +1,6 @@
-import React, { PropTypes } from 'react';
-import RadioIndicatorOuter from './RadioIndicatorOuter';
-import RadioIndicatorInner from './RadioIndicatorInner';
+import React, { PropTypes } from "react";
+import RadioIndicatorOuter from "./RadioIndicatorOuter";
+import RadioIndicatorInner from "./RadioIndicatorInner";
 
 const RadioIndicator = ({ color, selected }) => (
   <RadioIndicatorOuter color={color}>
@@ -10,7 +10,7 @@ const RadioIndicator = ({ color, selected }) => (
 
 RadioIndicator.propTypes = {
   color: PropTypes.string,
-  selected: PropTypes.bool.isRequired,
+  selected: PropTypes.bool.isRequired
 };
 
 export default RadioIndicator;

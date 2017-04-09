@@ -1,6 +1,6 @@
-import React, { PropTypes } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
-import colors from 'kolors';
+import React, { PropTypes } from "react";
+import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import colors from "kolors";
 
 const MapViewConsole = ({ name, onClose, onContact }) => (
   <View style={styles.actionContainer}>
@@ -27,48 +27,48 @@ const MapViewConsole = ({ name, onClose, onContact }) => (
 MapViewConsole.propTypes = {
   name: PropTypes.string.isRequired,
   onClose: PropTypes.func.isRequired,
-  onContact: PropTypes.func.isRequired,
+  onContact: PropTypes.func.isRequired
 };
 
 const styles = StyleSheet.create({
   actionContainer: {
     paddingVertical: 8,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center"
   },
   name: {
-    fontFamily: 'open-sans-bold',
+    fontFamily: "open-sans-bold",
     color: colors.black,
     fontSize: 14,
-    paddingBottom: 8,
+    paddingBottom: 8
   },
   buttonRow: {
     paddingTop: 8,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderColor: colors.lightGrey,
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    flexDirection: 'row',
+    alignItems: "center",
+    justifyContent: "space-around",
+    flexDirection: "row"
   },
   button: {
     paddingHorizontal: 16,
-    alignItems: 'center',
+    alignItems: "center"
   },
   closeButton: {
     borderRightWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.lightGrey,
+    borderColor: colors.lightGrey
   },
   close: {
-    fontFamily: 'open-sans-bold',
+    fontFamily: "open-sans-bold",
     color: colors.hotPink,
-    fontSize: 14,
+    fontSize: 14
   },
   contact: {
-    fontFamily: 'open-sans-bold',
+    fontFamily: "open-sans-bold",
     color: colors.blue,
-    fontSize: 14,
-  },
+    fontSize: 14
+  }
 });
 
 export default MapViewConsole;

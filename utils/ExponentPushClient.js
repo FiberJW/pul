@@ -8,7 +8,7 @@
 
 const fetch = global.fetch;
 const Headers = global.Headers;
-const BASE_URL = 'https://exp.host/';
+const BASE_URL = "https://exp.host/";
 const BASE_API_URL = `${BASE_URL}--/api`;
 
 /**
@@ -16,7 +16,7 @@ const BASE_API_URL = `${BASE_URL}--/api`;
  *
  */
 export function isExponentPushToken(token) {
-  return typeof token === 'string' && /^ExponentPushToken.+/.test(token);
+  return typeof token === "string" && /^ExponentPushToken.+/.test(token);
 }
 
 /**
@@ -38,15 +38,15 @@ export async function sendPushNotificationAsync(opts) {
   const body = {
     ...opts.data,
     exponentPushToken,
-    message,
+    message
   };
 
   const response = await fetch(`${BASE_API_URL}/notify`, {
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify(body),
     headers: new Headers({
-      'Content-Type': 'application/json',
-    }),
+      "Content-Type": "application/json"
+    })
   });
 
   if (response.status === 400) {

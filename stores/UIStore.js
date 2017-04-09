@@ -1,6 +1,6 @@
-import { action } from 'mobx';
-import { create } from 'mobx-persist';
-import { AsyncStorage } from 'react-native';
+import { action } from "mobx";
+import { create } from "mobx-persist";
+import { AsyncStorage } from "react-native";
 
 class UIStore {
   constructor() {
@@ -9,7 +9,7 @@ class UIStore {
 
   @action hydrate = () => {
     const pour = create({
-      storage: AsyncStorage,
+      storage: AsyncStorage
     });
 
     Object.keys(this).forEach(key => {

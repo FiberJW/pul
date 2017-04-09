@@ -1,45 +1,45 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from "react";
 import {
   View,
   TouchableOpacity,
   Text,
   StyleSheet,
   ListView,
-  ActivityIndicator,
-} from 'react-native';
-import { NavigationStyles } from '@expo/ex-navigation';
-import colors from 'kolors';
-import ElevatedView from 'react-native-elevated-view';
-import shuffle from '../utils/shuffle';
-import connectDropdownAlert from '../utils/connectDropdownAlert';
+  ActivityIndicator
+} from "react-native";
+import { NavigationStyles } from "@expo/ex-navigation";
+import colors from "kolors";
+import ElevatedView from "react-native-elevated-view";
+import shuffle from "../utils/shuffle";
+import connectDropdownAlert from "../utils/connectDropdownAlert";
 import {
   isExponentPushToken,
-  sendPushNotificationAsync,
-} from '../utils/ExponentPushClient';
-import { inject, observer } from 'mobx-react/native';
-import RadioOption from '../components/RadioOption';
-import { observable } from 'mobx';
-import _ from 'lodash';
-import Suggestion from '../components/styled/Suggestion';
-import { email } from 'react-native-communications';
+  sendPushNotificationAsync
+} from "../utils/ExponentPushClient";
+import { inject, observer } from "mobx-react/native";
+import RadioOption from "../components/RadioOption";
+import { observable } from "mobx";
+import _ from "lodash";
+import Suggestion from "../components/styled/Suggestion";
+import { email } from "react-native-communications";
 
 @connectDropdownAlert
-@inject('authStore')
+@inject("authStore")
 @observer
 export default class SetPickupLocationScreen extends Component {
   static route = {
     navigationBar: {
       visible: true,
-      title: 'SET PICKUP LOCATION',
+      title: "SET PICKUP LOCATION",
       tintColor: colors.black,
       titleStyle: {
-        fontFamily: 'open-sans-bold',
+        fontFamily: "open-sans-bold"
       },
-      backgroundColor: 'white',
+      backgroundColor: "white"
     },
     styles: {
-      ...NavigationStyles.SlideHorizontal,
-    },
+      ...NavigationStyles.SlideHorizontal
+    }
   };
 
   static propTypes = {
@@ -48,10 +48,10 @@ export default class SetPickupLocationScreen extends Component {
     event: PropTypes.object.isRequired,
     authStore: PropTypes.object.isRequired,
     refresh: PropTypes.func,
-    alertWithType: PropTypes.func.isRequired,
+    alertWithType: PropTypes.func.isRequired
   };
 
-  @observable location = '';
+  @observable location = "";
   @observable pickupLocations = [];
   @observable loading = true;
   @observable submitting = false;
@@ -61,14 +61,14 @@ export default class SetPickupLocationScreen extends Component {
   requestRide = () => {
     // add submission check
     if (this.submitting) {
-      this.props.alertWithType('info', 'Info', 'Your request is in progress.');
+      this.props.alertWithType("info", "Info", "Your request is in progress.");
       return;
     }
 
     this.submitting = true;
 
-    if (this.location === '') {
-      this.props.alertWithType('error', 'Error', 'Choose a pickup location.');
+    if (this.location === "") {
+      this.props.alertWithType("error", "Error", "Choose a pickup location.");
       this.submitting = false;
       return;
     }
@@ -82,33 +82,33 @@ export default class SetPickupLocationScreen extends Component {
         this.loading = true;
         global.firebaseApp
           .database()
-          .ref('schools')
+          .ref("schools")
           .child(this.props.event.schoolUID)
-          .child('events')
+          .child("events")
           .child(this.props.event.uid)
-          .child('rides')
+          .child("rides")
           .child(ride.uid)
-          .child('passengers')
+          .child("passengers")
           .push({
             userUID: this.props.authStore.userId,
             location: this.location,
-            isPickedUp: false,
+            isPickedUp: false
           })
           .then(() => {
             global.firebaseApp
               .database()
-              .ref('users')
+              .ref("users")
               .child(ride.driver)
-              .once('value')
+              .once("value")
               .then(userSnap => {
                 const user = userSnap.val();
 
                 if (!global.__DEV__ && isExponentPushToken(user.pushToken)) {
                   sendPushNotificationAsync({
                     exponentPushToken: user.pushToken,
-                    message: `${this.props.authStore.userData.displayName} has joined your ride to ${this.props.event.name}!`,
+                    message: `${this.props.authStore.userData.displayName} has joined your ride to ${this.props.event.name}!`
                   }).catch(err => {
-                    this.props.alertWithType('error', 'Error', err.toString());
+                    this.props.alertWithType("error", "Error", err.toString());
                   });
                 }
               });
@@ -117,9 +117,9 @@ export default class SetPickupLocationScreen extends Component {
               ride.passengers.slice().forEach(passenger => {
                 global.firebaseApp
                   .database()
-                  .ref('users')
+                  .ref("users")
                   .child(passenger.userUID)
-                  .once('value')
+                  .once("value")
                   .then(userSnap => {
                     const user = userSnap.val();
 
@@ -128,11 +128,11 @@ export default class SetPickupLocationScreen extends Component {
                     ) {
                       sendPushNotificationAsync({
                         exponentPushToken: user.pushToken,
-                        message: `${this.props.authStore.userData.displayName} has joined your ride to ${this.props.event.name}!`,
+                        message: `${this.props.authStore.userData.displayName} has joined your ride to ${this.props.event.name}!`
                       }).catch(err => {
                         this.props.alertWithType(
-                          'error',
-                          'Error',
+                          "error",
+                          "Error",
                           err.toString()
                         );
                       });
@@ -142,9 +142,9 @@ export default class SetPickupLocationScreen extends Component {
             }
 
             this.props.alertWithType(
-              'success',
-              'Success',
-              'Thanks for requesting a ride! Make sure to say hello to your driver!'
+              "success",
+              "Success",
+              "Thanks for requesting a ride! Make sure to say hello to your driver!"
             );
             this.loading = false;
             this.props.refresh(false);
@@ -152,7 +152,7 @@ export default class SetPickupLocationScreen extends Component {
           })
           .catch(err => {
             this.loading = false;
-            this.props.alertWithType('error', 'Error', err.toString());
+            this.props.alertWithType("error", "Error", err.toString());
           });
         return true;
       }
@@ -163,17 +163,17 @@ export default class SetPickupLocationScreen extends Component {
   componentWillMount() {
     global.firebaseApp
       .database()
-      .ref('schools')
+      .ref("schools")
       .child(this.props.event.schoolUID)
-      .child('pickupLocations')
-      .once('value')
+      .child("pickupLocations")
+      .once("value")
       .then(pickupLocationsSnap => {
         this.pickupLocations = _.toArray(pickupLocationsSnap.val());
         this.loading = false;
       })
       .catch(err => {
         this.loading = false;
-        this.props.alertWithType('error', 'Error', err.toString());
+        this.props.alertWithType("error", "Error", err.toString());
       });
   }
 
@@ -184,9 +184,9 @@ export default class SetPickupLocationScreen extends Component {
           <When condition={this.loading}>
             <View
               style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+                flex: 1
               }}
             >
               <ActivityIndicator size="large" />
@@ -220,10 +220,10 @@ export default class SetPickupLocationScreen extends Component {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => email(
-            ['datwheat@gmail.com'],
+            ["datwheat@gmail.com"],
             null,
             null,
-            'PÜL Pickup Location Request',
+            "PÜL Pickup Location Request",
             `Hey!
 
 You should consider adding <SPOT NAME> to PÜL!
@@ -249,31 +249,31 @@ ${this.props.authStore.userData.displayName}; School ID: ${this.props.authStore.
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: "space-between"
   },
   requestButton: {
     height: 64,
     backgroundColor: colors.blue,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 4,
-    margin: 16,
+    margin: 16
   },
   requestButtonText: {
-    fontFamily: 'open-sans-bold',
-    color: 'white',
-    fontSize: 24,
+    fontFamily: "open-sans-bold",
+    color: "white",
+    fontSize: 24
   },
   radioGroupContainer: {},
   radioContainer: {
     padding: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.lightGrey,
+    borderColor: colors.lightGrey
   },
   buttonLabelContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
+    flexDirection: "row",
+    alignItems: "center"
+  }
 });

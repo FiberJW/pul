@@ -1,9 +1,9 @@
-import React, { PropTypes } from 'react';
-import { StyleSheet } from 'react-native';
-import ElevatedView from 'react-native-elevated-view';
-import CardSublabel from './styled/CardSublabel';
-import CardLabel from './styled/CardLabel';
-import CardHeader from './styled/CardHeader';
+import React, { PropTypes } from "react";
+import { StyleSheet } from "react-native";
+import ElevatedView from "react-native-elevated-view";
+import CardSublabel from "./styled/CardSublabel";
+import CardLabel from "./styled/CardLabel";
+import CardHeader from "./styled/CardHeader";
 
 const TrexPlayer = props => (
   <ElevatedView style={styles.cardContainer} elevation={2}>
@@ -23,7 +23,7 @@ const TrexPlayer = props => (
 
 TrexPlayer.propTypes = {
   player: PropTypes.object.isRequired,
-  place: PropTypes.number.isRequired,
+  place: PropTypes.number.isRequired
 };
 
 const styles = StyleSheet.create({
@@ -33,12 +33,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     marginHorizontal: 8,
     marginVertical: 4,
-    backgroundColor: 'white',
+    backgroundColor: "white"
   },
   headerRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
+    flexDirection: "row",
+    justifyContent: "space-between"
+  }
 });
 
 export default TrexPlayer;

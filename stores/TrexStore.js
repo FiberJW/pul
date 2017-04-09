@@ -1,15 +1,15 @@
-import { observable, action } from 'mobx';
-import _ from 'lodash';
-import { create, persist } from 'mobx-persist';
+import { observable, action } from "mobx";
+import _ from "lodash";
+import { create, persist } from "mobx-persist";
 import {
   isExponentPushToken,
-  sendPushNotificationAsync,
-} from '../utils/ExponentPushClient';
-import { AsyncStorage } from 'react-native';
-import authStore from './AuthStore';
+  sendPushNotificationAsync
+} from "../utils/ExponentPushClient";
+import { AsyncStorage } from "react-native";
+import authStore from "./AuthStore";
 
 export class TrexStore {
-  @persist('list')
+  @persist("list")
   @observable
   players = [];
 
@@ -31,7 +31,7 @@ export class TrexStore {
 
   @action hydrate = () => {
     const pour = create({
-      storage: AsyncStorage,
+      storage: AsyncStorage
     });
 
     Object.keys(this).forEach(key => {
@@ -58,7 +58,7 @@ export class TrexStore {
       }
     });
 
-    const sorted = _.sortBy(newPlayers, ['trexHighestScore']);
+    const sorted = _.sortBy(newPlayers, ["trexHighestScore"]);
     sorted.reverse();
 
     this.players = sorted;
@@ -68,16 +68,16 @@ export class TrexStore {
   @action watchUsers = () => {
     global.firebaseApp
       .database()
-      .ref('users')
+      .ref("users")
       .child(global.firebaseApp.auth().currentUser.uid)
-      .once('value')
+      .once("value")
       .then(userSnap => {
         this.schoolUID = userSnap.val().school;
 
         global.firebaseApp
           .database()
-          .ref('users')
-          .on('value', this.updateLeaderboard(this.schoolUID));
+          .ref("users")
+          .on("value", this.updateLeaderboard(this.schoolUID));
       })
       .catch(error => {
         this.setError(error);
@@ -87,8 +87,8 @@ export class TrexStore {
   unWatchUsers = () => {
     global.firebaseApp
       .database()
-      .ref('users')
-      .off('value', this.updateLeaderboard(this.schoolUID));
+      .ref("users")
+      .off("value", this.updateLeaderboard(this.schoolUID));
   };
 
   @action addNewHighScore = score => {
@@ -101,26 +101,26 @@ export class TrexStore {
 
     global.firebaseApp
       .database()
-      .ref('users')
+      .ref("users")
       .child(global.firebaseApp.auth().currentUser.uid)
-      .once('value')
+      .once("value")
       .then(userSnap => {
         const user = userSnap.val();
         if (user.trexHighestScore) {
           if (user.trexHighestScore < highestScore) {
             global.firebaseApp
               .database()
-              .ref('users')
+              .ref("users")
               .child(global.firebaseApp.auth().currentUser.uid)
               .update(
                 {
-                  trexHighestScore: highestScore,
+                  trexHighestScore: highestScore
                 },
                 () => {
                   global.firebaseApp
                     .database()
-                    .ref('users')
-                    .once('value')
+                    .ref("users")
+                    .once("value")
                     .then(usersSnap => {
                       _.each(usersSnap.val(), peer => {
                         if (
@@ -131,11 +131,11 @@ export class TrexStore {
                         ) {
                           sendPushNotificationAsync({
                             exponentPushToken: peer.pushToken,
-                            message: `${authStore.userData.displayName} just leveled up in T-rex!`,
+                            message: `${authStore.userData.displayName} just leveled up in T-rex!`
                           }).catch(err => {
                             this.props.alertWithType(
-                              'error',
-                              'Error',
+                              "error",
+                              "Error",
                               err.toString()
                             );
                           });
@@ -148,17 +148,17 @@ export class TrexStore {
         } else {
           global.firebaseApp
             .database()
-            .ref('users')
+            .ref("users")
             .child(global.firebaseApp.auth().currentUser.uid)
             .update(
               {
-                trexHighestScore: highestScore,
+                trexHighestScore: highestScore
               },
               () => {
                 global.firebaseApp
                   .database()
-                  .ref('users')
-                  .once('value')
+                  .ref("users")
+                  .once("value")
                   .then(usersSnap => {
                     _.each(usersSnap.val(), peer => {
                       if (
@@ -169,11 +169,11 @@ export class TrexStore {
                       ) {
                         sendPushNotificationAsync({
                           exponentPushToken: peer.pushToken,
-                          message: `${authStore.userData.displayName} just began playing T-rex!`,
+                          message: `${authStore.userData.displayName} just began playing T-rex!`
                         }).catch(err => {
                           this.props.alertWithType(
-                            'error',
-                            'Error',
+                            "error",
+                            "Error",
                             err.toString()
                           );
                         });

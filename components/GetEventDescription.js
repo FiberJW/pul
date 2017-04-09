@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from 'react';
-import { View, StyleSheet } from 'react-native';
-import t from 'tcomb-form-native';
-import newEventFormStylesheet from '../config/newEventFormStylesheet';
+import React, { Component, PropTypes } from "react";
+import { View, StyleSheet } from "react-native";
+import t from "tcomb-form-native";
+import newEventFormStylesheet from "../config/newEventFormStylesheet";
 
 const Form = t.form.Form;
 
@@ -11,7 +11,7 @@ const descriptionRefined = t.refinement(
 );
 
 const Description = t.struct({
-  description: t.maybe(descriptionRefined),
+  description: t.maybe(descriptionRefined)
 });
 
 const DescriptionOptions = {
@@ -19,19 +19,19 @@ const DescriptionOptions = {
     description: {
       multiline: true,
       maxLength: 140,
-      underlineColorAndroid: 'transparent',
-      label: 'Event Description',
-      placeholder: 'Describe Event here (optional)',
+      underlineColorAndroid: "transparent",
+      label: "Event Description",
+      placeholder: "Describe Event here (optional)",
       stylesheet: newEventFormStylesheet,
-      error: 'Description should be an appropriate length.',
-    },
-  },
+      error: "Description should be an appropriate length."
+    }
+  }
 };
 
 export default class GetEventName extends Component {
   static propTypes = {
     value: PropTypes.any,
-    onChange: PropTypes.func,
+    onChange: PropTypes.func
   };
 
   isValid = () => {
@@ -66,7 +66,7 @@ export default class GetEventName extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+    justifyContent: "center",
+    alignItems: "center"
+  }
 });

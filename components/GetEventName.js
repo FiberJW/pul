@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from 'react';
-import { View, StyleSheet } from 'react-native';
-import t from 'tcomb-form-native';
-import newEventFormStylesheet from '../config/newEventFormStylesheet';
+import React, { Component, PropTypes } from "react";
+import { View, StyleSheet } from "react-native";
+import t from "tcomb-form-native";
+import newEventFormStylesheet from "../config/newEventFormStylesheet";
 
 const Form = t.form.Form;
 
@@ -11,25 +11,25 @@ const nameRefined = t.refinement(
 );
 
 const Name = t.struct({
-  name: nameRefined,
+  name: nameRefined
 });
 
 const NameOptions = {
   fields: {
     name: {
-      label: 'Event Name',
-      underlineColorAndroid: 'transparent',
-      placeholder: 'Insert name here',
+      label: "Event Name",
+      underlineColorAndroid: "transparent",
+      placeholder: "Insert name here",
       stylesheet: newEventFormStylesheet,
-      error: 'Name should be an appropriate length.',
-    },
-  },
+      error: "Name should be an appropriate length."
+    }
+  }
 };
 
 export default class GetEventName extends Component {
   static propTypes = {
     value: PropTypes.any,
-    onChange: PropTypes.func,
+    onChange: PropTypes.func
   };
 
   isValid = () => {
@@ -64,7 +64,7 @@ export default class GetEventName extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+    justifyContent: "center",
+    alignItems: "center"
+  }
 });

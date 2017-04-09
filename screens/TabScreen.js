@@ -1,18 +1,18 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from "react";
 import {
   StackNavigation,
   SlidingTabNavigation,
-  SlidingTabNavigationItem,
-} from '@expo/ex-navigation';
-import { View, StyleSheet } from 'react-native';
-import Icon from '../components/CrossPlatformIcon';
-import colors from 'kolors';
-import ShareButton from '../components/ShareButton';
-import NavbarTitle from '../components/NavbarTitle';
-import Router from '../navigation/Router';
-import { observer, inject } from 'mobx-react/native';
+  SlidingTabNavigationItem
+} from "@expo/ex-navigation";
+import { View, StyleSheet } from "react-native";
+import Icon from "../components/CrossPlatformIcon";
+import colors from "kolors";
+import ShareButton from "../components/ShareButton";
+import NavbarTitle from "../components/NavbarTitle";
+import Router from "../navigation/Router";
+import { observer, inject } from "mobx-react/native";
 
-@inject('eventStore')
+@inject("eventStore")
 @observer
 export default class TabScreen extends Component {
   static route = {
@@ -20,23 +20,23 @@ export default class TabScreen extends Component {
       visible: true,
       renderTitle: () => <NavbarTitle />,
       renderRight: () => <ShareButton />,
-      borderBottomColor: 'transparent',
-      backgroundColor: 'white',
-      ...SlidingTabNavigation.navigationBarStyles,
-    },
+      borderBottomColor: "transparent",
+      backgroundColor: "white",
+      ...SlidingTabNavigation.navigationBarStyles
+    }
   };
 
   static propTypes = {
-    eventStore: PropTypes.object,
+    eventStore: PropTypes.object
   };
 
   _renderLabel = ({ route }) => {
     switch (route.key) {
-      case 'ride':
+      case "ride":
         return <Icon name="car" size={32} color={colors.black} />;
-      case 'home':
+      case "home":
         return <Icon name="calendar" size={32} color={colors.black} />;
-      case 'settings':
+      case "settings":
         return <Icon name="settings" size={32} color={colors.black} />;
       default:
         return undefined;
@@ -62,21 +62,21 @@ export default class TabScreen extends Component {
             <StackNavigation
               id="ride"
               navigatorUID="ride"
-              initialRoute={Router.getRoute('upcoming')}
+              initialRoute={Router.getRoute("upcoming")}
             />
           </SlidingTabNavigationItem>
           <SlidingTabNavigationItem id="home">
             <StackNavigation
               id="home"
               navigatorUID="home"
-              initialRoute={Router.getRoute('home')}
+              initialRoute={Router.getRoute("home")}
             />
           </SlidingTabNavigationItem>
           <SlidingTabNavigationItem id="settings">
             <StackNavigation
               id="settings"
               navigatorUID="settings"
-              initialRoute={Router.getRoute('settings')}
+              initialRoute={Router.getRoute("settings")}
             />
           </SlidingTabNavigationItem>
         </SlidingTabNavigation>
@@ -87,6 +87,6 @@ export default class TabScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
+    flex: 1
+  }
 });

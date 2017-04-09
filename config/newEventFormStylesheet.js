@@ -1,6 +1,6 @@
-import t from 'tcomb-form-native';
-import _ from 'lodash';
-import colors from 'kolors';
+import t from "tcomb-form-native";
+import _ from "lodash";
+import colors from "kolors";
 
 const defaultStylesheet = _.cloneDeep(t.form.Form.stylesheet);
 
@@ -8,9 +8,9 @@ const newEventFormStylesheet = {
   ...defaultStylesheet,
   errorBlock: {
     ...defaultStylesheet.errorBlock,
-    fontFamily: 'open-sans-light',
+    fontFamily: "open-sans-light",
     fontSize: 12,
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end"
   },
   formGroup: {
     ...defaultStylesheet.formGroup,
@@ -18,40 +18,40 @@ const newEventFormStylesheet = {
       ...defaultStylesheet.formGroup.normal,
       marginBottom: 0,
       borderWidth: 0,
-      borderColor: 'transparent',
+      borderColor: "transparent"
     },
     error: {
       ...defaultStylesheet.formGroup.error,
       marginBottom: 0,
       borderWidth: 0,
-      borderColor: 'transparent',
-    },
+      borderColor: "transparent"
+    }
   },
   textbox: {
     ...defaultStylesheet.textbox,
     normal: {
       ...defaultStylesheet.textbox.normal,
       color: colors.black,
-      fontFamily: 'open-sans',
+      fontFamily: "open-sans",
       padding: 0,
       width: 250,
       marginBottom: 0,
       // height: 32,
       borderWidth: 0,
-      borderColor: 'transparent',
+      borderColor: "transparent"
       // fontSize: 24,
     },
     error: {
       ...defaultStylesheet.textbox.error,
-      fontFamily: 'open-sans',
+      fontFamily: "open-sans",
       padding: 0,
       width: 250,
       // height: 32,
       marginBottom: 0,
       borderWidth: 0,
-      borderColor: 'transparent',
+      borderColor: "transparent"
       // fontSize: 24,
-    },
+    }
   },
   controlLabel: {
     ...defaultStylesheet.controlLabel,
@@ -59,80 +59,80 @@ const newEventFormStylesheet = {
       ...defaultStylesheet.controlLabel.normal,
       color: colors.black,
       marginBottom: 0,
-      fontFamily: 'open-sans-semibold',
+      fontFamily: "open-sans-semibold"
     },
     error: {
       marginBottom: 0,
       ...defaultStylesheet.controlLabel.error,
-      fontFamily: 'open-sans-semibold',
-    },
+      fontFamily: "open-sans-semibold"
+    }
   },
   dateValue: {
     ...defaultStylesheet.dateValue,
     normal: {
       ...defaultStylesheet.dateValue.normal,
-      fontFamily: 'open-sans',
+      fontFamily: "open-sans",
       padding: 0,
       paddingVertical: 8,
-      marginBottom: 0,
+      marginBottom: 0
     },
     error: {
       ...defaultStylesheet.dateValue.error,
-      fontFamily: 'open-sans',
+      fontFamily: "open-sans",
       padding: 0,
       marginBottom: 0,
-      paddingVertical: 8,
-    },
+      paddingVertical: 8
+    }
   },
   pickerValue: {
     ...defaultStylesheet.pickerValue,
     normal: {
       ...defaultStylesheet.pickerValue.normal,
-      fontFamily: 'open-sans',
+      fontFamily: "open-sans",
       padding: 0,
       paddingLeft: 0,
       paddingVertical: 8,
       marginBottom: 0,
       borderWidth: 0,
-      borderColor: 'transparent',
+      borderColor: "transparent"
     },
     error: {
       ...defaultStylesheet.pickerValue.error,
-      fontFamily: 'open-sans',
+      fontFamily: "open-sans",
       padding: 0,
       paddingLeft: 0,
       marginBottom: 0,
       borderWidth: 0,
-      borderColor: 'transparent',
-      paddingVertical: 8,
-    },
+      borderColor: "transparent",
+      paddingVertical: 8
+    }
   },
   pickerContainer: {
     ...defaultStylesheet.pickerContainer,
     normal: {
       ...defaultStylesheet.pickerContainer.normal,
       borderWidth: 0,
-      borderColor: 'transparent',
+      borderColor: "transparent"
     },
     error: {
       ...defaultStylesheet.pickerContainer.error,
       borderWidth: 0,
-      borderColor: 'transparent',
-    },
+      borderColor: "transparent"
+    }
   },
   dateTouchable: {
     ...defaultStylesheet.dateTouchable,
     normal: {
       ...defaultStylesheet.dateTouchable.normal,
       width: 250,
-      padding: 0,
+      padding: 0
       // paddingVertical: 8,
     },
     error: {
       ...defaultStylesheet.dateTouchable.error,
       width: 250,
-      padding: 0,
-    },
+      padding: 0
+    }
   },
   pickerTouchable: {
     ...defaultStylesheet.pickerTouchable,
@@ -141,7 +141,7 @@ const newEventFormStylesheet = {
       width: 250,
       padding: 0,
       borderWidth: 0,
-      borderColor: 'transparent',
+      borderColor: "transparent"
       // paddingVertical: 8,
     },
     error: {
@@ -149,12 +149,12 @@ const newEventFormStylesheet = {
       width: 250,
       padding: 0,
       borderWidth: 0,
-      borderColor: 'transparent',
+      borderColor: "transparent"
     },
     active: {
       borderBottomWidth: 0,
-      borderColor: 'transparent',
-    },
+      borderColor: "transparent"
+    }
   },
   select: {
     ...defaultStylesheet.select,
@@ -164,7 +164,7 @@ const newEventFormStylesheet = {
       paddingLeft: 0,
       marginBottom: 0,
       borderWidth: 0,
-      borderColor: 'transparent',
+      borderColor: "transparent"
     },
     error: {
       ...defaultStylesheet.select.error,
@@ -172,9 +172,9 @@ const newEventFormStylesheet = {
       paddingLeft: 0,
       marginBottom: 0,
       borderWidth: 0,
-      borderColor: 'transparent',
-    },
-  },
+      borderColor: "transparent"
+    }
+  }
 };
 
 export default newEventFormStylesheet;

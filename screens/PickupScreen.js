@@ -1,28 +1,28 @@
-import React, { Component, PropTypes } from 'react';
-import { View, ActivityIndicator, StyleSheet, StatusBar } from 'react-native';
-import { NavigationStyles } from '@expo/ex-navigation';
-import colors from 'kolors';
-import { MapView, Location } from 'expo';
-import { maybeOpenURL } from 'react-native-app-link';
-import connectDropdownAlert from '../utils/connectDropdownAlert';
-import createWazeDeepLink from '../utils/createWazeDeepLink';
-import { phonecall } from 'react-native-communications';
-import { observer } from 'mobx-react/native';
-import { observable } from 'mobx';
-import MapViewFloatingCard from '../components/MapViewFloatingCard';
-import MapViewConsole from '../components/MapViewConsole';
-import DestinationMarker from '../components/styled/DestinationMarker';
+import React, { Component, PropTypes } from "react";
+import { View, ActivityIndicator, StyleSheet, StatusBar } from "react-native";
+import { NavigationStyles } from "@expo/ex-navigation";
+import colors from "kolors";
+import { MapView, Location } from "expo";
+import { maybeOpenURL } from "react-native-app-link";
+import connectDropdownAlert from "../utils/connectDropdownAlert";
+import createWazeDeepLink from "../utils/createWazeDeepLink";
+import { phonecall } from "react-native-communications";
+import { observer } from "mobx-react/native";
+import { observable } from "mobx";
+import MapViewFloatingCard from "../components/MapViewFloatingCard";
+import MapViewConsole from "../components/MapViewConsole";
+import DestinationMarker from "../components/styled/DestinationMarker";
 
 @connectDropdownAlert
 @observer
 export default class PickupScreen extends Component {
   static route = {
     navigationBar: {
-      visible: false,
+      visible: false
     },
     styles: {
-      ...NavigationStyles.SlideHorizontal,
-    },
+      ...NavigationStyles.SlideHorizontal
+    }
   };
 
   static propTypes = {
@@ -32,7 +32,7 @@ export default class PickupScreen extends Component {
     pickupLocation: PropTypes.object.isRequired,
     driver: PropTypes.object,
     rider: PropTypes.object,
-    alertWithType: PropTypes.func.isRequired,
+    alertWithType: PropTypes.func.isRequired
   };
 
   @observable loading = true;
@@ -48,12 +48,12 @@ export default class PickupScreen extends Component {
       {
         enableHighAccuracy: true,
         timeInterval: 1000,
-        distanceInterval: 1,
+        distanceInterval: 1
       },
       data => {
         this.location = {
           latitude: data.coords.latitude,
-          longitude: data.coords.longitude,
+          longitude: data.coords.longitude
         };
       }
     )
@@ -62,7 +62,7 @@ export default class PickupScreen extends Component {
         this.loading = false;
       })
       .catch(err => {
-        this.props.alertWithType('error', 'Error', err.toString());
+        this.props.alertWithType("error", "Error", err.toString());
         this.loading = false;
       });
   }
@@ -77,9 +77,9 @@ export default class PickupScreen extends Component {
         <When condition={this.loading}>
           <View
             style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              flex: 1
             }}
           >
             <ActivityIndicator size="large" />
@@ -96,7 +96,7 @@ export default class PickupScreen extends Component {
                 latitude: this.props.pickupLocation.lat,
                 longitude: this.props.pickupLocation.lon,
                 latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421,
+                longitudeDelta: 0.0421
               }}
               showsUserLocation
               followsUserLocation
@@ -110,7 +110,7 @@ export default class PickupScreen extends Component {
                 title={this.props.pickupLocation.name}
                 coordinate={{
                   latitude: this.props.pickupLocation.lat,
-                  longitude: this.props.pickupLocation.lon,
+                  longitude: this.props.pickupLocation.lon
                 }}
                 onCalloutPress={() => {
                   const wazeUrl = createWazeDeepLink(
@@ -119,11 +119,11 @@ export default class PickupScreen extends Component {
                   );
 
                   maybeOpenURL(wazeUrl, {
-                    appName: 'Waze',
-                    appStoreId: 'id323229106',
-                    playStoreId: 'com.waze',
+                    appName: "Waze",
+                    appStoreId: "id323229106",
+                    playStoreId: "com.waze"
                   }).catch(err => {
-                    this.props.alertWithType('error', 'Error', err.toString());
+                    this.props.alertWithType("error", "Error", err.toString());
                   });
                 }}
               >
@@ -138,9 +138,9 @@ export default class PickupScreen extends Component {
                   coordinates={[
                     {
                       latitude: this.props.pickupLocation.lat,
-                      longitude: this.props.pickupLocation.lon,
+                      longitude: this.props.pickupLocation.lon
                     },
-                    this.location,
+                    this.location
                   ]}
                 />
               </If>
@@ -153,7 +153,7 @@ export default class PickupScreen extends Component {
               }
               onPress={() => this.map.animateToCoordinate({
                 latitude: this.props.pickupLocation.lat,
-                longitude: this.props.pickupLocation.lon,
+                longitude: this.props.pickupLocation.lon
               })}
             />
             <MapViewConsole
@@ -182,7 +182,7 @@ export default class PickupScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
+    alignItems: "center",
+    justifyContent: "space-between"
+  }
 });

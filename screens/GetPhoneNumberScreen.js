@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from "react";
 import {
   View,
   Text,
@@ -6,15 +6,15 @@ import {
   TouchableOpacity,
   Dimensions,
   TextInput,
-  Keyboard,
-} from 'react-native';
-import colors from 'kolors';
-import { NavigationStyles } from '@expo/ex-navigation';
-import Router from 'Router';
-import connectDropdownAlert from '../utils/connectDropdownAlert';
-import KeyboardAwareScrollView from '../components/KeyboardAwareScrollView';
-import { observer } from 'mobx-react/native';
-import { observable } from 'mobx';
+  Keyboard
+} from "react-native";
+import colors from "kolors";
+import { NavigationStyles } from "@expo/ex-navigation";
+import Router from "Router";
+import connectDropdownAlert from "../utils/connectDropdownAlert";
+import KeyboardAwareScrollView from "../components/KeyboardAwareScrollView";
+import { observer } from "mobx-react/native";
+import { observable } from "mobx";
 
 @connectDropdownAlert
 @observer
@@ -23,12 +23,12 @@ export default class GetPhoneNumberScreen extends Component {
     navigationBar: {
       visible: true,
       tintColor: colors.black,
-      borderBottomColor: 'transparent',
-      backgroundColor: 'white',
+      borderBottomColor: "transparent",
+      backgroundColor: "white"
     },
     styles: {
-      ...NavigationStyles.SlideHorizontal,
-    },
+      ...NavigationStyles.SlideHorizontal
+    }
   };
 
   static propTypes = {
@@ -36,10 +36,10 @@ export default class GetPhoneNumberScreen extends Component {
     credentials: PropTypes.object.isRequired,
     navigator: PropTypes.object.isRequired,
     intent: PropTypes.string.isRequired,
-    alertWithType: PropTypes.func.isRequired,
+    alertWithType: PropTypes.func.isRequired
   };
 
-  @observable phoneNumber = '';
+  @observable phoneNumber = "";
 
   pushToNextScreen = () => {
     Keyboard.dismiss();
@@ -50,22 +50,22 @@ export default class GetPhoneNumberScreen extends Component {
           this.phoneNumber.trim().length < 10 || !/^\d+$/.test(this.phoneNumber)
         ) {
           this.props.alertWithType(
-            'error',
-            'Error',
-            'Phone number must be provided.'
+            "error",
+            "Error",
+            "Phone number must be provided."
           );
           return;
         }
 
         this.props.navigator.push(
-          Router.getRoute('getPassword', {
+          Router.getRoute("getPassword", {
             school: this.props.school,
             intent: this.props.intent,
             credentials: {
               email: this.props.credentials.email,
               name: this.props.credentials.name,
-              phoneNumber: this.phoneNumber.trim(),
-            },
+              phoneNumber: this.phoneNumber.trim()
+            }
           })
         );
       },
@@ -109,40 +109,40 @@ export default class GetPhoneNumberScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
-    justifyContent: 'space-between',
+    backgroundColor: "white",
+    justifyContent: "space-between",
     paddingHorizontal: 16,
-    paddingBottom: 16,
+    paddingBottom: 16
   },
   fieldLabel: {
     marginBottom: 8,
-    fontFamily: 'open-sans-semibold',
+    fontFamily: "open-sans-semibold",
     fontSize: 20,
-    color: colors.black,
+    color: colors.black
   },
   fieldContents: {
-    fontFamily: 'open-sans',
+    fontFamily: "open-sans",
     height: 40,
-    width: Dimensions.get('window').width * 0.60,
+    width: Dimensions.get("window").width * 0.60,
     color: colors.black,
-    fontSize: 18,
+    fontSize: 18
   },
   assistedTextInputContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   inputAssist: {
-    fontFamily: 'open-sans',
+    fontFamily: "open-sans",
     fontSize: 18,
-    color: colors.black,
+    color: colors.black
   },
   touchable: {
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end"
   },
   touchableText: {
-    fontFamily: 'open-sans-semibold',
+    fontFamily: "open-sans-semibold",
     fontSize: 24,
-    color: colors.black,
-  },
+    color: colors.black
+  }
 });

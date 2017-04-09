@@ -1,32 +1,32 @@
-import React, { Component, PropTypes } from 'react';
-import { View, StyleSheet } from 'react-native';
-import moment from 'moment';
-import t from 'tcomb-form-native';
-import newEventFormStylesheet from '../config/newEventFormStylesheet';
+import React, { Component, PropTypes } from "react";
+import { View, StyleSheet } from "react-native";
+import moment from "moment";
+import t from "tcomb-form-native";
+import newEventFormStylesheet from "../config/newEventFormStylesheet";
 const Form = t.form.Form;
 
 const _Date = t.struct({
-  date: t.Date,
+  date: t.Date
 });
 
 const DateOptions = {
   fields: {
     date: {
-      mode: 'date',
+      mode: "date",
       stylesheet: newEventFormStylesheet,
       minimumDate: moment().toDate(),
-      maximumDate: moment().add(4, 'years').toDate(),
+      maximumDate: moment().add(4, "years").toDate(),
       config: {
-        format: date => moment(date).format('MMMM Do, YYYY'),
-      },
-    },
-  },
+        format: date => moment(date).format("MMMM Do, YYYY")
+      }
+    }
+  }
 };
 
 export default class GetEventDate extends Component {
   static propTypes = {
     value: PropTypes.any,
-    onChange: PropTypes.func,
+    onChange: PropTypes.func
   };
 
   isValid = () => {
@@ -61,7 +61,7 @@ export default class GetEventDate extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+    justifyContent: "center",
+    alignItems: "center"
+  }
 });

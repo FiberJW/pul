@@ -1,30 +1,30 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component, PropTypes } from "react";
 import {
   View,
   Text,
   Dimensions,
   StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
-import { withNavigation } from '@expo/ex-navigation';
-import colors from 'kolors';
-import Collapsible from 'react-native-collapsible';
-import ElevatedView from 'react-native-elevated-view';
-import Router from 'Router';
-import connectDropdownAlert from '../utils/connectDropdownAlert';
-import createWazeDeepLink from '../utils/createWazeDeepLink';
-import { phonecall } from 'react-native-communications';
-import CardSublabel from './styled/CardSublabel';
-import CardLabel from './styled/CardLabel';
-import CardHeader from './styled/CardHeader';
-import CardIndicator from './styled/CardIndicator';
-import { observer, inject } from 'mobx-react/native';
-import { observable } from 'mobx';
-import _ from 'lodash';
+  TouchableOpacity
+} from "react-native";
+import { withNavigation } from "@expo/ex-navigation";
+import colors from "kolors";
+import Collapsible from "react-native-collapsible";
+import ElevatedView from "react-native-elevated-view";
+import Router from "Router";
+import connectDropdownAlert from "../utils/connectDropdownAlert";
+import createWazeDeepLink from "../utils/createWazeDeepLink";
+import { phonecall } from "react-native-communications";
+import CardSublabel from "./styled/CardSublabel";
+import CardLabel from "./styled/CardLabel";
+import CardHeader from "./styled/CardHeader";
+import CardIndicator from "./styled/CardIndicator";
+import { observer, inject } from "mobx-react/native";
+import { observable } from "mobx";
+import _ from "lodash";
 
 @withNavigation
 @connectDropdownAlert
-@inject('authStore')
+@inject("authStore")
 @observer
 export default class Carpooler extends Component {
   static propTypes = {
@@ -37,7 +37,7 @@ export default class Carpooler extends Component {
     passengers: PropTypes.array.isRequired,
     refresh: PropTypes.func,
     selfIsDriver: PropTypes.bool,
-    alertWithType: PropTypes.func.isRequired,
+    alertWithType: PropTypes.func.isRequired
   };
 
   @observable isCollapsed = true;
@@ -48,20 +48,20 @@ export default class Carpooler extends Component {
     );
     global.firebaseApp
       .database()
-      .ref('schools')
+      .ref("schools")
       .child(this.props.event.schoolUID)
-      .child('events')
+      .child("events")
       .child(this.props.event.uid)
-      .child('rides')
+      .child("rides")
       .child(this.props.event.yourRide.uid)
-      .child('passengers')
+      .child("passengers")
       .child(this.props.event.yourRide.passengers[passIndex].passUID)
       .update({ isPickedUp: !this.props.user.isPickedUp })
       .then(() => {
         this.props.refresh(false);
       })
       .catch(err => {
-        this.props.alertWithType('error', 'Error', err.toString());
+        this.props.alertWithType("error", "Error", err.toString());
       });
   };
 
@@ -81,10 +81,10 @@ export default class Carpooler extends Component {
 
     global.firebaseApp
       .database()
-      .ref('schools')
+      .ref("schools")
       .child(self.school)
-      .child('pickupLocations')
-      .once('value')
+      .child("pickupLocations")
+      .once("value")
       .then(pickupLocationsSnap => {
         const pickupLocations = pickupLocationsSnap.val();
         _.each(pickupLocations, location => {
@@ -94,32 +94,32 @@ export default class Carpooler extends Component {
         });
         global.firebaseApp
           .database()
-          .ref('users')
+          .ref("users")
           .child(this.props.event.yourRide.driver)
-          .once('value')
+          .once("value")
           .then(driverSnap => {
             driver = driverSnap.val();
-            this.props.navigation.getNavigator('master').push(
-              Router.getRoute('pickup', {
+            this.props.navigation.getNavigator("master").push(
+              Router.getRoute("pickup", {
                 self,
                 driver,
-                pickupLocation,
+                pickupLocation
               })
             );
           });
       })
       .catch(err => {
-        this.props.alertWithType('error', 'Error', err.toString());
+        this.props.alertWithType("error", "Error", err.toString());
       });
   };
 
   pickup = () => {
     global.firebaseApp
       .database()
-      .ref('schools')
+      .ref("schools")
       .child(this.props.user.school)
-      .child('pickupLocations')
-      .once('value')
+      .child("pickupLocations")
+      .once("value")
       .then(locSnap => {
         let location;
         _.each(locSnap.val(), loc => {
@@ -128,16 +128,16 @@ export default class Carpooler extends Component {
           }
         });
 
-        this.props.navigation.getNavigator('master').push(
-          Router.getRoute('pickup', {
+        this.props.navigation.getNavigator("master").push(
+          Router.getRoute("pickup", {
             pickupLocation: location,
             rider: this.props.user,
-            wazeUrl: createWazeDeepLink(location.lat, location.lon),
+            wazeUrl: createWazeDeepLink(location.lat, location.lon)
           })
         );
       })
       .catch(err => {
-        this.props.alertWithType('error', 'Error', err.toString());
+        this.props.alertWithType("error", "Error", err.toString());
       });
   };
 
@@ -198,8 +198,8 @@ export default class Carpooler extends Component {
         <View style={styles.bottomButton}>
           <Text style={styles.buttonText}>
             {this.props.user.isPickedUp
-              ? 'UNCONFIRM ATTENDANCE'
-              : 'CONFIRM ATTENDANCE'}
+              ? "UNCONFIRM ATTENDANCE"
+              : "CONFIRM ATTENDANCE"}
           </Text>
         </View>
       </TouchableOpacity>
@@ -232,12 +232,12 @@ export default class Carpooler extends Component {
           />
           <Collapsible duration={200} collapsed={this.isCollapsed}>
             {this.props.selfIsDriver &&
-              this.props.user.type === 'rider' &&
+              this.props.user.type === "rider" &&
               this.renderDriverPassengerContent()}
-            {this.props.user.type === 'rider' &&
+            {this.props.user.type === "rider" &&
               !this.props.selfIsDriver &&
               this.renderPeerPassengerContent()}
-            {this.props.user.type === 'driver' && this.renderDriverContent()}
+            {this.props.user.type === "driver" && this.renderDriverContent()}
           </Collapsible>
         </ElevatedView>
       </TouchableOpacity>;
@@ -252,76 +252,76 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     // borderRadius: 4,
     marginVertical: 4,
-    backgroundColor: 'white',
+    backgroundColor: "white"
   },
   collapsedContentContainer: {
     marginTop: 16,
-    marginBottom: 8,
+    marginBottom: 8
   },
   locationText: {
-    fontFamily: 'open-sans',
+    fontFamily: "open-sans",
     fontSize: 14,
-    textAlign: 'center',
+    textAlign: "center",
     color: colors.black,
-    marginBottom: 16,
+    marginBottom: 16
   },
   locationTextPlace: {
-    fontFamily: 'open-sans-semibold',
+    fontFamily: "open-sans-semibold",
     fontSize: 14,
-    color: colors.black,
+    color: colors.black
   },
   location: {
-    flexDirection: 'row',
+    flexDirection: "row"
   },
   contactDriverButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 4,
     paddingVertical: 8,
-    backgroundColor: colors.blue,
+    backgroundColor: colors.blue
   },
   meetDriverButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 4,
     paddingVertical: 8,
     marginTop: 16,
-    backgroundColor: colors.hotPink,
+    backgroundColor: colors.hotPink
   },
   buttonText: {
-    fontFamily: 'open-sans-bold',
+    fontFamily: "open-sans-bold",
     fontSize: 18,
-    color: 'white',
+    color: "white"
   },
   twoButtonRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   leftButton: {
     marginRight: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 4,
-    width: Dimensions.get('window').width * 0.40,
+    width: Dimensions.get("window").width * 0.40,
     paddingVertical: 8,
-    backgroundColor: colors.blue,
+    backgroundColor: colors.blue
   },
   rightButton: {
     marginLeft: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 4,
     paddingVertical: 8,
-    width: Dimensions.get('window').width * 0.40,
-    backgroundColor: colors.hotPink,
+    width: Dimensions.get("window").width * 0.40,
+    backgroundColor: colors.hotPink
   },
   bottomButton: {
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 4,
     paddingVertical: 8,
     backgroundColor: colors.neonGreen,
-    marginTop: 16,
-  },
+    marginTop: 16
+  }
 });
