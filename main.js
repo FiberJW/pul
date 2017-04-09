@@ -70,10 +70,8 @@ class App extends Component {
     await Font.loadAsync({
       'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
       'open-sans-light': require('./assets/fonts/OpenSans-Light.ttf'),
-      'open-sans-extrabold': require('./assets/fonts/OpenSans-ExtraBold.ttf'),
       'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
       'open-sans-semibold': require('./assets/fonts/OpenSans-Semibold.ttf'),
-      'neutra-bold': require('./assets/fonts/NeutraTextBold.ttf'),
     });
     await this.startFirebase();
   }
