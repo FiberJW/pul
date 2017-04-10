@@ -11,7 +11,7 @@ import {
 import { LinearGradient } from "expo";
 import Router from "../navigation/Router";
 
-export default class OnboardingScreen extends Component {
+export default class EntryScreen extends Component {
   static propTypes = {
     navigator: PropTypes.object
   };

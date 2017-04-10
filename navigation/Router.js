@@ -10,7 +10,7 @@ import UpcomingRideScreen from "../screens/UpcomingRideScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import SetPickupLocationScreen from "../screens/SetPickupLocationScreen";
 import DriveOptionsScreen from "../screens/DriveOptionsScreen";
-import OnboardingScreen from "../screens/OnboardingScreen";
+import EntryScreen from "../screens/EntryScreen";
 import ChooseSchoolScreen from "../screens/ChooseSchoolScreen";
 import GetEmailScreen from "../screens/GetEmailScreen";
 import GetNameScreen from "../screens/GetNameScreen";
@@ -29,7 +29,7 @@ export default createRouter(
     upcoming: () => UpcomingRideScreen,
     setPickupLocation: () => SetPickupLocationScreen,
     setDriveOptions: () => DriveOptionsScreen,
-    onboarding: () => OnboardingScreen,
+    entry: () => EntryScreen,
     chooseSchool: () => ChooseSchoolScreen,
     getEmail: () => GetEmailScreen,
     getName: () => GetNameScreen,

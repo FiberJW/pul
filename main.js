@@ -120,7 +120,7 @@ class App extends Component {
     const route = this.props.authStore.state ===
       this.props.authStore.authStates[1]
       ? "tabs"
-      : "onboarding";
+      : "entry";
 
     return (
       <Choose>

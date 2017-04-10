@@ -242,7 +242,7 @@ export default class SettingsScreen extends Component {
                           this.props.navigation
                             .getNavigator("master")
                             .immediatelyResetStack(
-                              [Router.getRoute("onboarding")],
+                              [Router.getRoute("entry")],
                               0
                             );
                           this.props.eventStore.reset();
