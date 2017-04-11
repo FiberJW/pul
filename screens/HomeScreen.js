@@ -130,8 +130,9 @@ export default class HomeScreen extends Component {
           onPress={() => {
             if (this.props.authStore.verified) {
               this.props.navigation.getNavigator("master").push(
-                Router.getRoute("newEvent", {
-                  refresh: this.props.eventStore.refresh
+                Router.getRoute("eventAdmin", {
+                  refresh: this.props.eventStore.refresh,
+                  editMode: false
                 })
               );
             } else {

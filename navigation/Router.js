@@ -5,7 +5,7 @@
 import { createRouter } from "@expo/ex-navigation";
 import HomeScreen from "../screens/HomeScreen";
 import TabScreen from "../screens/TabScreen";
-import NewEventScreen from "../screens/NewEventScreen";
+import EventAdminScreen from "../screens/EventAdminScreen";
 import UpcomingRideScreen from "../screens/UpcomingRideScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import SetPickupLocationScreen from "../screens/SetPickupLocationScreen";
@@ -24,7 +24,7 @@ export default createRouter(
   () => ({
     home: () => HomeScreen,
     tabs: () => TabScreen,
-    newEvent: () => NewEventScreen,
+    eventAdmin: () => EventAdminScreen,
     settings: () => SettingsScreen,
     upcoming: () => UpcomingRideScreen,
     setPickupLocation: () => SetPickupLocationScreen,

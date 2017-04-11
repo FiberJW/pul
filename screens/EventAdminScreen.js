@@ -35,11 +35,13 @@ import { observer, inject } from "mobx-react/native";
 @connectDropdownAlert
 @inject("authStore")
 @observer
-export default class NewEventScreen extends Component {
+export default class EventAdminScreen extends Component {
   static route = {
     navigationBar: {
       visible: true,
-      title: "NEW EVENT",
+      title({ editMode }) {
+        return `${editMode ? "EDIT" : "NEW"} EVENT`;
+      },
       tintColor: colors.black,
       renderLeft: () => null,
       renderRight: () => <CancelButton />,
