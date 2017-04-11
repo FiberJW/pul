@@ -71,8 +71,8 @@ export default class Event extends Component {
           if (this.props.event.createdBy === this.props.authStore.userId) {
             Vibration.vibrate([0, 25]);
             Alert.alert(
-              Platform.OS === "ios" ? "Delete Event" : "Delete event",
-              "Are you sure that you want to delete this event?",
+              Platform.OS === "ios" ? "Update Event?" : "Update event?",
+              null,
               [
                 {
                   text: "Cancel",
@@ -80,31 +80,51 @@ export default class Event extends Component {
                   style: "cancel"
                 },
                 {
-                  text: "OK",
+                  text: "Delete",
                   onPress: () => {
-                    global.firebaseApp
-                      .database()
-                      .ref("users")
-                      .child(this.props.authStore.userId)
-                      .once("value")
-                      .then(userSnap => {
-                        const school = userSnap.val().school;
-                        global.firebaseApp
-                          .database()
-                          .ref("schools")
-                          .child(school)
-                          .child("events")
-                          .child(this.props.event.uid)
-                          .remove();
-                      })
-                      .catch(error => {
-                        this.props.alertWithType(
-                          "error",
-                          "Error",
-                          error.toString()
-                        );
-                      });
+                    Alert.alert(
+                      Platform.OS === "ios" ? "Are You Sure?" : "Are you sure?",
+                      "Deleting this event will remove any pending rides.",
+                      [
+                        { text: "Cancel", style: "cancel" },
+                        {
+                          text: "OK",
+                          onPress: () => global.firebaseApp
+                            .database()
+                            .ref("users")
+                            .child(this.props.authStore.userId)
+                            .once("value")
+                            .then(userSnap => {
+                              const school = userSnap.val().school;
+                              global.firebaseApp
+                                .database()
+                                .ref("schools")
+                                .child(school)
+                                .child("events")
+                                .child(this.props.event.uid)
+                                .remove();
+                            })
+                            .catch(error => {
+                              this.props.alertWithType(
+                                "error",
+                                "Error",
+                                error.toString()
+                              );
+                            })
+                        }
+                      ]
+                    );
                   }
+                },
+                {
+                  text: "Edit",
+                  onPress: () =>
+                    this.props.navigation.getNavigator("master").push(
+                      Router.getRoute("eventAdmin", {
+                        event: this.props.event,
+                        editMode: true
+                      })
+                    )
                 }
               ]
             );
