@@ -252,7 +252,6 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16,
     marginHorizontal: 8,
-    // borderRadius: 4,
     marginVertical: 4,
     backgroundColor: "white"
   },

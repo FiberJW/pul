@@ -32,19 +32,15 @@ const settingsFormStylesheet = {
       padding: 0,
       width: 250,
       marginBottom: 0,
-      // height: 32,
       borderWidth: 0
-      // fontSize: 24,
     },
     error: {
       ...defaultStylesheet.textbox.error,
       fontFamily: "open-sans",
       padding: 0,
       width: 250,
-      // height: 32,
       marginBottom: 0,
       borderWidth: 0
-      // fontSize: 24,
     }
   },
   controlLabel: {
@@ -84,7 +80,6 @@ const settingsFormStylesheet = {
       ...defaultStylesheet.dateTouchable.normal,
       width: 250,
       padding: 0
-      // paddingVertical: 8,
     },
     error: {
       ...defaultStylesheet.dateTouchable.error,

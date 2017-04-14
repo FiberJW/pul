@@ -42,41 +42,36 @@ export default class GetEmailScreen extends Component {
 
   pushToNextScreen = () => {
     Keyboard.dismiss();
-    setTimeout(
-      () => {
-        // to make sure the keyboard goes down before autofocus on the next screen
-        if (!this.emailUsername.trim().length) {
-          this.props.alertWithType(
-            "error",
-            "Error",
-            "Email username must be provided."
-          );
-          return;
-        }
-        if (validator.isEmail(this.emailUsername.trim())) {
-          this.props.alertWithType(
-            "error",
-            "Error",
-            "Supply your email username only."
-          );
-          return;
-        }
-        const scene = this.props.intent === "signup"
-          ? "getName"
-          : "getPassword";
-        this.props.navigator.push(
-          Router.getRoute(scene, {
-            school: this.props.school,
-            intent: this.props.intent,
-            credentials: {
-              email: this.emailUsername.toLowerCase().trim() +
-                this.props.school.emailSuffix
-            }
-          })
+    setTimeout(() => {
+      // to make sure the keyboard goes down before autofocus on the next screen
+      if (!this.emailUsername.trim().length) {
+        this.props.alertWithType(
+          "error",
+          "Error",
+          "Email username must be provided."
         );
-      },
-      10
-    );
+        return;
+      }
+      if (validator.isEmail(this.emailUsername.trim())) {
+        this.props.alertWithType(
+          "error",
+          "Error",
+          "Supply your email username only."
+        );
+        return;
+      }
+      const scene = this.props.intent === "signup" ? "getName" : "getPassword";
+      this.props.navigator.push(
+        Router.getRoute(scene, {
+          school: this.props.school,
+          intent: this.props.intent,
+          credentials: {
+            email: this.emailUsername.toLowerCase().trim() +
+              this.props.school.emailSuffix
+          }
+        })
+      );
+    }, 10);
   };
 
   render() {
@@ -135,11 +130,7 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontSize: 18
   },
-  assistedTextInputContainer: {
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
-    // alignItems: 'center',
-  },
+  assistedTextInputContainer: {},
   inputAssist: {
     fontFamily: "open-sans",
     fontSize: 16,
