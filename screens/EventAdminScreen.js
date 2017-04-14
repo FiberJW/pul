@@ -153,6 +153,7 @@ export default class EventAdminScreen extends Component {
       propertiesAreValid = false;
     }
     if (
+      !this.props.editMode &&
       !date
         .add(time.hours, "hours")
         .add(time.minutes, "minutes")
