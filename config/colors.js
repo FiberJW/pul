@@ -22,5 +22,6 @@ export default {
   neonGreen: "#00E676",
   purp: "#6200EA",
   disabledPurp: "rgba(101, 27, 224, 0.5)",
-  disabledHotPink: "rgba(245, 0, 87, 0.5)"
+  disabledHotPink: "rgba(245, 0, 87, 0.5)",
+  lyft: "#FF06B8"
 };

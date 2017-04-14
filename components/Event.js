@@ -89,28 +89,29 @@ export default class Event extends Component {
                         { text: "Cancel", style: "cancel" },
                         {
                           text: "OK",
-                          onPress: () => global.firebaseApp
-                            .database()
-                            .ref("users")
-                            .child(this.props.authStore.userId)
-                            .once("value")
-                            .then(userSnap => {
-                              const school = userSnap.val().school;
-                              global.firebaseApp
-                                .database()
-                                .ref("schools")
-                                .child(school)
-                                .child("events")
-                                .child(this.props.event.uid)
-                                .remove();
-                            })
-                            .catch(error => {
-                              this.props.alertWithType(
-                                "error",
-                                "Error",
-                                error.toString()
-                              );
-                            })
+                          onPress: () =>
+                            global.firebaseApp
+                              .database()
+                              .ref("users")
+                              .child(this.props.authStore.userId)
+                              .once("value")
+                              .then(userSnap => {
+                                const school = userSnap.val().school;
+                                global.firebaseApp
+                                  .database()
+                                  .ref("schools")
+                                  .child(school)
+                                  .child("events")
+                                  .child(this.props.event.uid)
+                                  .remove();
+                              })
+                              .catch(error => {
+                                this.props.alertWithType(
+                                  "error",
+                                  "Error",
+                                  error.toString()
+                                );
+                              })
                         }
                       ]
                     );
@@ -336,7 +337,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 8,
     paddingHorizontal: 16,
-    // borderRadius: 4,
     marginVertical: 4,
     marginHorizontal: 8,
     backgroundColor: "white"
@@ -414,7 +414,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 8,
     marginVertical: 8,
-    backgroundColor: "#FF06B8"
+    backgroundColor: colors.lyft
   },
   lyftButtonText: {
     color: "white",
