@@ -43,34 +43,31 @@ export default class GetPhoneNumberScreen extends Component {
 
   pushToNextScreen = () => {
     Keyboard.dismiss();
-    setTimeout(
-      () => {
-        // to make sure the keyboard goes down before autofocus on the next screen
-        if (
-          this.phoneNumber.trim().length < 10 || !/^\d+$/.test(this.phoneNumber)
-        ) {
-          this.props.alertWithType(
-            "error",
-            "Error",
-            "Phone number must be provided."
-          );
-          return;
-        }
-
-        this.props.navigator.push(
-          Router.getRoute("getPassword", {
-            school: this.props.school,
-            intent: this.props.intent,
-            credentials: {
-              email: this.props.credentials.email,
-              name: this.props.credentials.name,
-              phoneNumber: this.phoneNumber.trim()
-            }
-          })
+    setTimeout(() => {
+      // to make sure the keyboard goes down before autofocus on the next screen
+      if (
+        this.phoneNumber.trim().length < 10 || !/^\d+$/.test(this.phoneNumber)
+      ) {
+        this.props.alertWithType(
+          "error",
+          "Error",
+          "Phone number must be provided."
         );
-      },
-      10
-    );
+        return;
+      }
+
+      this.props.navigator.push(
+        Router.getRoute("getPassword", {
+          school: this.props.school,
+          intent: this.props.intent,
+          credentials: {
+            email: this.props.credentials.email,
+            name: this.props.credentials.name,
+            phoneNumber: this.phoneNumber.trim()
+          }
+        })
+      );
+    }, 10);
   };
 
   render() {
@@ -126,16 +123,6 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width * 0.60,
     color: colors.black,
     fontSize: 18
-  },
-  assistedTextInputContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-  inputAssist: {
-    fontFamily: "open-sans",
-    fontSize: 18,
-    color: colors.black
   },
   touchable: {
     alignSelf: "flex-end"

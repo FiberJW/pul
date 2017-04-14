@@ -207,7 +207,8 @@ export default class Carpooler extends Component {
   );
 
   render() {
-    return this.props.user.userUID !== this.props.authStore.userId &&
+    return (
+      this.props.user.userUID !== this.props.authStore.userId &&
       <TouchableOpacity
         activeOpacity={1}
         onPress={() => {
@@ -240,7 +241,8 @@ export default class Carpooler extends Component {
             {this.props.user.type === "driver" && this.renderDriverContent()}
           </Collapsible>
         </ElevatedView>
-      </TouchableOpacity>;
+      </TouchableOpacity>
+    );
   }
 }
 
@@ -257,21 +259,6 @@ const styles = StyleSheet.create({
   collapsedContentContainer: {
     marginTop: 16,
     marginBottom: 8
-  },
-  locationText: {
-    fontFamily: "open-sans",
-    fontSize: 14,
-    textAlign: "center",
-    color: colors.black,
-    marginBottom: 16
-  },
-  locationTextPlace: {
-    fontFamily: "open-sans-semibold",
-    fontSize: 14,
-    color: colors.black
-  },
-  location: {
-    flexDirection: "row"
   },
   contactDriverButton: {
     justifyContent: "center",

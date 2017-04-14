@@ -219,12 +219,13 @@ export default class SetPickupLocationScreen extends Component {
           </ElevatedView>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => email(
-            ["datwheat@gmail.com"],
-            null,
-            null,
-            "PÜL Pickup Location Request",
-            `Hey!
+          onPress={() =>
+            email(
+              ["datwheat@gmail.com"],
+              null,
+              null,
+              "PÜL Pickup Location Request",
+              `Hey!
 
 You should consider adding <SPOT NAME> to PÜL!
 
@@ -237,7 +238,7 @@ Its details are:
 Thanks a lot for considering adding <SPOT NAME> to PÜL!
 
 ${this.props.authStore.userData.displayName}; School ID: ${this.props.authStore.userData.school}`
-          )}
+            )}
         >
           <Suggestion>Know a better spot?</Suggestion>
         </TouchableOpacity>
@@ -263,17 +264,5 @@ const styles = StyleSheet.create({
     fontFamily: "open-sans-bold",
     color: "white",
     fontSize: 24
-  },
-  radioGroupContainer: {},
-  radioContainer: {
-    padding: 16,
-    flexDirection: "row",
-    justifyContent: "space-around",
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: colors.lightGrey
-  },
-  buttonLabelContainer: {
-    flexDirection: "row",
-    alignItems: "center"
   }
 });

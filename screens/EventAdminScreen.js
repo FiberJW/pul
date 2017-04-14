@@ -95,8 +95,8 @@ export default class EventAdminScreen extends Component {
       address: this.location.details.formatted_address,
       geometry: this.location.details.geometry
     };
-    const description = this.description !== undefined &&
-      this.description.description;
+    const description =
+      this.description !== undefined && this.description.description;
     return {
       name: filter.clean(name.trim()),
       type,
@@ -166,12 +166,10 @@ export default class EventAdminScreen extends Component {
     return this.keyboardHeight > 0;
   };
 
-  _onKeyboardVisibilityChange = (
-    {
-      keyboardHeight,
-      layoutAnimationConfig
-    }: { keyboardHeight: number, layoutAnimationConfig: ?Object }
-  ) => {
+  _onKeyboardVisibilityChange = ({
+    keyboardHeight,
+    layoutAnimationConfig
+  }: { keyboardHeight: number, layoutAnimationConfig: ?Object }) => {
     if (keyboardHeight === 0) {
       this._blurFocusedTextInput();
     }
@@ -298,28 +296,24 @@ export default class EventAdminScreen extends Component {
               showsButtons
               loop={false}
               prevButton={
-                (
-                  <Icon
-                    onPress={() => {
-                      this.references.swiper.scrollBy(-1, false);
-                    }}
-                    name="arrow-back"
-                    color={colors.black}
-                    size={32}
-                  />
-                )
+                <Icon
+                  onPress={() => {
+                    this.references.swiper.scrollBy(-1, false);
+                  }}
+                  name="arrow-back"
+                  color={colors.black}
+                  size={32}
+                />
               }
               nextButton={
-                (
-                  <Icon
-                    onPress={() => {
-                      this.references.swiper.scrollBy(1, false);
-                    }}
-                    name="arrow-forward"
-                    color={colors.black}
-                    size={32}
-                  />
-                )
+                <Icon
+                  onPress={() => {
+                    this.references.swiper.scrollBy(1, false);
+                  }}
+                  name="arrow-forward"
+                  color={colors.black}
+                  size={32}
+                />
               }
             >
               <GetEventName
@@ -401,11 +395,6 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   swiperWrapper: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  slide: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center"

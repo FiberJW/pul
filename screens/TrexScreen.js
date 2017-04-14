@@ -50,12 +50,9 @@ export default class TrexScreen extends Component {
       this.appState.match(/inactive|background/) && nextAppState === "active"
     ) {
       this.softBanned = true;
-      setTimeout(
-        () => {
-          this.softBanned = false;
-        },
-        30000
-      );
+      setTimeout(() => {
+        this.softBanned = false;
+      }, 30000);
     }
     this.appState = nextAppState;
   };
@@ -140,13 +137,5 @@ const styles = StyleSheet.create({
     borderTopColor: colors.disabledGrey,
     borderTopWidth: StyleSheet.hairlineWidth,
     flex: 1
-  },
-  labelContainer: {
-    padding: 8
-  },
-  label: {
-    fontFamily: "open-sans-semibold",
-    fontSize: 12,
-    color: "rgba(128, 128, 128, 0.7)"
   }
 });

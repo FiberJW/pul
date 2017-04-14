@@ -53,102 +53,93 @@ export default class GetPasswordScreen extends Component {
 
   pushToNextScreen = () => {
     Keyboard.dismiss();
-    setTimeout(
-      () => {
-        // to make sure the keyboard goes down before autofocus on the next screen
-        if (this.loggingIn) {
-          return;
-        }
-        this.loggingIn = true;
-        if (this.password.length < 6) {
-          this.loggingIn = false;
-          this.props.alertWithType(
-            "error",
-            "Error",
-            "Password must be at least 6 characters long."
-          );
-          return;
-        }
+    setTimeout(() => {
+      // to make sure the keyboard goes down before autofocus on the next screen
+      if (this.loggingIn) {
+        return;
+      }
+      this.loggingIn = true;
+      if (this.password.length < 6) {
+        this.loggingIn = false;
+        this.props.alertWithType(
+          "error",
+          "Error",
+          "Password must be at least 6 characters long."
+        );
+        return;
+      }
 
-        if (this.props.intent === "signup" && !this.checkedPassword) {
-          this.props.alertWithType(
-            "success",
-            "",
-            "Make sure you've created a memorable password!"
-          );
-          this.checkedPassword = true;
-          this.loggingIn = false;
-          return;
-        }
+      if (this.props.intent === "signup" && !this.checkedPassword) {
+        this.props.alertWithType(
+          "success",
+          "",
+          "Make sure you've created a memorable password!"
+        );
+        this.checkedPassword = true;
+        this.loggingIn = false;
+        return;
+      }
 
-        if (this.props.intent === "signup") {
-          this.props.authStore
-            .signup({
-              password: this.password,
-              school: this.props.school,
-              ...this.props.credentials
-            })
-            .then(() => {
-              this.props.navigator.immediatelyResetStack(
-                [Router.getRoute("tabs")],
-                0
+      if (this.props.intent === "signup") {
+        this.props.authStore
+          .signup({
+            password: this.password,
+            school: this.props.school,
+            ...this.props.credentials
+          })
+          .then(() => {
+            this.props.navigator.immediatelyResetStack(
+              [Router.getRoute("tabs")],
+              0
+            );
+            setTimeout(() => {
+              this.props.alertWithType(
+                "info",
+                "Info",
+                "Make sure to enable push notifications to stay in the loop!"
               );
-              setTimeout(
-                () => {
-                  this.props.alertWithType(
-                    "info",
-                    "Info",
-                    "Make sure to enable push notifications to stay in the loop!"
-                  );
-                },
-                5000
+            }, 5000);
+          })
+          .catch(error => {
+            this.loggingIn = false;
+            this.props.alertWithType("error", "Error", error.toString());
+          });
+      } else {
+        this.props.authStore
+          .login({
+            ...this.props.credentials,
+            password: this.password
+          })
+          .then(() => {
+            try {
+              AsyncStorage.setItem(
+                "@PUL:user",
+                JSON.stringify({
+                  ...this.props.credentials,
+                  password: this.password
+                })
               );
-            })
-            .catch(error => {
-              this.loggingIn = false;
+            } catch (error) {
               this.props.alertWithType("error", "Error", error.toString());
-            });
-        } else {
-          this.props.authStore
-            .login({
-              ...this.props.credentials,
-              password: this.password
-            })
-            .then(() => {
-              try {
-                AsyncStorage.setItem(
-                  "@PUL:user",
-                  JSON.stringify({
-                    ...this.props.credentials,
-                    password: this.password
-                  })
-                );
-              } catch (error) {
-                this.props.alertWithType("error", "Error", error.toString());
-              }
-              this.props.navigator.immediatelyResetStack(
-                [Router.getRoute("tabs")],
-                0
+            }
+            this.props.navigator.immediatelyResetStack(
+              [Router.getRoute("tabs")],
+              0
+            );
+            setTimeout(() => {
+              this.props.alertWithType(
+                "info",
+                "Info",
+                "Make sure to enable push notifications to stay in the loop!"
               );
-              setTimeout(
-                () => {
-                  this.props.alertWithType(
-                    "info",
-                    "Info",
-                    "Make sure to enable push notifications to stay in the loop!"
-                  );
-                },
-                5000
-              );
-            })
-            .catch(error => {
-              this.loggingIn = false;
-              this.props.alertWithType("error", "Error", error.toString());
-            });
-        }
-      },
-      10
-    );
+            }, 5000);
+          })
+          .catch(error => {
+            this.loggingIn = false;
+            this.props.alertWithType("error", "Error", error.toString());
+          });
+      }
+    }, 10);
   };
 
   render() {
@@ -248,12 +239,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 16,
     paddingBottom: 16
-  },
-  fieldLabel: {
-    marginBottom: 8,
-    fontFamily: "open-sans-semibold",
-    fontSize: 20,
-    color: colors.black
   },
   fieldContents: {
     fontFamily: "open-sans",

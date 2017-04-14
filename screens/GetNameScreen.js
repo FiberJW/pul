@@ -42,26 +42,23 @@ export default class GetNameScreen extends Component {
 
   pushToNextScreen = () => {
     Keyboard.dismiss();
-    setTimeout(
-      () => {
-        // to make sure the keyboard goes down before autofocus on the next screen
-        if (!this.name.trim().length) {
-          this.props.alertWithType("error", "Error", "Name must be provided.");
-          return;
-        }
-        this.props.navigator.push(
-          Router.getRoute("getPhoneNumber", {
-            school: this.props.school,
-            intent: this.props.intent,
-            credentials: {
-              email: this.props.credentials.email,
-              name: this.name.trim()
-            }
-          })
-        );
-      },
-      10
-    );
+    setTimeout(() => {
+      // to make sure the keyboard goes down before autofocus on the next screen
+      if (!this.name.trim().length) {
+        this.props.alertWithType("error", "Error", "Name must be provided.");
+        return;
+      }
+      this.props.navigator.push(
+        Router.getRoute("getPhoneNumber", {
+          school: this.props.school,
+          intent: this.props.intent,
+          credentials: {
+            email: this.props.credentials.email,
+            name: this.name.trim()
+          }
+        })
+      );
+    }, 10);
   };
 
   render() {
@@ -114,16 +111,6 @@ const styles = StyleSheet.create({
     height: 40,
     color: colors.black,
     fontSize: 18
-  },
-  assistedTextInputContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center"
-  },
-  inputAssist: {
-    fontFamily: "open-sans",
-    fontSize: 18,
-    color: colors.black
   },
   touchable: {
     alignSelf: "flex-end"

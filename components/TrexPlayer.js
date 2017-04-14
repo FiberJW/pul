@@ -34,10 +34,6 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     marginVertical: 4,
     backgroundColor: "white"
-  },
-  headerRow: {
-    flexDirection: "row",
-    justifyContent: "space-between"
   }
 });
 
