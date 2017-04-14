@@ -28,12 +28,13 @@ import { observable } from "mobx";
 
 @withNavigation
 @connectDropdownAlert
-@inject("authStore")
+@inject("authStore", "eventStore")
 @observer
 export default class Event extends Component {
   static propTypes = {
     event: PropTypes.object.isRequired,
     authStore: PropTypes.object.isRequired,
+    eventStore: PropTypes.object.isRequired,
     navigator: PropTypes.object.isRequired,
     navigation: PropTypes.object.isRequired,
     refresh: PropTypes.func,
@@ -123,6 +124,7 @@ export default class Event extends Component {
                     this.props.navigation.getNavigator("master").push(
                       Router.getRoute("eventAdmin", {
                         event: this.props.event,
+                        refresh: this.props.eventStore.refresh,
                         editMode: true
                       })
                     )

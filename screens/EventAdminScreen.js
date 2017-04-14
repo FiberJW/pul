@@ -58,18 +58,36 @@ export default class EventAdminScreen extends Component {
 
   static propTypes = {
     navigator: PropTypes.object.isRequired,
+    event: PropTypes.object,
+    editMode: PropTypes.bool,
     authStore: PropTypes.object.isRequired,
     refresh: PropTypes.func,
     alertWithType: PropTypes.func.isRequired
   };
 
-  @observable name;
-  @observable date = moment.utc().toDate();
-  @observable time = moment.utc().toDate().getTime();
-  @observable url = "";
+  @observable name = this.props.event
+    ? { name: this.props.event.name }
+    : undefined;
+  @observable date = this.props.event
+    ? { date: moment.utc(this.props.event.date).toDate() }
+    : moment.utc().toDate();
+  @observable time = this.props.event
+    ? {
+        time: moment
+          .utc(this.props.event.date)
+          .add(this.props.event.time.hours, "hours")
+          .add(this.props.event.time.minutes, "minutes")
+          .toDate()
+      }
+    : moment.utc().toDate().getTime();
+  @observable url = this.props.event ? { url: this.props.event.url } : "";
   @observable submitting = false;
-  @observable type;
-  @observable description;
+  @observable type = this.props.event
+    ? { type: this.props.event.type || "" }
+    : undefined;
+  @observable description = this.props.event
+    ? { description: this.props.event.description || "" }
+    : undefined;
   @observable location;
   @observable keyboardHeight = 0;
   @observable swiperHeight = 0;
@@ -193,62 +211,81 @@ export default class EventAdminScreen extends Component {
 
     this.submitting = true;
 
-    global.firebaseApp
-      .database()
-      .ref("users")
-      .child(this.props.authStore.userId)
-      .once("value")
-      .then(snap => {
-        const schoolUID = snap.val().school;
-        global.firebaseApp
-          .database()
-          .ref("schools")
-          .child(schoolUID)
-          .child("events")
-          .push(event)
-          .then(() => {
-            // send pushes to peers
-            global.firebaseApp
-              .database()
-              .ref("users")
-              .once("value")
-              .then(usersSnap => {
-                _.each(usersSnap.val(), user => {
-                  if (
-                    !global.__DEV__ &&
-                    isExponentPushToken(user.pushToken) &&
-                    user.school === schoolUID
-                  ) {
-                    sendPushNotificationAsync({
-                      exponentPushToken: user.pushToken,
-                      message: `There's a new ${event.type.toLowerCase()} event at your school!`
-                    }).catch(err => {
-                      this.props.alertWithType(
-                        "error",
-                        "Error",
-                        err.toString()
-                      );
-                    });
-                  }
-                });
+    if (this.props.editMode) {
+      global.firebaseApp
+        .database()
+        .ref("schools")
+        .child(this.props.authStore.userData.school)
+        .child("events")
+        .child(this.props.event.uid)
+        .update(event, () => {
+          this.props.alertWithType(
+            "success",
+            "Success",
+            "Your event was updated successfully!"
+          );
+          this.props.refresh();
+          this.props.navigator.pop();
+        });
+    } else {
+      global.firebaseApp
+        .database()
+        .ref("users")
+        .child(this.props.authStore.userId)
+        .once("value")
+        .then(snap => {
+          const schoolUID = snap.val().school;
+          global.firebaseApp
+            .database()
+            .ref("schools")
+            .child(schoolUID)
+            .child("events")
+            .push(event)
+            .then(() => {
+              // send pushes to peers
+              global.firebaseApp
+                .database()
+                .ref("users")
+                .once("value")
+                .then(usersSnap => {
+                  _.each(usersSnap.val(), user => {
+                    if (
+                      !global.__DEV__ &&
+                      isExponentPushToken(user.pushToken) &&
+                      user.school === schoolUID
+                    ) {
+                      sendPushNotificationAsync({
+                        exponentPushToken: user.pushToken,
+                        message: `There's a new ${event.type.toLowerCase()} event at your school!`
+                      }).catch(err => {
+                        this.props.alertWithType(
+                          "error",
+                          "Error",
+                          err.toString()
+                        );
+                      });
+                    }
+                  });
 
-                this.props.alertWithType(
-                  "success",
-                  "Success",
-                  "Your event was submitted successfully!"
-                );
-                this.props.refresh();
-                this.props.navigator.pop();
-              });
-          });
-      })
-      .catch(err => {
-        this.submitting = false;
-        this.props.alertWithType("error", "Error", err.toString());
-      });
+                  this.props.alertWithType(
+                    "success",
+                    "Success",
+                    "Your event was submitted successfully!"
+                  );
+                  this.props.refresh();
+                  this.props.navigator.pop();
+                });
+            });
+        })
+        .catch(err => {
+          this.submitting = false;
+          this.props.alertWithType("error", "Error", err.toString());
+        });
+    }
   };
 
   componentWillMount() {
+    console.log(JSON.stringify(this.props.event, null, 2));
     this._unsubscribe = KeyboardEventListener.subscribe(
       this._onKeyboardVisibilityChange
     );
