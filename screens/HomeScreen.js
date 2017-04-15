@@ -78,14 +78,12 @@ export default class HomeScreen extends Component {
                 this.props.eventStore.events.slice()
               )}
               refreshControl={
-                (
-                  <RefreshControl
-                    enabled
-                    colors={[colors.blue, colors.hotPink]}
-                    refreshing={this.props.eventStore.refreshing}
-                    onRefresh={this.props.eventStore.refresh}
-                  />
-                )
+                <RefreshControl
+                  enabled
+                  colors={[colors.blue, colors.hotPink]}
+                  refreshing={this.props.eventStore.refreshing}
+                  onRefresh={this.props.eventStore.refresh}
+                />
               }
               renderRow={event => (
                 <Event event={event} refresh={this.props.eventStore.refresh} />
