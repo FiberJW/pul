@@ -1,11 +1,15 @@
-import { action } from "mobx";
-import { create } from "mobx-persist";
+import { action, observable } from "mobx";
+import { create, persist } from "mobx-persist";
 import { AsyncStorage } from "react-native";
 
 class UIStore {
   constructor() {
     this.hydrate();
   }
+
+  @persist
+  @observable
+  onboardingCompleted = false;
 
   @action hydrate = () => {
     const pour = create({

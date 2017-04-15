@@ -33,11 +33,12 @@ if (!global.__DEV__) {
 }
 
 @connectDropdownAlert
-@inject("authStore")
+@inject("authStore", "uiStore")
 @observer
 class App extends Component {
   static propTypes = {
     authStore: PropTypes.object,
+    uiStore: PropTypes.object,
     alertWithType: PropTypes.func
   };
 
@@ -117,10 +118,14 @@ class App extends Component {
   }
 
   render() {
-    const route = this.props.authStore.state ===
-      this.props.authStore.authStates[1]
-      ? "tabs"
-      : "entry";
+    let route;
+    if (this.props.authStore.state === this.props.authStore.authStates[1]) {
+      route = "tabs";
+    } else if (this.props.uiStore.onboardingCompleted) {
+      route = "entry";
+    } else {
+      route = "onboarding";
+    }
 
     return (
       <Choose>

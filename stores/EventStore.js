@@ -35,10 +35,10 @@ export class EventStore {
       let availableRides = 0;
 
       const rides = _.map(event.rides || {}, (ride, rideUID) => {
-        const passengers = _.map(ride.passengers || {}, (
-          passenger,
-          passUID
-        ) => ({ ...passenger, passUID }));
+        const passengers = _.map(
+          ride.passengers || {},
+          (passenger, passUID) => ({ ...passenger, passUID })
+        );
 
         if (
           (!passengers ||
@@ -121,12 +121,9 @@ export class EventStore {
 
   @action setError = (error, timeInSeconds = 1) => {
     this.error = error;
-    setTimeout(
-      () => {
-        this.error = null;
-      },
-      timeInSeconds * 1000
-    );
+    setTimeout(() => {
+      this.error = null;
+    }, timeInSeconds * 1000);
   };
 
   @action reset = () => {
@@ -141,15 +138,19 @@ export class EventStore {
   @computed get rides() {
     return this.events
       .filter(event => {
-        return event.rides &&
+        return (
+          event.rides &&
           event.rides.some(ride => {
-            return ride.driver === global.firebaseApp.auth().currentUser.uid ||
+            return (
+              ride.driver === global.firebaseApp.auth().currentUser.uid ||
               ride.passengers.some(
                 passenger =>
                   passenger.userUID ===
                   global.firebaseApp.auth().currentUser.uid
-              );
-          });
+              )
+            );
+          })
+        );
       })
       .map(event => {
         let yourRide;

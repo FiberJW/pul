@@ -41,12 +41,9 @@ export class TrexStore {
 
   @action setError = (error, timeInSeconds = 1) => {
     this.error = error;
-    setTimeout(
-      () => {
-        this.error = null;
-      },
-      timeInSeconds * 1000
-    );
+    setTimeout(() => {
+      this.error = null;
+    }, timeInSeconds * 1000);
   };
 
   @action updateLeaderboard = yourSchool => usersSnapshot => {

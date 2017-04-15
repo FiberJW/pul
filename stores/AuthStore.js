@@ -145,18 +145,15 @@ export class AuthStore {
   };
 
   @action watchEmailVerification = () => {
-    const emailWatch = setInterval(
-      () => {
-        if (global.firebaseApp.auth().currentUser) {
-          if (global.firebaseApp.auth().currentUser.emailVerified) {
-            this.verified = true;
-            clearInterval(emailWatch);
-          }
-          global.firebaseApp.auth().currentUser.reload();
+    const emailWatch = setInterval(() => {
+      if (global.firebaseApp.auth().currentUser) {
+        if (global.firebaseApp.auth().currentUser.emailVerified) {
+          this.verified = true;
+          clearInterval(emailWatch);
         }
-      },
-      1000
-    );
+        global.firebaseApp.auth().currentUser.reload();
+      }
+    }, 1000);
   };
 
   @action logout = async () => {
@@ -203,12 +200,9 @@ export class AuthStore {
 
   @action setError = (error = new Error(""), timeInSeconds = 1) => {
     this.error = error;
-    setTimeout(
-      () => {
-        this.error = null;
-      },
-      timeInSeconds * 1000
-    );
+    setTimeout(() => {
+      this.error = null;
+    }, timeInSeconds * 1000);
   };
 }
 
