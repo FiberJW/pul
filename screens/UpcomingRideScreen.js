@@ -71,14 +71,12 @@ export default class UpcomingRideScreen extends Component {
                 this.props.eventStore.rides.slice()
               )}
               refreshControl={
-                (
-                  <RefreshControl
-                    enabled
-                    colors={[colors.blue, colors.hotPink]}
-                    refreshing={this.props.eventStore.refreshing}
-                    onRefresh={this.props.eventStore.refresh}
-                  />
-                )
+                <RefreshControl
+                  enabled
+                  colors={[colors.blue, colors.hotPink]}
+                  refreshing={this.props.eventStore.refreshing}
+                  onRefresh={this.props.eventStore.refresh}
+                />
               }
               renderRow={r => (
                 <Ride
