@@ -131,7 +131,8 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center"
+    alignItems: "center",
+    paddingTop: StatusBar.currentHeight
   },
   shadow: {
     elevation: 5,
