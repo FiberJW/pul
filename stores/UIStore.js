@@ -11,6 +11,10 @@ class UIStore {
   @observable
   onboardingCompleted = false;
 
+  @action completeOnboarding = () => {
+    this.onboardingCompleted = true;
+  };
+
   @action hydrate = () => {
     const pour = create({
       storage: AsyncStorage

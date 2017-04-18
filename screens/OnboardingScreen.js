@@ -108,7 +108,7 @@ export default class App extends Component {
 
         <OnboardingButton
           onPress={() => {
-            this.props.uiStore.onboardingCompleted = true;
+            this.props.uiStore.completeOnboarding();
             this.props.navigator.push(Router.getRoute("entry"));
           }}
           label="GOT IT!"

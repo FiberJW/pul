@@ -10,7 +10,7 @@ import DropdownAlertProvider from "./components/DropdownAlertProvider";
 import ExpoSentryClient from "@expo/sentry-utils";
 import connectDropdownAlert from "./utils/connectDropdownAlert";
 import { inject, observer, Provider as MobXProvider } from "mobx-react/native";
-import { observable } from "mobx";
+import { observable, action } from "mobx";
 import authStore from "./stores/AuthStore";
 import eventStore from "./stores/EventStore";
 import trexStore from "./stores/TrexStore";
@@ -44,6 +44,10 @@ class App extends Component {
 
   @observable loading = true;
 
+  @action finishLoading = () => {
+    this.loading = false;
+  };
+
   async setup() {
     await Permissions.askAsync(Permissions.LOCATION);
     await Font.loadAsync({
@@ -69,7 +73,7 @@ class App extends Component {
       await this.signIn();
     } catch (error) {
       this.props.alertWithType("error", "Error", error.toString());
-      this.loading = false;
+      this.finishLoading();
     }
   };
 
@@ -79,7 +83,7 @@ class App extends Component {
       userCredentials = JSON.parse(userCredentials);
       try {
         await this.props.authStore.login(userCredentials, true);
-        this.loading = false;
+        this.finishLoading();
       } catch (error) {
         if (error.code) {
           switch (error.code) {
@@ -94,26 +98,26 @@ class App extends Component {
             case "auth/invalid-email":
             case "auth/user-disabled":
             case "auth/wrong-password":
-              this.loading = false;
+              this.finishLoading();
               break;
             default:
               Alert.alert(null, "Something is on fire.", [{ text: "OK" }]);
-              this.loading = false;
+              this.finishLoading();
           }
         } else {
           this.props.alertWithType("error", "Error", error.toString());
-          this.loading = false;
+          this.finishLoading();
         }
       }
     } else {
-      this.loading = false;
+      this.finishLoading();
     }
   };
 
   componentDidMount() {
     this.setup().catch(e => {
       Alert.alert(e.toString());
-      this.loading = false;
+      this.finishLoading();
     });
   }
 

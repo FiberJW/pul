@@ -13,7 +13,7 @@ import SchoolOption from "../components/SchoolOption";
 import connectDropdownAlert from "../utils/connectDropdownAlert";
 import { email } from "react-native-communications";
 import { observer } from "mobx-react/native";
-import { observable } from "mobx";
+import { observable, action } from "mobx";
 import _ from "lodash";
 import Suggestion from "../components/styled/Suggestion";
 
@@ -44,6 +44,14 @@ export default class ChooseSchoolScreen extends Component {
   @observable loading = true;
   @observable schools = [];
 
+  @action finishLoading = () => {
+    this.loading = false;
+  };
+
+  @action setSchools = schools => {
+    this.schools = schools;
+  };
+
   ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
   componentWillMount() {
@@ -52,13 +60,15 @@ export default class ChooseSchoolScreen extends Component {
       .ref("schools")
       .once("value")
       .then(schoolsSnap => {
-        this.schools = _.map(schoolsSnap.val(), (school, uid) => {
-          return {
-            ...school,
-            uid
-          };
-        });
-        this.loading = false;
+        this.setSchools(
+          _.map(schoolsSnap.val(), (school, uid) => {
+            return {
+              ...school,
+              uid
+            };
+          })
+        );
+        this.finishLoading();
       })
       .catch(err => {
         this.props.alertWithType("error", "Error", err.toString());
