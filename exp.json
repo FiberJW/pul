@@ -2,7 +2,7 @@
   "name": "PÜL",
   "description": "A carpooling app designed for students to help each other get more involved in their community.",
   "slug": "pul",
-  "sdkVersion": "15.0.0",
+  "sdkVersion": "16.0.0",
   "version": "0.1.3",
   "orientation": "portrait",
   "primaryColor": "#cccccc",

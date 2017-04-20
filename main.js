@@ -1,4 +1,4 @@
-import Expo, { Font, Permissions, AppLoading } from "expo";
+import Expo, { Font, Permissions, AppLoading, LegacyAsyncStorage } from "expo";
 import React, { Component, PropTypes } from "react";
 import { AsyncStorage, Alert } from "react-native";
 import { NavigationProvider, StackNavigation } from "@expo/ex-navigation";
@@ -56,6 +56,11 @@ class App extends Component {
       "open-sans": require("./assets/fonts/OpenSans-Regular.ttf"),
       "open-sans-semibold": require("./assets/fonts/OpenSans-Semibold.ttf")
     });
+
+    // Before we read from or write to AsyncStorage, migrate them
+    // Make sure this is inside of an async function
+    await LegacyAsyncStorage.migrateItems(["@PUL:user"]);
+
     await this.startFirebase();
   }
 

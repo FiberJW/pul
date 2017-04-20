@@ -1,16 +1,18 @@
-import React, { PropTypes } from "react";
+import React, { Component, PropTypes } from "react";
 import hoistNonReactStatic from "hoist-non-react-statics";
 
 export default function connectDropdownAlert(WrappedComponent) {
-  const ConnectedDropdownAlert = (props, context) => {
-    return (
-      <WrappedComponent
-        {...props}
-        alertWithType={context.alertWithType}
-        alert={context.alert}
-      />
-    );
-  };
+  class ConnectedDropdownAlert extends Component {
+    render() {
+      return (
+        <WrappedComponent
+          {...this.props}
+          alertWithType={this.context.alertWithType}
+          alert={this.context.alert}
+        />
+      );
+    }
+  }
 
   ConnectedDropdownAlert.contextTypes = {
     alertWithType: PropTypes.func,
