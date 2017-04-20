@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import {
   View,
   StyleSheet,
-  ListView,
+  FlatList,
   StatusBar,
   TouchableOpacity,
   ActivityIndicator
@@ -52,8 +52,6 @@ export default class ChooseSchoolScreen extends Component {
     this.schools = schools;
   };
 
-  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
-
   componentWillMount() {
     global.firebaseApp
       .database()
@@ -92,11 +90,11 @@ export default class ChooseSchoolScreen extends Component {
             </View>
           </When>
           <Otherwise>
-            <ListView
-              enableEmptySections
-              dataSource={this.ds.cloneWithRows(this.schools.slice())}
-              renderRow={s => (
-                <SchoolOption intent={this.props.intent} school={s} />
+            <FlatList
+              data={this.schools.slice()}
+              keyExtractor={(item, index) => index}
+              renderItem={({ item }) => (
+                <SchoolOption intent={this.props.intent} school={item} />
               )}
             />
           </Otherwise>

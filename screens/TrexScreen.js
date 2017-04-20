@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import {
   WebView,
   StyleSheet,
-  ListView,
+  FlatList,
   View,
   ActivityIndicator,
   AppState
@@ -42,8 +42,6 @@ export default class TrexScreen extends Component {
 
   @observable appState = AppState.currentState;
   @observable softBanned = false;
-
-  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
   _handleAppStateChange = nextAppState => {
     if (
@@ -101,13 +99,11 @@ export default class TrexScreen extends Component {
           <Otherwise>
             <View style={styles.leaderboard}>
               <WidgetLabel label="LEADERBOARD" />
-              <ListView
-                enableEmptySections
-                dataSource={this.ds.cloneWithRows(
-                  this.props.trexStore.players.slice()
-                )}
-                renderRow={(player, __, idx) => (
-                  <TrexPlayer player={player} place={parseInt(idx, 10) + 1} />
+              <FlatList
+                keyExtractor={(item, i) => i}
+                data={this.props.trexStore.players.slice()}
+                renderItem={({ item, index }) => (
+                  <TrexPlayer player={item} place={parseInt(index, 10) + 1} />
                 )}
               />
             </View>

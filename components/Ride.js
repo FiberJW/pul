@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from "react";
 import {
   View,
-  ListView,
   Text,
   TouchableOpacity,
   StyleSheet,
   Alert,
-  Platform
+  Platform,
+  FlatList
 } from "react-native";
 import colors from "kolors";
 import Carpooler from "../components/Carpooler";
@@ -41,8 +41,6 @@ export default class Ride extends Component {
   @observable pickedUpUsers = 0;
   @observable selfIsDriver = this.props.event.yourRide.driver ===
     this.props.authStore.userId;
-
-  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
   _onOpenActionSheet = () => {
     // Same interface as https://facebook.github.io/react-native/docs/actionsheetios.html
@@ -226,17 +224,17 @@ export default class Ride extends Component {
             <View style={styles.moreItem} />
           </TouchableOpacity>
         </View>
-        <ListView
-          enableEmptySections
-          dataSource={this.ds.cloneWithRows(this.passengers.slice())}
-          renderRow={u => (
+        <FlatList
+          data={this.passengers.slice()}
+          keyExtractor={(item, index) => index}
+          renderItem={({ item }) => (
             <Carpooler
               event={this.props.event}
               refresh={this.props.refresh}
               passengers={this.passengers.slice()}
               pickedUpUsers={this.pickedUpUsers}
               refreshing={this.props.refreshing}
-              user={u}
+              user={item}
               selfIsDriver={this.selfIsDriver}
             />
           )}
@@ -252,56 +250,57 @@ export default class Ride extends Component {
             }
           >
             <TouchableOpacity
-              onPress={() => Alert.alert(
-                Platform.OS === "ios" ? "Start Ride" : "Start ride",
-                "Are you sure? Just making sure you didn't click this by mistake.",
-                [
-                  { text: "Cancel", style: "cancel" },
-                  {
-                    text: "OK",
-                    onPress: () => {
-                      global.firebaseApp
-                        .database()
-                        .ref("schools")
-                        .child(this.props.event.schoolUID)
-                        .child("events")
-                        .child(this.props.event.uid)
-                        .child("rides")
-                        .child(this.props.event.yourRide.uid)
-                        .update(
-                          {
-                            rideStarted: true
-                          },
-                          () => {
-                            const wazeUrl = createWazeDeepLink(
-                              this.props.event.location.geometry.location.lat,
-                              this.props.event.location.geometry.location.lng
-                            );
-
-                            maybeOpenURL(wazeUrl, {
-                              appName: "Waze",
-                              appStoreId: "id323229106",
-                              playStoreId: "com.waze"
-                            }).catch(err => {
-                              this.props.alertWithType(
-                                "error",
-                                "Error",
-                                err.toString()
+              onPress={() =>
+                Alert.alert(
+                  Platform.OS === "ios" ? "Start Ride" : "Start ride",
+                  "Are you sure? Just making sure you didn't click this by mistake.",
+                  [
+                    { text: "Cancel", style: "cancel" },
+                    {
+                      text: "OK",
+                      onPress: () => {
+                        global.firebaseApp
+                          .database()
+                          .ref("schools")
+                          .child(this.props.event.schoolUID)
+                          .child("events")
+                          .child(this.props.event.uid)
+                          .child("rides")
+                          .child(this.props.event.yourRide.uid)
+                          .update(
+                            {
+                              rideStarted: true
+                            },
+                            () => {
+                              const wazeUrl = createWazeDeepLink(
+                                this.props.event.location.geometry.location.lat,
+                                this.props.event.location.geometry.location.lng
                               );
-                            });
-                          }
-                        )
-                        .catch(err => {
-                          this.props.alertWithType(
-                            "error",
-                            "Error",
-                            err.toString()
-                          );
-                        });
+
+                              maybeOpenURL(wazeUrl, {
+                                appName: "Waze",
+                                appStoreId: "id323229106",
+                                playStoreId: "com.waze"
+                              }).catch(err => {
+                                this.props.alertWithType(
+                                  "error",
+                                  "Error",
+                                  err.toString()
+                                );
+                              });
+                            }
+                          )
+                          .catch(err => {
+                            this.props.alertWithType(
+                              "error",
+                              "Error",
+                              err.toString()
+                            );
+                          });
+                      }
                     }
-                  }
-                ]
-              )}
+                  ]
+                )}
             >
               <ElevatedView style={styles.startDrivingButton} elevation={4}>
                 <Text style={styles.buttonText}>
@@ -318,45 +317,46 @@ export default class Ride extends Component {
             }
           >
             <TouchableOpacity
-              onPress={() => Alert.alert(
-                Platform.OS === "ios" ? "End Ride" : "End ride",
-                "Are you sure? Just making sure you didn't click this by mistake.",
-                [
-                  { text: "Cancel", style: "cancel" },
-                  {
-                    text: "OK",
-                    onPress: () => {
-                      global.firebaseApp
-                        .database()
-                        .ref("schools")
-                        .child(this.props.event.schoolUID)
-                        .child("events")
-                        .child(this.props.event.uid)
-                        .child("rides")
-                        .child(this.props.event.yourRide.uid)
-                        .update(
-                          {
-                            rideCompleted: true
-                          },
-                          () => {
+              onPress={() =>
+                Alert.alert(
+                  Platform.OS === "ios" ? "End Ride" : "End ride",
+                  "Are you sure? Just making sure you didn't click this by mistake.",
+                  [
+                    { text: "Cancel", style: "cancel" },
+                    {
+                      text: "OK",
+                      onPress: () => {
+                        global.firebaseApp
+                          .database()
+                          .ref("schools")
+                          .child(this.props.event.schoolUID)
+                          .child("events")
+                          .child(this.props.event.uid)
+                          .child("rides")
+                          .child(this.props.event.yourRide.uid)
+                          .update(
+                            {
+                              rideCompleted: true
+                            },
+                            () => {
+                              this.props.alertWithType(
+                                "success",
+                                "YEET",
+                                "Aye you made it!"
+                              );
+                            }
+                          )
+                          .catch(err => {
                             this.props.alertWithType(
-                              "success",
-                              "YEET",
-                              "Aye you made it!"
+                              "error",
+                              "Error",
+                              err.toString()
                             );
-                          }
-                        )
-                        .catch(err => {
-                          this.props.alertWithType(
-                            "error",
-                            "Error",
-                            err.toString()
-                          );
-                        });
+                          });
+                      }
                     }
-                  }
-                ]
-              )}
+                  ]
+                )}
             >
               <ElevatedView style={styles.rideCompleteButton} elevation={4}>
                 <Text style={styles.buttonText}>

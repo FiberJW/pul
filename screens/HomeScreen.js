@@ -1,14 +1,13 @@
 import React, { Component, PropTypes } from "react";
 import {
   View,
-  ListView,
+  FlatList,
   StyleSheet,
   ActivityIndicator,
   StatusBar,
   Image,
   Vibration,
-  Text,
-  RefreshControl
+  Text
 } from "react-native";
 import Event from "../components/Event";
 import ActionButton from "react-native-action-button";
@@ -36,8 +35,6 @@ export default class HomeScreen extends Component {
     eventStore: PropTypes.object,
     authStore: PropTypes.object
   };
-
-  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
   componentWillUpdate(nextProps) {
     if (nextProps.eventStore.error) {
@@ -71,22 +68,14 @@ export default class HomeScreen extends Component {
                 this.props.eventStore.refreshing
             }
           >
-            <ListView
-              enableEmptySections
+            <FlatList
               style={{ marginTop: 4 }}
-              dataSource={this.ds.cloneWithRows(
-                this.props.eventStore.events.slice()
-              )}
-              refreshControl={
-                <RefreshControl
-                  enabled
-                  colors={[colors.blue, colors.hotPink]}
-                  refreshing={this.props.eventStore.refreshing}
-                  onRefresh={this.props.eventStore.refresh}
-                />
-              }
-              renderRow={event => (
-                <Event event={event} refresh={this.props.eventStore.refresh} />
+              data={this.props.eventStore.events.slice()}
+              keyExtractor={(item, index) => index}
+              refreshing={this.props.eventStore.refreshing}
+              onRefresh={this.props.eventStore.refresh}
+              renderItem={({ item }) => (
+                <Event event={item} refresh={this.props.eventStore.refresh} />
               )}
             />
           </When>

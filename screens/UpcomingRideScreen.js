@@ -3,10 +3,9 @@ import {
   View,
   StyleSheet,
   StatusBar,
-  ListView,
+  FlatList,
   Text,
   Image,
-  RefreshControl,
   ActivityIndicator
 } from "react-native";
 import colors from "kolors";
@@ -30,8 +29,6 @@ export default class UpcomingRideScreen extends Component {
     eventStore: PropTypes.object,
     alertWithType: PropTypes.func.isRequired
   };
-
-  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
   componentWillUpdate(nextProps) {
     if (nextProps.eventStore.error) {
@@ -65,22 +62,13 @@ export default class UpcomingRideScreen extends Component {
                 this.props.eventStore.refreshing
             }
           >
-            <ListView
-              enableEmptySections
-              dataSource={this.ds.cloneWithRows(
-                this.props.eventStore.rides.slice()
-              )}
-              refreshControl={
-                <RefreshControl
-                  enabled
-                  colors={[colors.blue, colors.hotPink]}
-                  refreshing={this.props.eventStore.refreshing}
-                  onRefresh={this.props.eventStore.refresh}
-                />
-              }
-              renderRow={r => (
+            <FlatList
+              data={this.props.eventStore.rides.slice()}
+              refreshing={this.props.eventStore.refreshing}
+              onRefresh={this.props.eventStore.refresh}
+              renderItem={({ item }) => (
                 <Ride
-                  event={r}
+                  event={item}
                   refreshing={this.props.eventStore.refreshing}
                   refresh={this.props.eventStore.refresh}
                 />

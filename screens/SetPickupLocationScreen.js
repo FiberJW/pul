@@ -4,7 +4,7 @@ import {
   TouchableOpacity,
   Text,
   StyleSheet,
-  ListView,
+  FlatList,
   ActivityIndicator
 } from "react-native";
 import { NavigationStyles } from "@expo/ex-navigation";
@@ -55,8 +55,6 @@ export default class SetPickupLocationScreen extends Component {
   @observable pickupLocations = [];
   @observable loading = true;
   @observable submitting = false;
-
-  ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
   requestRide = () => {
     // add submission check
@@ -193,19 +191,19 @@ export default class SetPickupLocationScreen extends Component {
             </View>
           </When>
           <Otherwise>
-            <ListView
-              enableEmptySections
+            <FlatList
               style={{ marginTop: 4 }}
-              dataSource={this.ds.cloneWithRows(this.pickupLocations.slice())}
-              renderRow={location => (
+              keyExtractor={(item, i) => i}
+              data={this.pickupLocations.slice()}
+              renderItem={({ item }) => (
                 <RadioOption
                   onPress={() => {
-                    this.location = location.name;
+                    this.location = item.name;
                     this.pickupLocations = this.pickupLocations.slice(); // to force rerender
                   }}
                   color={colors.blue}
-                  selected={this.location === location.name}
-                  label={location.name}
+                  selected={this.location === item.name}
+                  label={item.name}
                 />
               )}
             />

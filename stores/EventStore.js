@@ -37,7 +37,7 @@ export class EventStore {
       const rides = _.map(event.rides || {}, (ride, rideUID) => {
         const passengers = _.map(
           ride.passengers || {},
-          (passenger, passUID) => ({ ...passenger, passUID })
+          (passenger, passUID) => ({ ...passenger, passUID, key: passUID })
         );
 
         if (
@@ -48,10 +48,10 @@ export class EventStore {
           availableRides++;
         }
 
-        return { ...ride, uid: rideUID, passengers };
+        return { ...ride, uid: rideUID, key: rideUID, passengers };
       });
 
-      return { ...event, uid, availableRides, schoolUID, rides };
+      return { ...event, uid, availableRides, schoolUID, rides, key: uid };
     }).reverse();
 
     this.events = rawEvents
