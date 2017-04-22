@@ -80,7 +80,7 @@ export default class EventAdminScreen extends Component {
           .toDate()
       }
     : moment.utc().toDate().getTime();
-  @observable url = this.props.event ? { url: this.props.event.url } : "";
+  @observable url = this.props.event ? { url: this.props.event.url || "" } : "";
   @observable submitting = false;
   @observable type = this.props.event
     ? { type: this.props.event.type || "" }
@@ -108,7 +108,7 @@ export default class EventAdminScreen extends Component {
         ? moment(this.time.time).minutes()
         : moment(this.time).minutes()
     };
-    const url = this.url.url || this.url;
+    const url = this.url && this.url.url;
     const location = {
       address: this.location.details.formatted_address,
       geometry: this.location.details.geometry
@@ -121,7 +121,7 @@ export default class EventAdminScreen extends Component {
       createdBy: this.props.authStore.userId,
       date,
       time,
-      url: url.toLowerCase(),
+      url: url && url.toLowerCase(),
       createdInDev: global.__DEV__,
       location,
       description: description && filter.clean(description.trim())

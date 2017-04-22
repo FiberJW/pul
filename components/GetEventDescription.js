@@ -17,7 +17,6 @@ const Description = t.struct({
 const DescriptionOptions = {
   fields: {
     description: {
-      multiline: true,
       maxLength: 140,
       underlineColorAndroid: "transparent",
       label: "Event Description",

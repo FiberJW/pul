@@ -73,7 +73,7 @@ export default class Event extends Component {
             Vibration.vibrate([0, 25]);
             Alert.alert(
               Platform.OS === "ios" ? "Update Event?" : "Update event?",
-              null,
+              "🚗 🚙",
               [
                 {
                   text: "Cancel",
