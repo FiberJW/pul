@@ -1,3 +1,4 @@
+import { Dimensions } from "react-native";
 import styled from "styled-components/native";
 import colors from "kolors";
 
@@ -6,5 +7,5 @@ export default styled.Text`
   font-size: 16;
   color: ${colors.black};
   flex-wrap: wrap;
-  width: 60%;
+  max-width: ${Dimensions.get("window").width / 2};
 `;
