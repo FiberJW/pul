@@ -8,6 +8,7 @@ import {
   TextInput,
   ActivityIndicator
 } from "react-native";
+import { KeepAwake } from "expo";
 import { NavigationStyles } from "@expo/ex-navigation";
 import colors from "kolors";
 import KeyboardEventListener from "KeyboardEventListener";
@@ -314,6 +315,7 @@ export default class EventAdminScreen extends Component {
           this.swiperWidth = width;
         }}
       >
+        <KeepAwake />
         <StatusBar barStyle="dark-content" />
         <Choose>
           <When condition={this.submitting}>

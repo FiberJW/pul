@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from "react";
 import { View, ActivityIndicator, StyleSheet, StatusBar } from "react-native";
 import { NavigationStyles } from "@expo/ex-navigation";
 import colors from "kolors";
-import { MapView, Location } from "expo";
+import { MapView, Location, KeepAwake } from "expo";
 import { maybeOpenURL } from "react-native-app-link";
 import connectDropdownAlert from "../utils/connectDropdownAlert";
 import createWazeDeepLink from "../utils/createWazeDeepLink";
@@ -87,6 +87,7 @@ export default class PickupScreen extends Component {
         </When>
         <Otherwise>
           <View style={styles.container}>
+            <KeepAwake />
             <MapView
               ref={c => {
                 this.map = c;
@@ -146,15 +147,14 @@ export default class PickupScreen extends Component {
               </If>
             </MapView>
             <MapViewFloatingCard
-              label={
-                `Meet at the ${this.props.pickupLocation.name
-                  .toLowerCase()
-                  .trim()}.`
-              }
-              onPress={() => this.map.animateToCoordinate({
-                latitude: this.props.pickupLocation.lat,
-                longitude: this.props.pickupLocation.lon
-              })}
+              label={`Meet at the ${this.props.pickupLocation.name
+                .toLowerCase()
+                .trim()}.`}
+              onPress={() =>
+                this.map.animateToCoordinate({
+                  latitude: this.props.pickupLocation.lat,
+                  longitude: this.props.pickupLocation.lon
+                })}
             />
             <MapViewConsole
               name={
