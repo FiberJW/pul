@@ -25,6 +25,7 @@ import CardHeader from "./styled/CardHeader";
 import CardSublabel from "./styled/CardSublabel";
 import { observer, inject } from "mobx-react/native";
 import { observable } from "mobx";
+import Icon from "../components/CrossPlatformIcon";
 
 @withNavigation
 @connectDropdownAlert
@@ -146,25 +147,79 @@ export default class Event extends Component {
               {this.props.event.type.toUpperCase()}
             </CardSublabel>
           </CardHeader>
-          <Text
-            onPress={() => {
-              this.isCollapsed = !this.isCollapsed;
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center"
             }}
-            onLongPress={() => {
-              this.props.navigation
-                .getNavigator("master")
-                .push(Router.getRoute("location", { event: this.props.event }));
-            }}
-            style={styles.location}
           >
-            {this.props.event.location.address}
-          </Text>
-          <Text style={styles.time}>
-            {moment(this.props.event.date)
-              .add(this.props.event.time.hours, "hours")
-              .add(this.props.event.time.minutes, "minutes")
-              .format("LLLL")}
-          </Text>
+            <View>
+              <Text
+                onPress={() => {
+                  this.isCollapsed = !this.isCollapsed;
+                }}
+                onLongPress={() => {
+                  this.props.navigation
+                    .getNavigator("master")
+                    .push(
+                      Router.getRoute("location", { event: this.props.event })
+                    );
+                }}
+                style={styles.location}
+              >
+                {this.props.event.location.address}
+              </Text>
+              <Text style={styles.time}>
+                {moment(this.props.event.date)
+                  .add(this.props.event.time.hours, "hours")
+                  .add(this.props.event.time.minutes, "minutes")
+                  .format("LLLL")}
+              </Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => {
+                global.firebaseApp
+                  .database()
+                  .ref("schools")
+                  .child(this.props.event.schoolUID)
+                  .child("events")
+                  .child(this.props.event.uid)
+                  .update({
+                    likes: {
+                      [this.props.authStore
+                        .userId]: !this.props.event.likes.includes(
+                        this.props.authStore.userId
+                      )
+                    }
+                  });
+              }}
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "baseline"
+              }}
+            >
+              <Icon
+                name="heart"
+                color={colors.black}
+                size={16}
+                outline={
+                  !this.props.event.likes.includes(this.props.authStore.userId)
+                }
+              />
+              <Text
+                style={{
+                  fontSize: 16,
+                  marginLeft: 4,
+                  color: colors.black,
+                  fontFamily: "open-sans"
+                }}
+              >
+                {this.props.event.likes.length}
+              </Text>
+            </TouchableOpacity>
+          </View>
           <Collapsible duration={200} collapsed={this.isCollapsed}>
             <If condition={this.props.event.description}>
               <Text style={styles.description}>

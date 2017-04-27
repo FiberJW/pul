@@ -10,6 +10,7 @@ module.exports = {
   rules: {
     "react/prop-types": 1,
     "react-native/no-unused-styles": 1,
+    "consistent-return": 0,
     "react/sort-comp": [
       1,
       {

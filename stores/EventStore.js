@@ -51,7 +51,22 @@ export class EventStore {
         return { ...ride, uid: rideUID, key: rideUID, passengers };
       });
 
-      return { ...event, uid, availableRides, schoolUID, rides, key: uid };
+      const likes = _.map(event.likes || {}, (liked, user) => ({
+        user,
+        liked
+      }))
+        .filter(({ liked }) => liked)
+        .map(o => o.user);
+
+      return {
+        ...event,
+        uid,
+        availableRides,
+        schoolUID,
+        rides,
+        key: uid,
+        likes
+      };
     }).reverse();
 
     this.events = rawEvents

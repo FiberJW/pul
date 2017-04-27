@@ -287,7 +287,6 @@ export default class EventAdminScreen extends Component {
   };
 
   componentWillMount() {
-    console.log(JSON.stringify(this.props.event, null, 2));
     this._unsubscribe = KeyboardEventListener.subscribe(
       this._onKeyboardVisibilityChange
     );
