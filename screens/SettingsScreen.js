@@ -196,7 +196,9 @@ export default class SettingsScreen extends Component {
               <SettingsLabel>Push notifications</SettingsLabel>
             </TouchableOpacity>
             <Switch
-              onTintColor={colors.blue}
+              onTintColor={
+                Platform.OS === "ios" ? colors.blue : colors.mayaBlue
+              }
               thumbTintColor={
                 Platform.OS === "android" && this.notifications
                   ? colors.blue

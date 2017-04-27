@@ -5,6 +5,7 @@
 export default {
   black: "#212121",
   blue: "#007AFF",
+  mayaBlue: "#4CA2FF",
   disabledBlue: "rgba(0, 122, 255, 0.5)",
   amber: "#FFAB00",
   offWhite: "#fafafa",
