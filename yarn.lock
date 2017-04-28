@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@expo/ex-navigation@^2.11.0":
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/@expo/ex-navigation/-/ex-navigation-2.11.0.tgz#429f9ee1121e5174e7473171a013d1be048ee425"
+"@expo/ex-navigation@^2.11.1":
+  version "2.11.1"
+  resolved "https://registry.yarnpkg.com/@expo/ex-navigation/-/ex-navigation-2.11.1.tgz#c2d1e831cf9ee2990832c62ca68e9a3d6cacad02"
   dependencies:
     "@expo/react-native-touchable-native-feedback-safe" "^1.1.0"
     clamp "^1.0.1"
@@ -20,7 +20,7 @@
     react-clone-referenced-element "^1.0.1"
     react-mixin "^3.0.5"
     react-native-drawer-layout-polyfill "^1.1.0"
-    react-native-tab-view "0.0.52"
+    react-native-tab-view "^0.0.61"
     react-redux "^4.4.5"
     react-static-container "^1.0.0"
     react-timer-mixin "^0.13.3"
@@ -3919,6 +3919,12 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
+prop-types@^15.5.8:
+  version "15.5.8"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.8.tgz#6b7b2e141083be38c8595aa51fc55775c7199394"
+  dependencies:
+    fbjs "^0.8.9"
+
 prr@~0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/prr/-/prr-0.0.0.tgz#1a84b85908325501411853d0081ee3fa86e2926a"
@@ -4101,9 +4107,11 @@ react-native-swiper@^1.5.4:
   version "1.5.4"
   resolved "https://registry.yarnpkg.com/react-native-swiper/-/react-native-swiper-1.5.4.tgz#a85535b5374ef8d605a7a720e447ac46816ac448"
 
-react-native-tab-view@0.0.52:
-  version "0.0.52"
-  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-0.0.52.tgz#61655f93974ff4f26f02bd739566848984ad53c7"
+react-native-tab-view@^0.0.61:
+  version "0.0.61"
+  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-0.0.61.tgz#9f5446c9ad33158b87f0bccf5004fbff79ca1f92"
+  dependencies:
+    prop-types "^15.5.8"
 
 react-native-vector-icons@4.0.0:
   version "4.0.0"
