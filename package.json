@@ -6,9 +6,6 @@
   "private": true,
   "main": "main.js",
   "scripts": {
-    "upload-sourcemaps:android": "publish-sentry-release --platform android --team juwan-wheatley --project pul --auth-token ba831e90c8b5421b907731c3bc77415161fa905c437e4572ae79ad2192886adc",
-    "upload-sourcemaps:ios": "publish-sentry-release --platform ios --team juwan-wheatley --project pul --auth-token ba831e90c8b5421b907731c3bc77415161fa905c437e4572ae79ad2192886adc",
-    "upload-sourcemaps": "npm run upload-sourcemaps:android && npm run upload-sourcemaps:ios",
     "lint:staged": "lint-staged",
     "appr": "appr",
     "lint": "eslint ./ --cache --ignore-pattern .gitignore",
@@ -23,7 +20,6 @@
   "dependencies": {
     "@expo/ex-navigation": "^2.11.1",
     "@expo/react-native-action-sheet": "^0.3.0",
-    "@expo/sentry-utils": "^0.4.0",
     "@expo/vector-icons": "^4.0.0",
     "babel-preset-expo": "^1.0.0",
     "bad-words": "^1.4.2",
@@ -47,6 +43,7 @@
     "react-native-elevated-view": "0.0.1",
     "react-native-google-places-autocomplete": "^1.2.6",
     "react-native-swiper": "^1.5.4",
+    "sentry-expo": "^1.0.0",
     "styled-components": "^1.4.4",
     "tcomb-form-native": "^0.6.1",
     "tinycolor2": "^1.4.1",

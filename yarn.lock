@@ -46,6 +46,12 @@
   dependencies:
     raven-js "^3.12.0"
 
+"@expo/spawn-async@^1.2.8":
+  version "1.2.8"
+  resolved "https://registry.yarnpkg.com/@expo/spawn-async/-/spawn-async-1.2.8.tgz#ca0f3e0b447dcfe2db3d29a2f58682465d60c63d"
+  dependencies:
+    cross-spawn "^4.0.2"
+
 "@expo/vector-icons@^4.0.0":
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@expo/vector-icons/-/vector-icons-4.0.0.tgz#df34e226b41c9f231be6d43c3190f5f7e3828773"
@@ -1602,6 +1608,13 @@ cross-env@^3.1.4:
 cross-spawn@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-3.0.1.tgz#1256037ecb9f0c5f79e3d6ef135e30770184b982"
+  dependencies:
+    lru-cache "^4.0.1"
+    which "^1.2.9"
+
+cross-spawn@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-4.0.2.tgz#7b9247621c23adfdd3856004a823cbe397424d41"
   dependencies:
     lru-cache "^4.0.1"
     which "^1.2.9"
@@ -3975,6 +3988,10 @@ range-parser@~1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/range-parser/-/range-parser-1.0.3.tgz#6872823535c692e2c2a0103826afd82c2e0ff175"
 
+"raven-js@ 3.15.0":
+  version "3.15.0"
+  resolved "https://registry.yarnpkg.com/raven-js/-/raven-js-3.15.0.tgz#ebf95466b7d40fbbc3d6a5085af7c1431607926c"
+
 raven-js@^3.12.0:
   version "3.12.1"
   resolved "https://registry.yarnpkg.com/raven-js/-/raven-js-3.12.1.tgz#bec1aebbc0b14fbfe651ffff4c5692931065d418"
@@ -4095,6 +4112,12 @@ react-native-safe-module@^1.1.0:
   resolved "https://registry.yarnpkg.com/react-native-safe-module/-/react-native-safe-module-1.1.1.tgz#c3eb1d2030661676b075ba8d12c305a31b1d8fb4"
   dependencies:
     dedent "^0.6.0"
+
+"react-native-sentry@https://github.com/expo/react-native-sentry/archive/expo-initial-release.tar.gz":
+  version "0.7.0"
+  resolved "https://github.com/expo/react-native-sentry/archive/expo-initial-release.tar.gz#42fd96de7290f556ecd0998e433096a3bace6c21"
+  dependencies:
+    raven-js " 3.15.0"
 
 "react-native-svg@https://github.com/expo/react-native-svg/archive/4.4.1.tar.gz":
   version "4.4.1"
@@ -4547,6 +4570,15 @@ send@0.13.2:
     on-finished "~2.3.0"
     range-parser "~1.0.3"
     statuses "~1.2.1"
+
+sentry-expo@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/sentry-expo/-/sentry-expo-1.0.0.tgz#2dc1fdc28f285324cb399ab73649a774a1acc764"
+  dependencies:
+    "@expo/spawn-async" "^1.2.8"
+    mkdirp "^0.5.1"
+    react-native-sentry "https://github.com/expo/react-native-sentry/archive/expo-initial-release.tar.gz"
+    rimraf "^2.6.1"
 
 serializr@^1.1.8:
   version "1.1.11"

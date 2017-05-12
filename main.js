@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { sentryURL } from "./config/keys";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import DropdownAlertProvider from "./components/DropdownAlertProvider";
-import ExpoSentryClient from "@expo/sentry-utils";
+import { Sentry } from "sentry-expo";
 import { Provider as MobXProvider } from "mobx-react/native";
 import authStore from "./stores/AuthStore";
 import eventStore from "./stores/EventStore";
@@ -20,11 +20,7 @@ if (!global.__DEV__) {
     };
   });
 
-  ExpoSentryClient.setupSentry(
-    sentryURL,
-    require("./exp.json").version,
-    require("./package.json").main
-  );
+  Sentry.config(sentryURL).install();
 }
 
 class Main extends Component {
