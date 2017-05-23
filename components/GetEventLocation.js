@@ -13,6 +13,7 @@ import {
 import { googleApiKey } from "../config/keys";
 import colors from "kolors";
 import ElevatedView from "react-native-elevated-view";
+import mapStyles from "../config/mapStyles";
 
 export default class GetEventLocation extends Component {
   static propTypes = {
@@ -29,6 +30,8 @@ export default class GetEventLocation extends Component {
         {!this.props.submitting &&
           this.props.location &&
           <MapView
+            provider={MapView.PROVIDER_GOOGLE}
+            customMapStyle={mapStyles}
             style={StyleSheet.absoluteFillObject}
             scrollEnabled={false}
             initialRegion={{

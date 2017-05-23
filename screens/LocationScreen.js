@@ -5,6 +5,7 @@ import colors from "kolors";
 import { NavigationStyles } from "@expo/ex-navigation";
 import { observer } from "mobx-react/native";
 import { observable } from "mobx";
+import mapStyles from "../config/mapStyles";
 
 @observer
 export default class LocationScreen extends Component {
@@ -37,6 +38,8 @@ export default class LocationScreen extends Component {
   render() {
     return (
       <MapView
+        provider={MapView.PROVIDER_GOOGLE}
+        customMapStyle={mapStyles}
         style={StyleSheet.absoluteFillObject}
         initialRegion={{
           latitude: this.props.event.location.geometry.location.lat,

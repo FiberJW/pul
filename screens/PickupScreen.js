@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { View, ActivityIndicator, StyleSheet, StatusBar } from "react-native";
 import { NavigationStyles } from "@expo/ex-navigation";
-import colors from "kolors";
 import { MapView, Location, KeepAwake } from "expo";
 import { maybeOpenURL } from "react-native-app-link";
 import connectDropdownAlert from "../utils/connectDropdownAlert";
@@ -12,6 +11,7 @@ import { observable } from "mobx";
 import MapViewFloatingCard from "../components/MapViewFloatingCard";
 import MapViewConsole from "../components/MapViewConsole";
 import DestinationMarker from "../components/styled/DestinationMarker";
+import mapStyles from "../config/mapStyles";
 
 @connectDropdownAlert
 @observer
@@ -92,6 +92,8 @@ export default class PickupScreen extends Component {
               ref={c => {
                 this.map = c;
               }}
+              provider={MapView.PROVIDER_GOOGLE}
+              customMapStyle={mapStyles}
               style={StyleSheet.absoluteFillObject}
               initialRegion={{
                 latitude: this.props.pickupLocation.lat,
@@ -130,21 +132,6 @@ export default class PickupScreen extends Component {
               >
                 <DestinationMarker />
               </MapView.Marker>
-              <If condition={this.location}>
-                <MapView.Polyline
-                  strokeWidth={2}
-                  strokeColor={colors.black}
-                  geodesic
-                  lineDashPattern={[4, 8, 4, 8]}
-                  coordinates={[
-                    {
-                      latitude: this.props.pickupLocation.lat,
-                      longitude: this.props.pickupLocation.lon
-                    },
-                    this.location
-                  ]}
-                />
-              </If>
             </MapView>
             <MapViewFloatingCard
               label={`Meet at the ${this.props.pickupLocation.name
