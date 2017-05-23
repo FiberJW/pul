@@ -86,6 +86,7 @@ export class EventStore {
               .add(rightEvent.time.minutes, "minutes")
           );
       })
+      .sort((a, b) => b.likes.length - a.likes.length)
       .slice(0, 100);
     this.schoolUID = schoolUID;
     this.loading = false;
