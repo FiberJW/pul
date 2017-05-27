@@ -1,7 +1,6 @@
 import React, { PropTypes } from "react";
-import { TouchableOpacity } from "react-native";
 import styled from "styled-components/native";
-import ElevatedView from "react-native-elevated-view";
+import ElevatedView from "fiber-react-native-elevated-view";
 import colors from "kolors";
 
 const MapViewFloatingCardText = styled.Text`
@@ -21,13 +20,16 @@ const MapViewFloatingCardContainer = styled(ElevatedView)`
 `;
 
 const MapViewFloatingCard = props => (
-  <TouchableOpacity onPress={props.onPress}>
-    <MapViewFloatingCardContainer elevation={4}>
-      <MapViewFloatingCardText>
-        {props.label}
-      </MapViewFloatingCardText>
-    </MapViewFloatingCardContainer>
-  </TouchableOpacity>
+  <MapViewFloatingCardContainer
+    onPress={props.onPress}
+    feedbackEnabled
+    activeElevation={1}
+    elevation={4}
+  >
+    <MapViewFloatingCardText>
+      {props.label}
+    </MapViewFloatingCardText>
+  </MapViewFloatingCardContainer>
 );
 
 MapViewFloatingCard.propTypes = {
