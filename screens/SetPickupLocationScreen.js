@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { NavigationStyles } from "@expo/ex-navigation";
 import colors from "kolors";
-import ElevatedView from "react-native-elevated-view";
+import ElevatedView from "fiber-react-native-elevated-view";
 import shuffle from "../utils/shuffle";
 import connectDropdownAlert from "../utils/connectDropdownAlert";
 import {
@@ -209,13 +209,17 @@ export default class SetPickupLocationScreen extends Component {
             />
           </Otherwise>
         </Choose>
-        <TouchableOpacity onPress={() => this.requestRide()}>
-          <ElevatedView style={styles.requestButton} elevation={4}>
-            <Text style={styles.requestButtonText}>
-              REQUEST A RIDE
-            </Text>
-          </ElevatedView>
-        </TouchableOpacity>
+        <ElevatedView
+          activeElevation={1}
+          feedbackEnabled
+          onPress={() => this.requestRide()}
+          style={styles.requestButton}
+          elevation={4}
+        >
+          <Text style={styles.requestButtonText}>
+            REQUEST A RIDE
+          </Text>
+        </ElevatedView>
         <TouchableOpacity
           onPress={() =>
             email(

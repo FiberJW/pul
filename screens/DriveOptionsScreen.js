@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import {
   View,
-  TouchableOpacity,
   Text,
   ActivityIndicator,
   ScrollView,
@@ -12,7 +11,7 @@ import colors from "kolors";
 import moment from "moment";
 import t from "tcomb-form-native";
 import pickupTimeStylesheet from "../config/pickupTimeStylesheet";
-import ElevatedView from "react-native-elevated-view";
+import ElevatedView from "fiber-react-native-elevated-view";
 import connectDropdownAlert from "../utils/connectDropdownAlert";
 import { Notifications } from "expo";
 import {
@@ -247,13 +246,17 @@ export default class DriveOptionsScreen extends Component {
               }}
               options={TimeOptions}
             />
-            <TouchableOpacity onPress={() => this.pushRide()}>
-              <ElevatedView elevation={4} style={styles.confirmButton}>
-                <Text style={styles.confirmButtonText}>
-                  CONFIRM DRIVE
-                </Text>
-              </ElevatedView>
-            </TouchableOpacity>
+            <ElevatedView
+              feedbackEnabled
+              activeElevation={1}
+              onPress={() => this.pushRide()}
+              elevation={4}
+              style={styles.confirmButton}
+            >
+              <Text style={styles.confirmButtonText}>
+                CONFIRM DRIVE
+              </Text>
+            </ElevatedView>
           </ScrollView>
         </Otherwise>
       </Choose>

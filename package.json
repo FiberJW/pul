@@ -41,7 +41,6 @@
     "react-native-collapsible": "^0.8.0",
     "react-native-communications": "^2.2.1",
     "react-native-dropdownalert": "^2.5.0",
-    "react-native-elevated-view": "0.0.1",
     "react-native-google-places-autocomplete": "^1.2.6",
     "react-native-swiper": "^1.5.4",
     "sentry-expo": "^1.0.0",
