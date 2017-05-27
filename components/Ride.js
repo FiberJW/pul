@@ -12,7 +12,7 @@ import colors from "kolors";
 import Carpooler from "../components/Carpooler";
 import { connectActionSheet } from "@expo/react-native-action-sheet";
 import { withNavigation } from "@expo/ex-navigation";
-import ElevatedView from "react-native-elevated-view";
+import ElevatedView from "fiber-react-native-elevated-view";
 import { maybeOpenURL } from "react-native-app-link";
 import connectDropdownAlert from "../utils/connectDropdownAlert";
 import createWazeDeepLink from "../utils/createWazeDeepLink";
@@ -249,7 +249,7 @@ export default class Ride extends Component {
                 this.pickedUpUsers === this.passengers.length - 1
             }
           >
-            <TouchableOpacity
+            <ElevatedView
               onPress={() =>
                 Alert.alert(
                   Platform.OS === "ios" ? "Start Ride" : "Start ride",
@@ -301,13 +301,15 @@ export default class Ride extends Component {
                     }
                   ]
                 )}
+              feedbackEnabled
+              activeElevation={1}
+              style={styles.startDrivingButton}
+              elevation={4}
             >
-              <ElevatedView style={styles.startDrivingButton} elevation={4}>
-                <Text style={styles.buttonText}>
-                  START DRIVING
-                </Text>
-              </ElevatedView>
-            </TouchableOpacity>
+              <Text style={styles.buttonText}>
+                START DRIVING
+              </Text>
+            </ElevatedView>
           </When>
           <When
             condition={
@@ -316,7 +318,7 @@ export default class Ride extends Component {
                 !this.props.event.yourRide.rideCompleted
             }
           >
-            <TouchableOpacity
+            <ElevatedView
               onPress={() =>
                 Alert.alert(
                   Platform.OS === "ios" ? "End Ride" : "End ride",
@@ -357,13 +359,15 @@ export default class Ride extends Component {
                     }
                   ]
                 )}
+              style={styles.rideCompleteButton}
+              feedbackEnabled
+              activeElevation={1}
+              elevation={4}
             >
-              <ElevatedView style={styles.rideCompleteButton} elevation={4}>
-                <Text style={styles.buttonText}>
-                  COMPLETE RIDE
-                </Text>
-              </ElevatedView>
-            </TouchableOpacity>
+              <Text style={styles.buttonText}>
+                COMPLETE RIDE
+              </Text>
+            </ElevatedView>
           </When>
           <When condition={this.selfIsDriver && this.passengers.length === 1}>
             <RideStatus>
