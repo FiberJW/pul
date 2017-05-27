@@ -1,18 +1,12 @@
 import React, { Component, PropTypes } from "react";
-import {
-  View,
-  Text,
-  Dimensions,
-  StyleSheet,
-  TouchableOpacity
-} from "react-native";
+import { View, Text, Dimensions, StyleSheet } from "react-native";
 import { MapView } from "expo";
 import {
   GooglePlacesAutocomplete
 } from "react-native-google-places-autocomplete";
 import { googleApiKey } from "../config/keys";
 import colors from "kolors";
-import ElevatedView from "react-native-elevated-view";
+import ElevatedView from "fiber-react-native-elevated-view";
 import mapStyles from "../config/mapStyles";
 
 export default class GetEventLocation extends Component {
@@ -95,17 +89,17 @@ export default class GetEventLocation extends Component {
         {this.props.keyboardHeight === 0 &&
           !this.props.submitting &&
           this.props.location &&
-          <TouchableOpacity
+          <ElevatedView
+            feedbackEnabled
+            activeElevation={1}
             onPress={this.props.onSubmit}
-            activeOpacity={0.7}
-            style={styles.submitButtonContainer}
+            style={styles.submitButton}
+            elevation={4}
           >
-            <ElevatedView style={styles.submitButton} elevation={4}>
-              <Text style={styles.submitText}>
-                SUBMIT EVENT
-              </Text>
-            </ElevatedView>
-          </TouchableOpacity>}
+            <Text style={styles.submitText}>
+              SUBMIT EVENT
+            </Text>
+          </ElevatedView>}
       </View>
     );
   }
@@ -117,10 +111,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
-  submitButtonContainer: {
-    marginBottom: Dimensions.get("window").height / 4
-  },
   submitButton: {
+    marginBottom: Dimensions.get("window").height / 4,
     backgroundColor: colors.blue,
     borderRadius: 4,
     paddingVertical: 8,
