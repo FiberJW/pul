@@ -25,6 +25,7 @@
     "bad-words": "^1.4.2",
     "chalkdust": "^1.1.0",
     "expo": "^17.0.0",
+    "fiber-react-native-elevated-view": "^0.1.3",
     "firebase": "^3.6.3",
     "hoist-non-react-statics": "^1.2.0",
     "jsx-control-statements": "^3.1.5",
