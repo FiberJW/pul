@@ -9,7 +9,7 @@ import {
 import { withNavigation } from "@expo/ex-navigation";
 import colors from "kolors";
 import Collapsible from "react-native-collapsible";
-import ElevatedView from "react-native-elevated-view";
+import ElevatedView from "fiber-react-native-elevated-view";
 import Router from "Router";
 import connectDropdownAlert from "../utils/connectDropdownAlert";
 import createWazeDeepLink from "../utils/createWazeDeepLink";
@@ -209,39 +209,38 @@ export default class Carpooler extends Component {
   render() {
     return (
       this.props.user.userUID !== this.props.authStore.userId &&
-      <TouchableOpacity
-        activeOpacity={1}
+      <ElevatedView
         onPress={() => {
           this.isCollapsed = !this.isCollapsed;
         }}
+        style={styles.cardContainer}
+        elevation={2}
       >
-        <ElevatedView style={styles.cardContainer} elevation={2}>
-          <CardHeader>
-            <CardLabel>
-              {this.props.user.displayName.toUpperCase()}
-            </CardLabel>
-            <CardSublabel>
-              {this.props.user.type.toUpperCase()}
-            </CardSublabel>
-          </CardHeader>
-          <CardIndicator
-            active={
-              this.props.pickedUpUsers === this.props.passengers.length ||
-                (this.props.event.yourRide.rideStarted ||
-                  this.props.user.isPickedUp)
-            }
-          />
-          <Collapsible duration={200} collapsed={this.isCollapsed}>
-            {this.props.selfIsDriver &&
-              this.props.user.type === "rider" &&
-              this.renderDriverPassengerContent()}
-            {this.props.user.type === "rider" &&
-              !this.props.selfIsDriver &&
-              this.renderPeerPassengerContent()}
-            {this.props.user.type === "driver" && this.renderDriverContent()}
-          </Collapsible>
-        </ElevatedView>
-      </TouchableOpacity>
+        <CardHeader>
+          <CardLabel>
+            {this.props.user.displayName.toUpperCase()}
+          </CardLabel>
+          <CardSublabel>
+            {this.props.user.type.toUpperCase()}
+          </CardSublabel>
+        </CardHeader>
+        <CardIndicator
+          active={
+            this.props.pickedUpUsers === this.props.passengers.length ||
+              (this.props.event.yourRide.rideStarted ||
+                this.props.user.isPickedUp)
+          }
+        />
+        <Collapsible duration={200} collapsed={this.isCollapsed}>
+          {this.props.selfIsDriver &&
+            this.props.user.type === "rider" &&
+            this.renderDriverPassengerContent()}
+          {this.props.user.type === "rider" &&
+            !this.props.selfIsDriver &&
+            this.renderPeerPassengerContent()}
+          {this.props.user.type === "driver" && this.renderDriverContent()}
+        </Collapsible>
+      </ElevatedView>
     );
   }
 }
