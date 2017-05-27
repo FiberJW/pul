@@ -1,6 +1,6 @@
 import React, { PropTypes } from "react";
 import { StyleSheet } from "react-native";
-import ElevatedView from "react-native-elevated-view";
+import ElevatedView from "fiber-react-native-elevated-view";
 import CardSublabel from "./styled/CardSublabel";
 import CardLabel from "./styled/CardLabel";
 import CardHeader from "./styled/CardHeader";
