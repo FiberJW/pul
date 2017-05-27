@@ -215,6 +215,8 @@ export default class Carpooler extends Component {
         }}
         style={styles.cardContainer}
         elevation={2}
+        feedbackEnabled
+        activeElevation={4}
       >
         <CardHeader>
           <CardLabel>
