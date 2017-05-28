@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { sentryURL } from "./config/keys";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import DropdownAlertProvider from "./components/DropdownAlertProvider";
-import { Sentry } from "sentry-expo";
+import Sentry from "sentry-expo";
 import { Provider as MobXProvider } from "mobx-react/native";
 import authStore from "./stores/AuthStore";
 import eventStore from "./stores/EventStore";
@@ -19,7 +19,6 @@ if (!global.__DEV__) {
       /* noop */
     };
   });
-
   Sentry.config(sentryURL).install();
 }
 
