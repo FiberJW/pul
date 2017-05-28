@@ -199,7 +199,7 @@ export default class Event extends Component {
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
-              alignItems: "baseline"
+              alignItems: "center"
             }}
           >
             <Icon
@@ -212,7 +212,7 @@ export default class Event extends Component {
             />
             <Text
               style={{
-                fontSize: 16,
+                fontSize: 12,
                 marginLeft: 4,
                 color: colors.black,
                 fontFamily: "open-sans"
