@@ -1,0 +1,127 @@
+{
+  "schools": {
+    "-k230n0yc312": {
+      "emailSuffix": "@gmail.com",
+      "events": {
+        "-Kf9Q1YdxgKw7vdAKtXv": {
+          "createdBy": "dVlhxGGG5tdmHvw8fpBTmAFw4wA3",
+          "createdInDev": true,
+          "date": "2018-04-08T04:00:00.000Z",
+          "description": "",
+          "likes": {
+            "JOhedXcqPpbx8D29Ax3Ck0ppzzk2": false
+          },
+          "location": {
+            "address": "257 N. Duke St #A, York, PA 17401, USA",
+            "geometry": {
+              "location": {
+                "lat": 39.96781000000001,
+                "lng": -76.72566499999999
+              },
+              "viewport": {
+                "northeast": {
+                  "lat": 39.9691589802915,
+                  "lng": -76.72431601970848
+                },
+                "southwest": {
+                  "lat": 39.9664610197085,
+                  "lng": -76.7270139802915
+                }
+              }
+            }
+          },
+          "name": "VR Happy Hour",
+          "rides": {
+            "-Kf9QbfMBlr84iQqrW5I": {
+              "driver": "dVlhxGGG5tdmHvw8fpBTmAFw4wA3",
+              "eventUID": "-Kf9Q1YdxgKw7vdAKtXv",
+              "notiID": "67CAFB22-FB1C-47F9-82FD-6440A79900E7",
+              "passengerLimit": 3,
+              "passengers": {
+                "-Kf9SgXqayN1RUKEA9LD": {
+                  "isPickedUp": false,
+                  "location": "Googleplex",
+                  "userUID": "LdrpN22KyzRWNIy9CpRLSN7MATU2"
+                },
+                "-KfAbCnr-hvmyNwTE2Vp": {
+                  "isPickedUp": true,
+                  "location": "Googleplex",
+                  "userUID": "DE14uLX7xFXpVvqfldcCGAdrJco1"
+                },
+                "-Kn68H8zMxzz9rElZ1u-": {
+                  "isPickedUp": false,
+                  "location": "1 Hacker Way",
+                  "userUID": "jBSCetb23xVsbzTSFh0JiK2h2J53"
+                }
+              },
+              "pickupTime": {
+                "hours": 15,
+                "minutes": 28
+              },
+              "rideCompleted": false,
+              "rideStarted": false,
+              "schoolUID": "-k230n0yc312"
+            },
+            "-KfGMBg1ruwNpdLoRSmG": {
+              "driver": "kqjSx4kVIXhAQrtteBmlcRAtUyB3",
+              "eventUID": "-Kf9Q1YdxgKw7vdAKtXv",
+              "notiID": "A4742B2E-F835-464B-85B1-3CD29DBAABFB",
+              "passengerLimit": 1,
+              "passengers": {
+                "-Kn_O-DcQxLHZej5Qaf8": {
+                  "isPickedUp": false,
+                  "location": "1 Hacker Way",
+                  "userUID": "yxOW4tKX56NaAjbN0Q7rpV6akbJ3"
+                }
+              },
+              "pickupTime": {
+                "hours": 5,
+                "minutes": 46
+              },
+              "rideCompleted": false,
+              "rideStarted": false,
+              "schoolUID": "-k230n0yc312"
+            }
+          },
+          "time": {
+            "hours": 16,
+            "minutes": 20
+          },
+          "type": "hackathon",
+          "url": ""
+        }
+      },
+      "logoUrl": "https://firebasestorage.googleapis.com/v0/b/pulapp-80d33.appspot.com/o/Google_-G-_Logo.png?alt=media&token=f0b5497c-4f7c-4dd1-8b12-8ba650058a8c",
+      "name": "Demo School",
+      "pickupLocations": [
+        {
+          "lat": 37.4221527,
+          "lon": -122.0842991,
+          "name": "Googleplex"
+        },
+        {
+          "lat": 37.4845773,
+          "lon": -122.1478826,
+          "name": "1 Hacker Way"
+        }
+      ],
+      "primaryColor": "#F4F4F4"
+    }
+  },
+  "users": {
+    "0CBmSPPmCNOnnYKf2L4rnGRROcj2": {
+      "deviceId": "<UUID>",
+      "displayName": "<NAME>",
+      "email": "<EMAIL>",
+      "phoneNumber": "<#>",
+      "pushToken": "ExponentPushToken[<ID>]",
+      "ridesGiven": 0,
+      "ridesReceived": 0,
+      "school": "<SCHOOL ID>",
+      "settings": {
+        "notifications": true
+      },
+      "trexHighestScore": 725
+    }
+  }
+}

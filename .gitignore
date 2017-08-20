@@ -3,8 +3,8 @@ npm-debug.*
 .idea/
 .expo/*
 node_modules/
-config/keys.js
 .release/
 .vscode/
 jsconfig.json
 .eslintcache
+yarn-error.log
