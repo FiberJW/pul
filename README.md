@@ -12,8 +12,6 @@
 
 ---
 
-[![Build Status](https://travis-ci.org/datwheat/pul.svg?branch=master)](https://travis-ci.org/datwheat/pul)
-
 [Get It on Expo!](https://expo.io/@pulapp/pul)
 
 ## Screenshots
